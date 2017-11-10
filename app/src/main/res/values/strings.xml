@@ -4,5 +4,5 @@
     <string name="label_activity_perfil">Perfil</string>
 
     <!-- shared transitions-->
-    <string name="transition_name_boton">enter_transition_perfil</string>
+    <!--<string name="transition_name_boton">enter_transition_perfil</string>-->
 </resources>

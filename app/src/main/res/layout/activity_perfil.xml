@@ -111,7 +111,6 @@
             android:clickable="true"
             android:onClick="saveUser"
             android:src="@drawable/ic_save_white"
-            android:transitionName="@string/transition_name_boton"
             app:elevation="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
