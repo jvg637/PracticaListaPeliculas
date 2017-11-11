@@ -25,6 +25,7 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
     private  Set userList = new HashSet<User>();
+    private boolean recordarUsuario = false;
     EditText contraseña;
     EditText usuario;
     CheckBox mostrar;
@@ -69,6 +70,20 @@ public class InicioSesionActivity extends AppCompatActivity {
         return validUser;
     }
 
+    private void rememberUser() {
+        SharedPreferences prefs = getSharedPreferences("Recordar usuario", Context.MODE_PRIVATE);
+        String username = "";
+        String password = "";
+
+        Log.e("x", "recordando");
+
+        if(prefs.getBoolean("recordar", this.recordarUsuario)) {
+            this.recordarme.setChecked(true);
+            this.usuario.setText(prefs.getString("username", username));
+            this.contraseña.setText(prefs.getString("password", password));
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,16 +94,17 @@ public class InicioSesionActivity extends AppCompatActivity {
         mostrar = (CheckBox) findViewById(R.id.mostrar_contraseña);
         recordarme = (CheckBox) findViewById(R.id.recordarme);
 
+
+        rememberUser();
         initUserList();
     }
 
     public void loguearCheckbox(View v) {
         String s = "Recordar datos de usuario: " + (recordarme.isChecked() ? "Sí" : "No");
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        if (recordarme.isChecked()){
-            usuario.setText("usuario1");
-            contraseña.setText("usuario1");
-        }
+
+        this.recordarUsuario = recordarme.isChecked();
+
     }
 
     public void mostrarContraseña(View v) {
@@ -111,6 +127,17 @@ public class InicioSesionActivity extends AppCompatActivity {
         }*/
 
         if( this.checkUser(new User(this.usuario.getText().toString(), this.contraseña.getText().toString())) ){
+            SharedPreferences prefs = getSharedPreferences("Recordar usuario", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("recordar", recordarme.isChecked());
+
+            if(recordarUsuario) {
+                editor.putString("username", this.usuario.getText().toString());
+                editor.putString("password", this.contraseña.getText().toString());
+            }
+
+            editor.commit();
+
             Intent intent = new Intent(this, ListasActivity.class);
             startActivity(intent);
             //startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());

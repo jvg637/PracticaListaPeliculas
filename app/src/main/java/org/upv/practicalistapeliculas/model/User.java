@@ -2,6 +2,8 @@ package org.upv.practicalistapeliculas.model;
 
 import android.util.Log;
 
+import org.upv.practicalistapeliculas.R;
+
 import java.io.Serializable;
 
 /**
@@ -12,10 +14,26 @@ public class User implements Serializable {
     private String mail;
     private String username;
     private String password;
+    private int DEFAULT_PHOTO = R.mipmap.ic_perfil;
+
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.mail = email;
+    }
+
+    public int getDEFAULT_PHOTO() {
+        return DEFAULT_PHOTO;
+    }
+
+    public void setDEFAULT_PHOTO(int DEFAULT_PHOTO) {
+        this.DEFAULT_PHOTO = DEFAULT_PHOTO;
     }
 
     public String getMail() {
