@@ -14,9 +14,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.upv.practicalistapeliculas.R;
+import org.upv.practicalistapeliculas.adapters.DownloadImageTask;
 import org.upv.practicalistapeliculas.model.Movie;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -65,7 +67,12 @@ public class ShowEditMovie extends AppCompatActivity {
         int id = -1;
 
         if (data != null && data.getExtras() != null) {
-            id = data.getExtras().getInt(PARAM_EXTRA_ID_PELICULA, -1);
+            /*
+             * Como en Movie el id se definió como long, si no se realiza de esta manera,
+             * el valor que se obtiene al obtener el extra es siempre 0
+             */
+            long idP = data.getExtras().getLong(PARAM_EXTRA_ID_PELICULA);
+            id = new BigDecimal(idP).intValueExact();
         }
         
         if (id == -1) {
@@ -80,7 +87,8 @@ public class ShowEditMovie extends AppCompatActivity {
     private void mostrarPelicula(int id) {
         Movie movie = MovieList.list.get(id);
 
-        photo.setImageResource(R.mipmap.ic_perfil);
+        //Para obtener la imagen desde la url usamos la clase DownloadImageTask
+        new DownloadImageTask(photo).execute(movie.getCardImageUrl());
         title.setText(movie.getTitle() + " ( 2010 )");
         category.setText(movie.getCategory());
         summary.setText(movie.getDescription());

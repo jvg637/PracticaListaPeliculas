@@ -1,9 +1,11 @@
 package org.upv.practicalistapeliculas;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -11,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import org.upv.practicalistapeliculas.adapters.MovieListAdapter;
 import org.upv.practicalistapeliculas.model.Movie;
 import org.upv.practicalistapeliculas.movie.MovieList;
+import org.upv.practicalistapeliculas.movie.ShowEditMovie;
 import org.upv.practicalistapeliculas.movie.Utils;
 
 import java.lang.reflect.Type;
@@ -25,14 +28,19 @@ public class MovieListActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
 
+    //Lista peliculas
+    private List<Movie> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
-        List<Movie> movieList = new ArrayList<>();
-        if(movieList.isEmpty()) {
+        /*
+         * Posiblemente esto no haya que hacerlo mas adelante, de momento es para evitar un NullPointerException
+         */
+        movieList = new ArrayList<>();
+        if (movieList.isEmpty()) {
             String json = Utils.loadJSONFromResource(this, R.raw.movies);
             Gson gson = new Gson();
             Type collection = new TypeToken<ArrayList<Movie>>() {
@@ -52,6 +60,15 @@ public class MovieListActivity extends AppCompatActivity {
         // Crear un nuevo adaptador
         adapter = new MovieListAdapter(movieList);
         recycler.setAdapter(adapter);
+
+        recycler.addOnItemTouchListener(new RecyclerItemClickListener(MovieListActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(MovieListActivity.this, ShowEditMovie.class);
+                intent.putExtra("ID", movieList.get(position).getId());
+                startActivity(intent);
+            }
+        }));
     }
 
 }
