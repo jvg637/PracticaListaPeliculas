@@ -26,6 +26,9 @@
         <activity android:name=".movie.ShowEditMovie" />
 
         <activity android:name=".PeliculaActivity"></activity>
+
+
+        <activity android:name=".ListasActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
