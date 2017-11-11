@@ -1,10 +1,16 @@
 package org.upv.practicalistapeliculas.movie;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,11 +20,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.adapters.DownloadImageTask;
+import org.upv.practicalistapeliculas.adapters.MovieListAdapter;
 import org.upv.practicalistapeliculas.model.Movie;
+import org.upv.practicalistapeliculas.movie.MovieList;
+import org.upv.practicalistapeliculas.movie.Utils;
 
+import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +50,7 @@ public class ShowEditMovie extends AppCompatActivity {
     private EditText category;
     private EditText summary;
     private EditText director;
+    private EditText actor;
     private EditText producer;
     private EditText studio;
     private RatingBar rating;
@@ -56,10 +65,11 @@ public class ShowEditMovie extends AppCompatActivity {
         title  = (EditText) findViewById(R.id.title);
         category = (EditText) findViewById(R.id.category);
         summary = (EditText) findViewById(R.id.summary);
-        rating = (RatingBar)  findViewById(R.id.ratingBar);;
+        actor = (EditText) findViewById(R.id.actor);
         director = (EditText) findViewById(R.id.director);
         producer = (EditText) findViewById(R.id.producer);
         studio = (EditText) findViewById(R.id.studio);
+        rating = (RatingBar)  findViewById(R.id.ratingBar);;
 
         btnSave = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -67,12 +77,7 @@ public class ShowEditMovie extends AppCompatActivity {
         int id = -1;
 
         if (data != null && data.getExtras() != null) {
-            /*
-             * Como en Movie el id se definió como long, si no se realiza de esta manera,
-             * el valor que se obtiene al obtener el extra es siempre 0
-             */
-            long idP = data.getExtras().getLong(PARAM_EXTRA_ID_PELICULA);
-            id = new BigDecimal(idP).intValueExact();
+            id = data.getExtras().getInt(PARAM_EXTRA_ID_PELICULA, -1);
         }
         
         if (id == -1) {
@@ -87,17 +92,21 @@ public class ShowEditMovie extends AppCompatActivity {
     private void mostrarPelicula(int id) {
         Movie movie = MovieList.list.get(id);
 
-        //Para obtener la imagen desde la url usamos la clase DownloadImageTask
-        new DownloadImageTask(photo).execute(movie.getCardImageUrl());
         title.setText(movie.getTitle() + " ( 2010 )");
         category.setText(movie.getCategory());
         summary.setText(movie.getDescription());
         studio.setText(movie.getStudio());
         director.setText("Director 1");
         producer.setText("Productor 1");
+        actor.setText("Actor 1");
         rating.setRating(2.5f);
-
+        new DownloadImageTask(photo).execute(movie.getBackgroundImageUrl());
         protectFields();
+
+        Transition lista_enter = TransitionInflater.from(this)
+                .inflateTransition(R.transition.transition_curva);
+        getWindow().setSharedElementEnterTransition(lista_enter);
+
     }
 
     private void protectFields() {
@@ -115,6 +124,9 @@ public class ShowEditMovie extends AppCompatActivity {
 
 //        summary.setEnabled(false);
         summary.setFocusable(false);
+
+//        actor.setEnabled(false);
+        actor.setFocusable(false);
 
 //        director.setEnabled(false);
         director.setFocusable(false);
@@ -138,5 +150,30 @@ public class ShowEditMovie extends AppCompatActivity {
         Type collection = new TypeToken<ArrayList<Movie>>() {
         }.getType();
         MovieList.list = gson.fromJson(json, collection);
+    }
+
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

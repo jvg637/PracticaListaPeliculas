@@ -1,6 +1,9 @@
 package org.upv.practicalistapeliculas;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,8 +68,12 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(MovieListActivity.this, ShowEditMovie.class);
-                intent.putExtra("ID", movieList.get(position).getId());
-                startActivity(intent);
+//                intent.putExtra("ID", movieList.get(position).getId());
+//                startActivity(intent);
+
+                intent.putExtra(ShowEditMovie.PARAM_EXTRA_ID_PELICULA, (int)movieList.get(position).getId());
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this, new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
+                ActivityCompat.startActivity(MovieListActivity.this, intent, options.toBundle());
             }
         }));
     }
