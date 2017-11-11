@@ -5,13 +5,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.upv.practicalistapeliculas.bbdd.TablasBBDD;
+import org.upv.practicalistapeliculas.bbdd.BBDDTables;
 
 /**
  * Created by Miguel Á. Núñez on 11/11/2017.
  */
 
-public class PeliculaDBAdapter {
+public class MovieDBAdapter {
     /*
      * Se define una constante con el nombre de la tabla
      */
@@ -47,16 +47,16 @@ public class PeliculaDBAdapter {
     private String[] columnasDIR = new String[] {DIR_COLUMNA_NOMBRE};
 
     private Context contexto;
-    private TablasBBDD dbHelper;
+    private BBDDTables dbHelper;
     private SQLiteDatabase db;
 
-    public PeliculaDBAdapter(Context context) {
+    public MovieDBAdapter(Context context) {
         this.contexto = context;
     }
 
-    public PeliculaDBAdapter abrir() throws SQLException
+    public MovieDBAdapter abrir() throws SQLException
     {
-        dbHelper = new TablasBBDD(contexto);
+        dbHelper = new BBDDTables(contexto);
         db = dbHelper.getWritableDatabase();
         return this;
     }

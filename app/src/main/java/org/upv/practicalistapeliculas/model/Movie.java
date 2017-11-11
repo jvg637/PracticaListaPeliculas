@@ -12,7 +12,7 @@
  * the License.
  */
 
-package org.upv.practicalistapeliculas.movie;
+package org.upv.practicalistapeliculas.model;
 
 import android.util.Log;
 

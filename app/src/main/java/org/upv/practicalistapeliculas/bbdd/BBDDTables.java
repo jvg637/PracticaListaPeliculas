@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by Miguel Á. Núñez on 10/11/2017.
  */
 
-public class TablasBBDD extends SQLiteOpenHelper {
+public class BBDDTables extends SQLiteOpenHelper {
 
     private static int version = 1;
     private static String name = "PeliculasDb" ;
@@ -35,7 +35,7 @@ public class TablasBBDD extends SQLiteOpenHelper {
             "idPelicula TEXT," +
             "FOREIGN KEY(idPelicula) REFERENCES Peliculas(idPelicula))";
 
-    public TablasBBDD(Context context)
+    public BBDDTables(Context context)
     {
         super(context, name, factory, version);
     }

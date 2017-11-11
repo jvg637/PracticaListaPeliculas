@@ -12,9 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Lionel on 07/11/2017.
  */
@@ -51,7 +48,7 @@ public class ListasActivity extends AppCompatActivity {
             public void onItemClick(View v, int position) {
                 Toast.makeText(ListasActivity.this, "items: " + position, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(ListasActivity.this, PeliculaActivity.class);
+                Intent intent = new Intent(ListasActivity.this, MovieActivity.class);
                 startActivity(intent);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
             }

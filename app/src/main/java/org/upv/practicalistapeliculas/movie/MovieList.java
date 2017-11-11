@@ -1,12 +1,7 @@
 package org.upv.practicalistapeliculas.movie;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.upv.practicalistapeliculas.model.Movie;
 
-import org.upv.practicalistapeliculas.R;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
