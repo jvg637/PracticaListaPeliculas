@@ -1,5 +1,7 @@
 package org.upv.practicalistapeliculas;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -48,6 +50,10 @@ public class ListasActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
                 Toast.makeText(ListasActivity.this, "items: " + position, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(ListasActivity.this, PeliculaActivity.class);
+                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
             }
         }));
 

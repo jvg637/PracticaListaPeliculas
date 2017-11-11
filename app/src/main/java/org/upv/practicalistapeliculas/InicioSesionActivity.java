@@ -111,7 +111,7 @@ public class InicioSesionActivity extends AppCompatActivity {
         }*/
 
         if( this.checkUser(new User(this.usuario.getText().toString(), this.contraseña.getText().toString())) ){
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, ListasActivity.class);
             startActivity(intent);
             //startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         }else{

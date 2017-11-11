@@ -27,13 +27,13 @@ public class TablasBBDD extends SQLiteOpenHelper {
     private static String sqlActoresCreate = "CREATE TABLE Actores (_id INTEGER PRIMARY KEY," +
             "nombre TEXT" +
             "idPelicula TEXT," +
-            "FOREIGN KEY(ipPelicula) REFERENCES Peliculas(idPelicula))";
+            "FOREIGN KEY(idPelicula) REFERENCES Peliculas(idPelicula))";
 
     //Sentencia SQL para crear la tablea de Directores
     private static String sqlDirectoresCreate = "CREATE TABLE Directores (_id INTEGER PRIMARY KEY," +
             "nombre TEXT" +
             "idPelicula TEXT," +
-            "FOREIGN KEY(ipPelicula) REFERENCES Peliculas(idPelicula))";
+            "FOREIGN KEY(idPelicula) REFERENCES Peliculas(idPelicula))";
 
     public TablasBBDD(Context context)
     {

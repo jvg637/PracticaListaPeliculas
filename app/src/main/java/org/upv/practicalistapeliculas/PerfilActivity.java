@@ -1,20 +1,19 @@
 package org.upv.practicalistapeliculas;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputType;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import org.upv.practicalistapeliculas.model.User;
 
 public class PerfilActivity extends AppCompatActivity {
 
@@ -51,10 +50,10 @@ public class PerfilActivity extends AppCompatActivity {
         mostrar = (CheckBox) findViewById(R.id.mostrar_contraseña);
 
         User user = readUserFromPreferences();
-        usuario.setText(user.getEmail());
+        usuario.setText(user.getMail());
         contraseña.setText(user.getPassword());
-        name.setText(user.getName());
-        photo.setImageResource(user.getFoto());
+        name.setText(user.getUsername());
+//        photo.setImageResource(user.getFoto());
 //        contraseña.setText(user.getPassword());
 
         Transition lista_enter = TransitionInflater.from(this)
@@ -70,7 +69,8 @@ public class PerfilActivity extends AppCompatActivity {
         String name = sp.getString(KEY_NAME, DEFAULT_NAME);
         int photo = sp.getInt(KEY_FOTO, DEFAULT_PHOTO);
 
-        return new User(email, name, password, photo);
+//        return new User(email, name, password, photo);
+        return new User(email, password);
     }
 
     public void saveUserPreferences() {
