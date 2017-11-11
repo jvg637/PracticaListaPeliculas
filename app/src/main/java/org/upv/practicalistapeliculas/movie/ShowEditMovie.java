@@ -71,8 +71,7 @@ public class ShowEditMovie extends AppCompatActivity {
              * Como en Movie el id se definió como long, si no se realiza de esta manera,
              * el valor que se obtiene al obtener el extra es siempre 0
              */
-            long idP = data.getExtras().getLong(PARAM_EXTRA_ID_PELICULA);
-            id = new BigDecimal(idP).intValueExact();
+            id = new BigDecimal(data.getExtras().getLong(PARAM_EXTRA_ID_PELICULA)).intValueExact();
         }
         
         if (id == -1) {
