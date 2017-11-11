@@ -83,7 +83,7 @@ public class ShowEditMovie extends AppCompatActivity {
         if (id == -1) {
             // Mode Edit
         } else {
-            leerDatos();
+//            leerDatos();
             // Mode View
             mostrarPelicula(id);
         }
@@ -139,18 +139,18 @@ public class ShowEditMovie extends AppCompatActivity {
         btnSave.setVisibility(View.GONE);
     }
 
-    private void leerDatos() {
-        if (MovieList.list != null)
-            MovieList.list.clear();
-        else
-            MovieList.list = new ArrayList<>();
-
-        String json = Utils.loadJSONFromResource(this, R.raw.movies);
-        Gson gson = new Gson();
-        Type collection = new TypeToken<ArrayList<Movie>>() {
-        }.getType();
-        MovieList.list = gson.fromJson(json, collection);
-    }
+//    private void leerDatos() {
+//        if (MovieList.list != null)
+//            MovieList.list.clear();
+//        else
+//            MovieList.list = new ArrayList<>();
+//
+//        String json = Utils.loadJSONFromResource(this, R.raw.movies);
+//        Gson gson = new Gson();
+//        Type collection = new TypeToken<ArrayList<Movie>>() {
+//        }.getType();
+//        MovieList.list = gson.fromJson(json, collection);
+//    }
 
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
