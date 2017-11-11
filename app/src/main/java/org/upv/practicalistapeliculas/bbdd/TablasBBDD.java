@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TablasBBDD extends SQLiteOpenHelper {
 
     private static int version = 1;
-    private static String name = "HipotecaDb" ;
+    private static String name = "PeliculasDb" ;
     private static SQLiteDatabase.CursorFactory factory = null;
 
     //Sentencia SQL para crear la tabla de Usuarios
