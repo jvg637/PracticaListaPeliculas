@@ -27,7 +27,7 @@
             android:label="@string/label_activity_perfil"></activity>
         <activity android:name=".movie.ShowEditMovie" />
 
-        <activity android:name=".MovieActivity"></activity>
+        <activity android:name=".MovieListActivity"></activity>
 
 
         <activity

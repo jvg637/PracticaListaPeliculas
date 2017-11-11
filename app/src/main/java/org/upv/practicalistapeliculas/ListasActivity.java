@@ -48,7 +48,7 @@ public class ListasActivity extends AppCompatActivity {
             public void onItemClick(View v, int position) {
                 Toast.makeText(ListasActivity.this, "items: " + position, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(ListasActivity.this, MovieActivity.class);
+                Intent intent = new Intent(ListasActivity.this, MovieListActivity.class);
                 startActivity(intent);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
             }

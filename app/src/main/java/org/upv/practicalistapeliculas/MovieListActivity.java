@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import org.upv.practicalistapeliculas.bbdd.BBDDTables;
 
-public class MovieActivity extends AppCompatActivity {
+public class MovieListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,8 +16,8 @@ public class MovieActivity extends AppCompatActivity {
         /*
          * Declaramos el controlador de la BBDD y accedemos en modo escritura
          */
-        BBDDTables dbHelper = new BBDDTables(getBaseContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        /*BBDDTables dbHelper = new BBDDTables(getBaseContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();*/
 
 
     }

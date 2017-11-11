@@ -86,7 +86,7 @@ public class ShowEditMovie extends AppCompatActivity {
         summary.setText(movie.getDescription());
         studio.setText(movie.getStudio());
         director.setText("Director 1");
-        producer.setText("Productor 1");;
+        producer.setText("Productor 1");
         rating.setRating(2.5f);
 
         protectFields();
