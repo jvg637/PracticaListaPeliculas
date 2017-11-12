@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.upv.practicalistapeliculas.R;
+import org.upv.practicalistapeliculas.adapters.DownloadImageTask;
 import org.upv.practicalistapeliculas.adapters.MovieListAdapter;
 import org.upv.practicalistapeliculas.model.Movie;
 import org.upv.practicalistapeliculas.movie.MovieList;
@@ -152,28 +153,4 @@ public class ShowEditMovie extends AppCompatActivity {
 //        MovieList.list = gson.fromJson(json, collection);
 //    }
 
-    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
 }
