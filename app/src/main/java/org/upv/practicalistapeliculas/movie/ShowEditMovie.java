@@ -1,34 +1,21 @@
 package org.upv.practicalistapeliculas.movie;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.upv.practicalistapeliculas.R;
 import org.upv.practicalistapeliculas.adapters.DownloadImageTask;
-import org.upv.practicalistapeliculas.adapters.MovieListAdapter;
 import org.upv.practicalistapeliculas.model.Movie;
-import org.upv.practicalistapeliculas.movie.MovieList;
-import org.upv.practicalistapeliculas.movie.Utils;
-
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * Created by jvg63 on 09/11/2017.
@@ -50,9 +37,9 @@ public class ShowEditMovie extends AppCompatActivity {
     private EditText title;
     private EditText category;
     private EditText summary;
-    private EditText director;
-    private EditText actor;
-    private EditText producer;
+    private EditText directors;
+    private EditText actors;
+    private EditText producers;
     private EditText studio;
     private RatingBar rating;
     private FloatingActionButton btnSave;
@@ -62,17 +49,17 @@ public class ShowEditMovie extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_edit_movie);
 
-        photo = (ImageView) findViewById(R.id.photo);
-        title  = (EditText) findViewById(R.id.title);
-        category = (EditText) findViewById(R.id.category);
-        summary = (EditText) findViewById(R.id.summary);
-        actor = (EditText) findViewById(R.id.actor);
-        director = (EditText) findViewById(R.id.director);
-        producer = (EditText) findViewById(R.id.producer);
-        studio = (EditText) findViewById(R.id.studio);
-        rating = (RatingBar)  findViewById(R.id.ratingBar);;
+        photo = findViewById(R.id.photo);
+        title  = findViewById(R.id.title);
+        category = findViewById(R.id.category);
+        summary = findViewById(R.id.summary);
+        actors = findViewById(R.id.actor);
+        directors = findViewById(R.id.director);
+        producers = findViewById(R.id.producer);
+        studio = findViewById(R.id.studio);
+        rating = findViewById(R.id.ratingBar);
 
-        btnSave = (FloatingActionButton) findViewById(R.id.fab);
+        btnSave = findViewById(R.id.fab);
 
         Intent data = getIntent();
         int id = -1;
@@ -93,14 +80,16 @@ public class ShowEditMovie extends AppCompatActivity {
     private void mostrarPelicula(int id) {
         Movie movie = MovieList.list.get(id);
 
-        title.setText(movie.getTitle() + " ( 2010 )");
+        title.setText(movie.getTitle());
         category.setText(movie.getCategory());
         summary.setText(movie.getDescription());
         studio.setText(movie.getStudio());
-        director.setText("Director 1");
-        producer.setText("Productor 1");
-        actor.setText("Actor 1");
         rating.setRating(2.5f);
+        directors.setText(movie.getDirectors());
+        actors.setText(movie.getActors());
+        producers.setText(movie.getProducers());
+
+
         new DownloadImageTask(photo).execute(movie.getBackgroundImageUrl());
         protectFields();
 
@@ -127,13 +116,13 @@ public class ShowEditMovie extends AppCompatActivity {
         summary.setFocusable(false);
 
 //        actor.setEnabled(false);
-        actor.setFocusable(false);
+        actors.setFocusable(false);
 
 //        director.setEnabled(false);
-        director.setFocusable(false);
+        directors.setFocusable(false);
 
 //        producer.setEnabled(false);
-        producer.setFocusable(false);
+        producers.setFocusable(false);
 
         rating.setEnabled(false);
 

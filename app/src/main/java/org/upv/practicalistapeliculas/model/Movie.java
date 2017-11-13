@@ -35,6 +35,9 @@ public class Movie implements Serializable {
     private String videoUrl;
     private String studio;
     private String category;
+    private String actors;
+    private String directors;
+    private String producers;
 
     public Movie() {
     }
@@ -109,6 +112,30 @@ public class Movie implements Serializable {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getActors() {
+        return actors;
+    }
+
+    public void setActors(String actors) {
+        this.actors = actors;
+    }
+
+    public String getDirectors() {
+        return directors;
+    }
+
+    public void setDirectors(String directors) {
+        this.directors = directors;
+    }
+
+    public String getProducers() {
+        return producers;
+    }
+
+    public void setProducers(String producers) {
+        this.producers = producers;
     }
 
     public URI getBackgroundImageURI() {

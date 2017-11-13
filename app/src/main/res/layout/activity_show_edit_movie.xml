@@ -129,7 +129,10 @@
                     android:background="@drawable/ripple2"
                     android:hint="Actor/es"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:minLines="3"
+                    android:scrollbars="vertical"
                     android:textSize="14dp" />
             </android.support.design.widget.TextInputLayout>
 
@@ -151,7 +154,10 @@
                     android:background="@drawable/ripple2"
                     android:hint="Director/es"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:minLines="3"
+                    android:scrollbars="vertical"
                     android:textSize="14dp" />
             </android.support.design.widget.TextInputLayout>
 
@@ -173,7 +179,10 @@
                     android:background="@drawable/ripple2"
                     android:hint="Productor/es"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:minLines="3"
+                    android:scrollbars="vertical"
                     android:textSize="14dp" />
             </android.support.design.widget.TextInputLayout>
 
