@@ -78,7 +78,10 @@ public class PerfilActivity extends AppCompatActivity {
 
         Transition lista_enter = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_pefil_enter);
+        Transition curve_shared = TransitionInflater.from(this)
+                .inflateTransition(R.transition.transition_curva);
         getWindow().setEnterTransition(lista_enter);
+        getWindow().setSharedElementEnterTransition(curve_shared);
 
     }
 
