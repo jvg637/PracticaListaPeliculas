@@ -75,7 +75,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Toast.makeText(ListasActivity.this, "items: " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ListasActivity.this, "items: " + position, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(ListasActivity.this, MovieListActivity.class);
 //                startActivity(intent);
