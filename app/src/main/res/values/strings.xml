@@ -6,4 +6,8 @@
     <string name="toolbar_title">Listas de películas</string>
     <!-- shared transitions-->
     <!--<string name="transition_name_boton">enter_transition_perfil</string>-->
+
+    <string name="drawer_open">navigation drawer abierto</string>
+    <string name="drawer_close">navigation drawer cerrado</string>
+    <string name="drawer_edit_user">Editar perfil usuario</string>
 </resources>
