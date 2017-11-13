@@ -41,10 +41,8 @@ public class InicioSesionActivity extends AppCompatActivity {
 
             User mainUser = new User("usuario1", "usuario1");
 
-
             Gson gson = new Gson();
             String json = gson.toJson(mainUser);
-
 
             userList.add(json);
             editor.putStringSet("users", userList);
@@ -53,7 +51,7 @@ public class InicioSesionActivity extends AppCompatActivity {
     }
 
     private boolean checkUser(User userToCheck) {
-        User userAux = null;
+              User userAux = null;
         boolean validUser = false;
         this.userList = prefs.getStringSet("users", this.userList );
         Gson gson = new Gson();
@@ -137,6 +135,12 @@ public class InicioSesionActivity extends AppCompatActivity {
             }
 
             editor.commit();
+
+            // Graba en preferencias el login
+            SharedPreferences prefsLogin = getSharedPreferences(PerfilActivity.USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editorLogin = prefsLogin.edit();
+            editorLogin.putString(PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER, this.usuario.getText().toString());
+            editorLogin.commit();
 
             Intent intent = new Intent(this, ListasActivity.class);
             startActivity(intent);

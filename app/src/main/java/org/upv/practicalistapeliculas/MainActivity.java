@@ -1,10 +1,12 @@
 package org.upv.practicalistapeliculas;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -31,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
 //                Intent intent = new Intent(MainActivity.this, PerfilActivity.class);
                 Intent intent = new Intent(MainActivity.this, ShowEditMovie.class);
                 intent.putExtra(ShowEditMovie.PARAM_EXTRA_ID_PELICULA, 2);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, new Pair<View, String>(findViewById(R.id.fab), getString(R.string.shared_photo_list_movie)));
+                ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
             }
         });
     }

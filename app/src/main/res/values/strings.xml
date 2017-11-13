@@ -4,6 +4,7 @@
     <string name="label_activity_perfil">Perfil</string>
 
     <string name="toolbar_title">Listas de películas</string>
+    <string name="shared_photo_list_movie">shared_photo_list_movie</string>
     <!-- shared transitions-->
     <!--<string name="transition_name_boton">enter_transition_perfil</string>-->
 

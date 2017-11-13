@@ -8,32 +8,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
+
 import org.upv.practicalistapeliculas.model.User;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class PerfilActivity extends AppCompatActivity {
 
+    // Datos del usuario que ha hecho login
+    public static final String USER_LOGIN_PREFERENCES = "user";
+    public static final String USER_LOGIN_PREFERENCES_KEY_USER = "user";
 
-    private static final String NAME_USER_PREFERENCES = "user";
+    // Fichero de usuarios
+    private static final String USERS = "Usuarios";
+    private static final String USERS_KEY_USERS = "users";
+
     private static final String DEFAULT_EMAIL = "usuario1@gmail.com";
+    private static final String DEFAULT_USER = "usuario1";
     private static final String DEFAULT_PASSWORD = "usuario1";
     private static final String DEFAULT_NAME = "Usuario Garcia";
-    private static final int DEFAULT_PHOTO = R.mipmap.ic_perfil;
-    private static final String KEY_PASSWORD = "user";
-    private static final String KEY_USER = "password";
-    private static final String KEY_NAME = "password";
-    private static final String KEY_FOTO = "photo";
 
 
-    private EditText contraseña;
     private EditText usuario;
+    private EditText contraseña;
+    private EditText email;
     private EditText name;
     private ImageView photo;
     private CheckBox mostrar;
+
+    private Set<String> userList;
 
 
     @Override
@@ -44,17 +57,24 @@ public class PerfilActivity extends AppCompatActivity {
 
         usuario = (EditText) findViewById(R.id.usuario);
         contraseña = (EditText) findViewById(R.id.contraseña);
+        email = (EditText) findViewById(R.id.email);
         name = (EditText) findViewById(R.id.name);
         photo = (ImageView) findViewById(R.id.photo);
 
         mostrar = (CheckBox) findViewById(R.id.mostrar_contraseña);
 
         User user = readUserFromPreferences();
-        usuario.setText(user.getMail());
-        contraseña.setText(user.getPassword());
-        name.setText(user.getUsername());
-//        photo.setImageResource(user.getFoto());
+
+        if (user != null) {
+            usuario.setText(user.getUsername());
+            contraseña.setText(user.getPassword());
+            name.setText("Nombre de Usuario1");
+            email.setText(user.getMail());
+            photo.setImageResource(user.getDEFAULT_PHOTO());
 //        contraseña.setText(user.getPassword());
+        } else {
+            Snackbar.make(findViewById(R.id.container), "Usuario no ha hecho login!", Snackbar.LENGTH_LONG).show();
+        }
 
         Transition lista_enter = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_pefil_enter);
@@ -62,27 +82,49 @@ public class PerfilActivity extends AppCompatActivity {
 
     }
 
-    public User readUserFromPreferences() {
-        SharedPreferences sp = this.getSharedPreferences(NAME_USER_PREFERENCES, Context.MODE_PRIVATE);
-        String email = sp.getString(KEY_USER, DEFAULT_EMAIL);
-        String password = sp.getString(KEY_PASSWORD, DEFAULT_PASSWORD);
-        String name = sp.getString(KEY_NAME, DEFAULT_NAME);
-        int photo = sp.getInt(KEY_FOTO, DEFAULT_PHOTO);
-
-//        return new User(email, name, password, photo);
-        return new User(email, password);
-    }
 
     public void saveUserPreferences() {
-        SharedPreferences sp = this.getSharedPreferences(NAME_USER_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
+        User newUser = new User(usuario.getText().toString(), contraseña.getText().toString(), email.getText().toString(), name.getText().toString());
 
-        editor.putString(KEY_USER, usuario.getText().toString());
-        editor.putString(KEY_PASSWORD, contraseña.getText().toString());
-        editor.putString(KEY_NAME, name.getText().toString());
-        editor.putInt(KEY_FOTO, R.mipmap.ic_perfil);
+
+        SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
+
+        Set userList = prefs.getStringSet(USERS_KEY_USERS, null);
+
+        Set  userListNew = new HashSet<>();
+
+        if (userList == null) {
+            userList = new HashSet<>();
+        }
+
+        Gson gson = new Gson();
+
+        Iterator<String> userListIterator = userList.iterator();
+
+        if (userList.size() == 0) {
+
+            String json = gson.toJson(newUser);
+            userListNew.add(json);
+
+        }
+        else {
+            while (userListIterator.hasNext()) {
+                User userAux = gson.fromJson(userListIterator.next(), User.class);
+                if (newUser.getUsername().equals(userAux.getUsername())) {
+                    String json = gson.toJson(newUser);
+                    userListNew.add(json);
+                } else {
+                    String json = gson.toJson(userAux);
+                    userListNew.add(json);
+                }
+            }
+        }
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet(USERS_KEY_USERS, userListNew);
         editor.commit();
     }
+
 
     public void mostrarContraseña(View v) {
 
@@ -112,4 +154,30 @@ public class PerfilActivity extends AppCompatActivity {
 
     }
 
+
+    private User readUserFromPreferences() {
+        User userAux = null;
+        User user = null;
+//        boolean encontrado = false;
+
+        SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
+        String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
+
+        SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
+        this.userList = prefs.getStringSet(USERS_KEY_USERS, null);
+
+        Gson gson = new Gson();
+
+        Iterator<String> userListIterator = this.userList.iterator();
+
+        while (userListIterator.hasNext()) {
+            userAux = gson.fromJson(userListIterator.next(), User.class);
+            if (userLogged.equals(userAux.getUsername())) {
+                user = userAux;
+                break;
+            }
+        }
+
+        return user;
+    }
 }

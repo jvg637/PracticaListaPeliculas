@@ -14,6 +14,7 @@ public class User implements Serializable {
     private String mail;
     private String username;
     private String password;
+    private String fullname;
     private int DEFAULT_PHOTO = R.mipmap.ic_perfil;
 
 
@@ -26,6 +27,13 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.mail = email;
+    }
+
+    public User(String username, String password, String email, String fullname) {
+        this.username = username;
+        this.password = password;
+        this.mail = email;
+        this.fullname = fullname;
     }
 
     public int getDEFAULT_PHOTO() {
@@ -76,4 +84,11 @@ public class User implements Serializable {
         return password != null ? password.equals(user.password) : user.password == null;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 }
