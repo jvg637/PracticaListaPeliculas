@@ -30,8 +30,8 @@ public class PerfilActivity extends AppCompatActivity {
     public static final String USER_LOGIN_PREFERENCES_KEY_USER = "user";
 
     // Fichero de usuarios
-    private static final String USERS = "Usuarios";
-    private static final String USERS_KEY_USERS = "users";
+    public static final String USERS = "Usuarios";
+    public static final String USERS_KEY_USERS = "users";
 
     private static final String DEFAULT_EMAIL = "usuario1@gmail.com";
     private static final String DEFAULT_USER = "usuario1";
@@ -152,7 +152,9 @@ public class PerfilActivity extends AppCompatActivity {
         } else {
             saveUserPreferences();
 
+            setResult(RESULT_OK);
             finish();
+
         }
 
     }

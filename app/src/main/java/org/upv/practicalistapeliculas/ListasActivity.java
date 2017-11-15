@@ -26,9 +26,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.upv.practicalistapeliculas.model.User;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import static android.accounts.AccountManager.KEY_PASSWORD;
+import static org.upv.practicalistapeliculas.PerfilActivity.USERS;
+import static org.upv.practicalistapeliculas.PerfilActivity.USERS_KEY_USERS;
+import static org.upv.practicalistapeliculas.PerfilActivity.USER_LOGIN_PREFERENCES;
+import static org.upv.practicalistapeliculas.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
 
 /**
  * Created by Lionel on 07/11/2017.
@@ -45,6 +54,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     private static final String KEY_USER = "password";
     private static final String KEY_NAME = "password";
     private static final String KEY_FOTO = "photo";
+    private static final int ACTUALIZAR_PERFIL = 10000;
 
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
@@ -118,7 +128,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             // Editar perfil
             Intent intent = new Intent(this, PerfilActivity.class);
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, new Pair<View, String>(findViewById(R.id.navUserFoto), getString(R.string.shared_photo_perfil)));
-            ActivityCompat.startActivity(this, intent, options.toBundle());
+            ActivityCompat.startActivityForResult(this, intent, ACTUALIZAR_PERFIL, options.toBundle());
         } else if (id == R.id.nav_2) {
             // …
         }
@@ -141,9 +151,10 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     private void setNavigationPerfil(){
 
         // Navigation drawer user/foto
-        SharedPreferences sp = this.getSharedPreferences(NAME_USER_PREFERENCES, Context.MODE_PRIVATE);
-        String email = sp.getString(KEY_USER, DEFAULT_EMAIL);
-        int photo = sp.getInt(KEY_FOTO, DEFAULT_PHOTO);
+        User user = readUserFromPreferences();
+//        SharedPreferences sp = getSharedPreferences(NAME_USER_PREFERENCES, Context.MODE_PRIVATE);
+        String email = user.getMail();
+        int photo = user.getDEFAULT_PHOTO();
 
         //String password = sp.getString(KEY_PASSWORD, DEFAULT_PASSWORD);
         //String name = sp.getString(KEY_NAME, DEFAULT_NAME);
@@ -155,6 +166,43 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         userfoto.setImageResource(photo);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == ACTUALIZAR_PERFIL && resultCode == RESULT_OK) {
+            User user = readUserFromPreferences();
+            username = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navUsername);
+            username.setText(user.getMail());
 
+            userfoto = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.navUserFoto);
+            userfoto.setImageResource(user.getDEFAULT_PHOTO());
+        }
+    }
+
+    private User readUserFromPreferences() {
+        User userAux = null;
+        User user = null;
+//        boolean encontrado = false;
+
+        SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
+        String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
+
+        SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
+        Set userList = prefs.getStringSet(USERS_KEY_USERS, null);
+
+        Gson gson = new Gson();
+
+        Iterator<String> userListIterator = userList.iterator();
+
+        while (userListIterator.hasNext()) {
+            userAux = gson.fromJson(userListIterator.next(), User.class);
+            if (userLogged.equals(userAux.getUsername())) {
+                user = userAux;
+                break;
+            }
+        }
+
+        return user;
+    }
 }
