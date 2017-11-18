@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.model;
 
 /**
  * Created by Lionel on 07/11/2017.

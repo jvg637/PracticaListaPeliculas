@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.activity;
 
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
@@ -13,10 +13,11 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.upv.practicalistapeliculas.R;
+import org.upv.practicalistapeliculas.adapters.RecyclerItemClickListener;
 import org.upv.practicalistapeliculas.adapters.MovieListAdapter;
 import org.upv.practicalistapeliculas.model.Movie;
 import org.upv.practicalistapeliculas.movie.MovieList;
-import org.upv.practicalistapeliculas.movie.ShowEditMovie;
 import org.upv.practicalistapeliculas.movie.Utils;
 
 import java.lang.reflect.Type;
@@ -67,11 +68,11 @@ public class MovieListActivity extends AppCompatActivity {
         recycler.addOnItemTouchListener(new RecyclerItemClickListener(MovieListActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent intent = new Intent(MovieListActivity.this, ShowEditMovie.class);
+                Intent intent = new Intent(MovieListActivity.this, ShowEditMovieActivity.class);
 //                intent.putExtra("ID", movieList.get(position).getId());
 //                startActivity(intent);
 
-                intent.putExtra(ShowEditMovie.PARAM_EXTRA_ID_PELICULA, (int)movieList.get(position).getId());
+                intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int)movieList.get(position).getId());
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this, new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
                 ActivityCompat.startActivity(MovieListActivity.this, intent, options.toBundle());
             }

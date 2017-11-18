@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

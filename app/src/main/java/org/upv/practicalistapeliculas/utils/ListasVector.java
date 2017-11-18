@@ -1,4 +1,7 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.utils;
+
+import org.upv.practicalistapeliculas.model.Lista;
+import org.upv.practicalistapeliculas.model.Listas;
 
 import java.util.ArrayList;
 import java.util.List;

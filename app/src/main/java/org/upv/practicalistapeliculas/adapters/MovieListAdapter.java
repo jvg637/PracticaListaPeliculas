@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import org.upv.practicalistapeliculas.R;
 import org.upv.practicalistapeliculas.model.Movie;
+import org.upv.practicalistapeliculas.utils.DownloadImageTask;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.adapters;
+package org.upv.practicalistapeliculas.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

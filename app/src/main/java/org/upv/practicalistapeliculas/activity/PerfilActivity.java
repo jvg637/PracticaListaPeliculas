@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,12 +10,14 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
 
+import org.upv.practicalistapeliculas.R;
 import org.upv.practicalistapeliculas.model.User;
 
 import java.util.HashSet;
@@ -83,8 +85,23 @@ public class PerfilActivity extends AppCompatActivity {
         getWindow().setEnterTransition(lista_enter);
         getWindow().setSharedElementEnterTransition(curve_shared);
 
+        postponeEnterTransition();
+
+        scheduleStartPostponedTransition(photo);
     }
 
+
+    private void scheduleStartPostponedTransition(final View sharedElement) {
+        sharedElement.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startPostponedEnterTransition();
+                        return true;
+                    }
+                });
+    }
 
     public void saveUserPreferences() {
         User newUser = new User(usuario.getText().toString(), contraseña.getText().toString(), email.getText().toString(), name.getText().toString());

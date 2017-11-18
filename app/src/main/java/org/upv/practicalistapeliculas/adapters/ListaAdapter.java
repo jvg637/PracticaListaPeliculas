@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
+import org.upv.practicalistapeliculas.utils.ListasVector;
+import org.upv.practicalistapeliculas.R;
 
 /**
  * Created by Lionel on 07/11/2017.

@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.activity;
 
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,20 +23,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.upv.practicalistapeliculas.model.Lista;
+import org.upv.practicalistapeliculas.adapters.ListaAdapter;
+import org.upv.practicalistapeliculas.utils.ListasVector;
+import org.upv.practicalistapeliculas.R;
+import org.upv.practicalistapeliculas.adapters.RecyclerItemClickListener;
 import org.upv.practicalistapeliculas.model.User;
 
 import java.util.Iterator;
 import java.util.Set;
 
-import static android.accounts.AccountManager.KEY_PASSWORD;
-import static org.upv.practicalistapeliculas.PerfilActivity.USERS;
-import static org.upv.practicalistapeliculas.PerfilActivity.USERS_KEY_USERS;
-import static org.upv.practicalistapeliculas.PerfilActivity.USER_LOGIN_PREFERENCES;
-import static org.upv.practicalistapeliculas.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
+import static org.upv.practicalistapeliculas.activity.PerfilActivity.USERS;
+import static org.upv.practicalistapeliculas.activity.PerfilActivity.USERS_KEY_USERS;
+import static org.upv.practicalistapeliculas.activity.PerfilActivity.USER_LOGIN_PREFERENCES;
+import static org.upv.practicalistapeliculas.activity.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
 
 /**
  * Created by Lionel on 07/11/2017.

@@ -1,6 +1,5 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.activity;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.upv.practicalistapeliculas.R;
 import org.upv.practicalistapeliculas.model.User;
 
 import java.util.HashSet;
@@ -159,7 +159,7 @@ public class InicioSesionActivity extends AppCompatActivity {
     }*/
 
     public void x (View view){
-        Intent intent = new Intent(this, Registro.class);
+        Intent intent = new Intent(this, RegistroActivity.class);
         startActivity(intent);
     }
 

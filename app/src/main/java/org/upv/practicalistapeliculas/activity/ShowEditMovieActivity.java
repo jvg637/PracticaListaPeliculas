@@ -1,27 +1,28 @@
-package org.upv.practicalistapeliculas.movie;
+package org.upv.practicalistapeliculas.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.adapters.DownloadImageTask;
+import org.upv.practicalistapeliculas.utils.DownloadImageTask;
 import org.upv.practicalistapeliculas.model.Movie;
+import org.upv.practicalistapeliculas.movie.MovieList;
 
 /**
  * Created by jvg63 on 09/11/2017.
  */
 
-public class ShowEditMovie extends AppCompatActivity {
+public class ShowEditMovieActivity extends AppCompatActivity {
     public static String PARAM_EXTRA_ID_PELICULA = "ID";
 
 //    id
@@ -50,7 +51,7 @@ public class ShowEditMovie extends AppCompatActivity {
         setContentView(R.layout.activity_show_edit_movie);
 
         photo = findViewById(R.id.photo);
-        title  = findViewById(R.id.title);
+        title = findViewById(R.id.title);
         category = findViewById(R.id.category);
         summary = findViewById(R.id.summary);
         actors = findViewById(R.id.actor);
@@ -67,15 +68,29 @@ public class ShowEditMovie extends AppCompatActivity {
         if (data != null && data.getExtras() != null) {
             id = data.getExtras().getInt(PARAM_EXTRA_ID_PELICULA, -1);
         }
-        
+
         if (id == -1) {
             // Mode Edit
         } else {
 //            leerDatos();
             // Mode View
+            postponeEnterTransition();
             mostrarPelicula(id);
         }
     }
+
+    private void scheduleStartPostponedTransition(final View sharedElement) {
+        sharedElement.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startPostponedEnterTransition();
+                        return true;
+                    }
+                });
+    }
+
 
     private void mostrarPelicula(int id) {
         Movie movie = MovieList.list.get(id);
@@ -96,6 +111,7 @@ public class ShowEditMovie extends AppCompatActivity {
         Transition lista_enter = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_curva);
         getWindow().setSharedElementEnterTransition(lista_enter);
+        scheduleStartPostponedTransition(photo);
 
     }
 

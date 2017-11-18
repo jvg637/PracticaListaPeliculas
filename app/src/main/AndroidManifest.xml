@@ -23,26 +23,26 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".PerfilActivity"
+            android:name=".activity.PerfilActivity"
             android:label="@string/label_activity_perfil"></activity>
-        <activity android:name=".movie.ShowEditMovie" />
+        <activity android:name=".activity.ShowEditMovieActivity" />
 
-        <activity android:name=".MovieListActivity"></activity>
+        <activity android:name=".activity.MovieListActivity"></activity>
 
 
         <activity
-            android:name=".ListasActivity"
+            android:name=".activity.ListasActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
 
-        <activity android:name=".InicioSesionActivity">
+        <activity android:name=".activity.InicioSesionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Registro">
+        <activity android:name=".activity.RegistroActivity">
 
         </activity>
     </application>

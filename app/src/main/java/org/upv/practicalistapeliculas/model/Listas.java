@@ -1,4 +1,6 @@
-package org.upv.practicalistapeliculas;
+package org.upv.practicalistapeliculas.model;
+
+import org.upv.practicalistapeliculas.model.Lista;
 
 /**
  * Created by Lionel on 08/11/2017.
