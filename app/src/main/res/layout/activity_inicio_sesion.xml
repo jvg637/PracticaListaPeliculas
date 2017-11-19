@@ -121,7 +121,7 @@
             android:clickable="true"
 
             android:elevation="2dp"
-            android:onClick="x"
+            android:onClick="altaUsuario"
             android:text="REGISTRARSE"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toRightOf="@+id/butt_acceder"

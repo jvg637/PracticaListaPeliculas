@@ -1,9 +1,12 @@
 package org.upv.practicalistapeliculas.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -23,6 +26,7 @@ import java.util.Set;
 
 public class InicioSesionActivity extends AppCompatActivity {
 
+    private static final int ALTA_USUARIO = 20001;
     private SharedPreferences prefs;
     private  Set userList = new HashSet<User>();
     private boolean recordarUsuario = false;
@@ -143,8 +147,8 @@ public class InicioSesionActivity extends AppCompatActivity {
             editorLogin.commit();
 
             Intent intent = new Intent(this, ListasActivity.class);
-            startActivity(intent);
-            //startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+//            startActivity(intent);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         }else{
             String s = "Usuario o contraseña incorrecto, intentelo de nuevo";
             Toast.makeText(this, s, Toast.LENGTH_LONG).show();
@@ -158,9 +162,21 @@ public class InicioSesionActivity extends AppCompatActivity {
         usuario.requestFocus();
     }*/
 
-    public void x (View view){
+    public void altaUsuario (View view){
         Intent intent = new Intent(this, RegistroActivity.class);
-        startActivity(intent);
+//        startActivity(intent);
+        intent.putExtra("usuario", usuario.getText().toString());
+        intent.putExtra("password", contraseña.getText().toString());
+        ActivityCompat.startActivityForResult(this, intent,ALTA_USUARIO, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ALTA_USUARIO &&  resultCode == Activity.RESULT_OK) {
+            usuario.setText(data.getExtras().getString("usuario"));
+            contraseña.setText(data.getExtras().getString("password"));
+        }
+    }
 }

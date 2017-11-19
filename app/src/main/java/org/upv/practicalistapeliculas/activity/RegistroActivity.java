@@ -1,9 +1,11 @@
 package org.upv.practicalistapeliculas.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +14,11 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 
 import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.activity.InicioSesionActivity;
 import org.upv.practicalistapeliculas.model.User;
 
 import java.util.HashSet;
 import java.util.Set;
+
 
 /**
  * Created by Ivan on 10/11/17.
@@ -40,6 +42,14 @@ public class RegistroActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email_formularioAlta);
         bRegistrar = (Button) findViewById(R.id.boton_registrar);
 
+
+        if (getIntent().getExtras()!=null) {
+            Bundle extras = getIntent().getExtras();
+            String txtUsuario= extras.getString("usuario", "");
+            String txtPassword = extras.getString("password", "");
+            usuario.setText(txtUsuario);
+            contraseña.setText(txtPassword);
+        }
         bRegistrar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 registrar();
@@ -62,8 +72,12 @@ public class RegistroActivity extends AppCompatActivity {
         editor.putStringSet("users", userList);
         editor.commit();
 
-        Intent intent = new Intent(this, InicioSesionActivity.class);
-        startActivity(intent);
+        Intent data = new Intent();
+        data.putExtra("usuario", usuario.getText().toString());
+        data.putExtra("password", contraseña.getText().toString());
+        setResult(Activity.RESULT_OK,data);
+
+        finish();
     }
 
     public void onStop() {
