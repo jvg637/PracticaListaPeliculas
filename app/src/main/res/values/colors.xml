@@ -3,7 +3,26 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="colorSideNavBarStart">#3F51B5</color>
+    <color name="colorSideNavBarEnd">#303F9F</color>
     <color name="primaryTextColor">#a9a9a9</color>
     <color name="colorFondo">#d7ccc8</color>
+
+    <!-- 1 -->
+    <color name="colorPrimary_1">#f1653f</color>
+    <color name="colorPrimaryDark_1">#e84724</color>
+    <color name="colorAccent_1">#FF9800</color>
+    <color name="colorSideNavBarStart_1">#F5825E</color>
+    <color name="colorSideNavBarEnd_1">#E84724</color>
+    <color name="primaryTextColor_1">#212121</color>
+    <color name="colorFondo_1">#d7ccc8</color>
+
+    <!-- 2 -->
+    <color name="colorPrimary_2">#72cee2</color>
+    <color name="colorPrimaryDark_2">#4880c2</color>
+    <color name="colorAccent_2">#f5825e</color>
+    <color name="colorSideNavBarStart_2">#72cee2</color>
+    <color name="colorSideNavBarEnd_2">#4880c2</color>
+    <color name="primaryTextColor_2">#212121</color>
+    <color name="colorFondo_2">#d7ccc8</color>
 </resources>

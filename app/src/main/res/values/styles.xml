@@ -23,9 +23,71 @@
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
         Para elementos comparticos
         <item name="android:windowSharedElementEnterTransition">
-        @transition/transition_slide </item>
+            @transition/transition_slide </item>
         <item name="android:windowSharedElementExitTransition">
             @transition/transition_curva </item>
+    </style>
+
+    <!-- Theme 1 para comparar -->
+    <style name="AppTheme1" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/colorFondo</item>
+        <item name="colorPrimary">@color/colorPrimary_1</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_1</item>
+        <item name="colorAccent">@color/colorAccent_1</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <!-- Transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">
+            @transition/transition_explode </item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
+        <item name="android:windowExitTransition">
+            @transition/transition_explode </item>
+
+        <item name="android:windowReenterTransition">
+            @transition/transition_fade </item>
+        <item name="android:windowReturnTransition">
+            @transition/transition_slide </item>
+        <item name="android:windowAllowReturnTransitionOverlap">false</item>
+        <!--Para elementos comparticos -->
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/transition_slide </item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/transition_curva </item>
+    </style>
+
+    <!-- Theme 2 para comparar -->
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/colorFondo</item>
+        <item name="colorPrimary">@color/colorPrimary_2</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_2</item>
+        <item name="colorAccent">@color/colorAccent_2</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <!-- Transitions -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">
+            @transition/transition_explode </item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
+        <item name="android:windowExitTransition">
+            @transition/transition_explode </item>
+
+        <item name="android:windowReenterTransition">
+            @transition/transition_fade </item>
+        <item name="android:windowReturnTransition">
+            @transition/transition_slide </item>
+        <item name="android:windowAllowReturnTransitionOverlap">false</item>
+        Para elementos comparticos
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/transition_slide </item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/transition_curva </item>
+    </style>
+
+    <style name="AppThemeListas" parent="AppTheme1">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -33,15 +95,7 @@
     </style>
 
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
 
 </resources>

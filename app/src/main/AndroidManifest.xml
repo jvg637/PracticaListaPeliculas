@@ -11,29 +11,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        android:theme="@style/AppTheme1">
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity
-            android:name=".activity.PerfilActivity"
-            android:label="@string/label_activity_perfil"></activity>
+        <activity android:name=".activity.PerfilActivity" android:label="@string/label_activity_perfil"></activity>
+
         <activity android:name=".activity.ShowEditMovieActivity" />
 
         <activity android:name=".activity.MovieListActivity"></activity>
 
-
-        <activity
-            android:name=".activity.ListasActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name=".activity.ListasActivity" android:theme="@style/AppThemeListas" />
 
         <activity android:name=".activity.InicioSesionActivity">
             <intent-filter>
