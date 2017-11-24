@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.upv.practicalistapeliculas.R;
@@ -35,6 +36,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public void onBindViewHolder(MovieListViewHolder holder, int position) {
         holder.title.setText(items.get(position).getTitle());
         holder.category.setText(items.get(position).getCategory());
+        holder.rating.setRating(2.5f);
         //Descargamos la imagen y se la añadimos al ImageView
         new DownloadImageTask(holder.poster).execute(items.get(position).getCardImageUrl());
 
@@ -50,12 +52,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         private ImageView poster;
         private TextView title;
         private TextView category;
+        private RatingBar rating;
 
         private MovieListViewHolder(View v) {
             super(v);
             poster = v.findViewById(R.id.movie_poster);
             title = v.findViewById(R.id.movie_title);
             category = v.findViewById(R.id.movie_year);
+            rating = v.findViewById(R.id.movie_rating);
         }
     }
 }

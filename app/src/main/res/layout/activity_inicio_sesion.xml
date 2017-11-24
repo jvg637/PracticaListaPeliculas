@@ -35,13 +35,13 @@
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/actionBarSize"
             android:transitionGroup="true"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titulo"
             android:layout_marginTop="8dp">
 
             <EditText
                 android:id="@+id/usuario"
-                android:layout_width="match_parent"
+
+                app:layout_constraintLeft_toLeftOf="parent"                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nombre de usuario o correo"
                 android:imeOptions="actionNext"
