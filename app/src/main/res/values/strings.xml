@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Practica Lista Peliculas</string>
+    <string name="app_name">Lista Peliculas</string>
     <string name="action_settings">Settings</string>
     <string name="label_activity_perfil">Perfil</string>
 
