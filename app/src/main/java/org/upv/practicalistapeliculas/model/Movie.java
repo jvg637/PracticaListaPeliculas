@@ -19,6 +19,9 @@ import android.util.Log;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /*
  * Movie class represents video entity with title, description, image thumbs and video url.
@@ -38,8 +41,10 @@ public class Movie implements Serializable {
     private String actors;
     private String directors;
     private String producers;
+    private static List<Float> ratings;
 
     public Movie() {
+        ratings = new ArrayList<>();
     }
 
     public static long getCount() {
@@ -136,6 +141,23 @@ public class Movie implements Serializable {
 
     public void setProducers(String producers) {
         this.producers = producers;
+    }
+
+    public Float getAverageRating() {
+        Float res = 0.0f;
+        int tam = ratings.size();
+        if(tam > 0) {
+            for (Float rating : ratings) {
+                res += rating;
+            }
+            return res / tam;
+        } else {
+            return res;
+        }
+    }
+
+    public void addRating(Float rating) {
+        ratings.add(rating);
     }
 
     public URI getBackgroundImageURI() {

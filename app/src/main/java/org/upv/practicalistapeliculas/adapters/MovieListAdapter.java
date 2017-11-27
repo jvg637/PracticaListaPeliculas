@@ -36,7 +36,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public void onBindViewHolder(MovieListViewHolder holder, int position) {
         holder.title.setText(items.get(position).getTitle());
         holder.category.setText(items.get(position).getCategory());
-        holder.rating.setRating(2.5f);
+        holder.rating.setRating(items.get(position).getAverageRating());
         //Descargamos la imagen y se la añadimos al ImageView
         new DownloadImageTask(holder.poster).execute(items.get(position).getCardImageUrl());
 

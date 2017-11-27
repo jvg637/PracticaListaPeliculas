@@ -17,6 +17,8 @@
 
         <activity android:name=".activity.ShowEditMovieActivity" />
 
+        <activity android:name=".activity.Ratings" />
+
         <activity android:name=".activity.MovieListActivity"></activity>
 
         <activity android:name=".activity.ListasActivity" android:theme="@style/AppThemeListas" />

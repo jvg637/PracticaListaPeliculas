@@ -12,4 +12,11 @@
     <string name="drawer_open">navigation drawer abierto</string>
     <string name="drawer_close">navigation drawer cerrado</string>
     <string name="drawer_edit_user">Editar perfil usuario</string>
+
+    <!-- Textos correspondientes al xml de activity_show_edit_movie (ASEM) -->
+    <string name="ASEM_comment">Your Comment</string>
+    <string name="ASEM_average">Average</string>
+    <string name="ASEM_show_comments">Show Comments</string>
+    <string name="ASEM_push_comment">Post your comment</string>
+    <string name="ASEM_add_comment_rating">You must add a comment and a rating</string>
 </resources>

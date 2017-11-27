@@ -79,4 +79,10 @@ public class MovieListActivity extends AppCompatActivity {
         }));
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter = new MovieListAdapter(movieList);
+        recycler.setAdapter(adapter);
+    }
 }

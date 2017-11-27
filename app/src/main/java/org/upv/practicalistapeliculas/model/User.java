@@ -1,10 +1,13 @@
 package org.upv.practicalistapeliculas.model;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import org.upv.practicalistapeliculas.R;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Ivan on 10/11/17.
@@ -16,24 +19,31 @@ public class User implements Serializable {
     private String password;
     private String fullname;
     private int DEFAULT_PHOTO = R.mipmap.ic_perfil;
+    private Map<Long, String> listRatings;
 
 
+    @SuppressLint("UseSparseArrays")
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        listRatings = new HashMap<>();
     }
 
+    @SuppressLint("UseSparseArrays")
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.mail = email;
+        listRatings = new HashMap<>();
     }
 
+    @SuppressLint("UseSparseArrays")
     public User(String username, String password, String email, String fullname) {
         this.username = username;
         this.password = password;
         this.mail = email;
         this.fullname = fullname;
+        listRatings = new HashMap<>();
     }
 
     public int getDEFAULT_PHOTO() {
@@ -66,6 +76,26 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRating(long idPelicula) {
+        if(listRatings != null && listRatings.containsKey(idPelicula)) {
+            return listRatings.get(idPelicula);
+        } else {
+            return "0.0f- ";
+        }
+    }
+
+    public void setRating(long idPelicula, float rating, String comment) {
+        String ratingComment = rating + "-" + comment;
+        if(listRatings != null) {
+            if (!listRatings.containsKey(idPelicula)) {
+                listRatings.put(idPelicula, ratingComment);
+            }
+        } else {
+            listRatings = new HashMap<>();
+            listRatings.put(idPelicula, ratingComment);
+        }
     }
 
     @Override

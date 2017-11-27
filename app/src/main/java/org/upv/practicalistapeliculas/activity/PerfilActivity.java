@@ -57,13 +57,13 @@ public class PerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
 
 
-        usuario = (EditText) findViewById(R.id.usuario);
-        contraseña = (EditText) findViewById(R.id.contraseña);
-        email = (EditText) findViewById(R.id.email);
-        name = (EditText) findViewById(R.id.name);
-        photo = (ImageView) findViewById(R.id.photo);
+        usuario = findViewById(R.id.usuario);
+        contraseña = findViewById(R.id.contraseña);
+        email = findViewById(R.id.email);
+        name = findViewById(R.id.name);
+        photo = findViewById(R.id.photo);
 
-        mostrar = (CheckBox) findViewById(R.id.mostrar_contraseña);
+        mostrar = findViewById(R.id.mostrar_contraseña);
 
         User user = readUserFromPreferences();
 
@@ -177,7 +177,7 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
 
-    private User readUserFromPreferences() {
+    public User readUserFromPreferences() {
         User userAux = null;
         User user = null;
 //        boolean encontrado = false;
