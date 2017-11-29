@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.activity;
+package org.upv.lista.list.netflix.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

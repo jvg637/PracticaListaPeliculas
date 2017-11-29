@@ -12,23 +12,13 @@
  * the License.
  */
 
-package org.upv.practicalistapeliculas.movie;
+package org.upv.lista.list.netflix.movie;
 
 import android.content.Context;
-import android.graphics.Point;
-import android.view.Display;
-import android.view.WindowManager;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.upv.practicalistapeliculas.R;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * A collection of utility methods, all static.

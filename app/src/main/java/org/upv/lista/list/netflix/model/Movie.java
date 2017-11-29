@@ -12,7 +12,7 @@
  * the License.
  */
 
-package org.upv.practicalistapeliculas.model;
+package org.upv.lista.list.netflix.model;
 
 import android.util.Log;
 
@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /*

@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.activity;
+package org.upv.lista.list.netflix.activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.model.User;
+import org.upv.lista.list.R;
+import org.upv.lista.list.netflix.model.User;
 
 import java.util.HashSet;
 import java.util.Iterator;

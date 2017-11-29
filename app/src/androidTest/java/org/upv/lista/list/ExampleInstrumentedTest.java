@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.lista.list;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

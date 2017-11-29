@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.upv.practicalistapeliculas">
+    package="org.upv.lista.list">
 
     <!-- Internet permission -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,17 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.PerfilActivity" android:label="@string/label_activity_perfil"></activity>
+        <activity android:name="org.upv.lista.list.netflix.activity.PerfilActivity" android:label="@string/label_activity_perfil"></activity>
 
-        <activity android:name=".activity.ShowEditMovieActivity" />
+        <activity android:name="org.upv.lista.list.netflix.activity.ShowEditMovieActivity" />
 
-        <activity android:name=".activity.Ratings" />
+        <activity android:name="org.upv.lista.list.netflix.activity.Ratings" />
 
-        <activity android:name=".activity.MovieListActivity"></activity>
+        <activity android:name="org.upv.lista.list.netflix.activity.MovieListActivity"></activity>
 
-        <activity android:name=".activity.ListasActivity" android:theme="@style/AppThemeListas" />
+        <activity android:name="org.upv.lista.list.netflix.activity.ListasActivity" android:theme="@style/AppThemeListas" />
 
-        <activity android:name=".activity.SplashActivity" android:theme="@style/SplashTheme">
+        <activity android:name="org.upv.lista.list.netflix.activity.SplashActivity" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         -->
-        <activity android:name=".activity.InicioSesionActivity"></activity>
-        <activity android:name=".activity.RegistroActivity"></activity>
+        <activity android:name="org.upv.lista.list.netflix.activity.InicioSesionActivity"></activity>
+        <activity android:name="org.upv.lista.list.netflix.activity.RegistroActivity"></activity>
     </application>
 </manifest>

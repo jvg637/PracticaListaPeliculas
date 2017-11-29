@@ -1,16 +1,13 @@
-package org.upv.practicalistapeliculas.activity;
+package org.upv.lista.list.netflix.activity;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -21,20 +18,19 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.model.User;
-import org.upv.practicalistapeliculas.utils.DownloadImageTask;
-import org.upv.practicalistapeliculas.model.Movie;
-import org.upv.practicalistapeliculas.movie.MovieList;
+import org.upv.lista.list.R;
+import org.upv.lista.list.netflix.model.User;
+import org.upv.lista.list.netflix.utils.DownloadImageTask;
+import org.upv.lista.list.netflix.model.Movie;
+import org.upv.lista.list.netflix.movie.MovieList;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USERS;
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USERS_KEY_USERS;
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USER_LOGIN_PREFERENCES;
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USERS;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USERS_KEY_USERS;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
 
 /**
  * Created by jvg63 on 09/11/2017.

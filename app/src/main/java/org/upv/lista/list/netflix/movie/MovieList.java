@@ -1,6 +1,6 @@
-package org.upv.practicalistapeliculas.movie;
+package org.upv.lista.list.netflix.movie;
 
-import org.upv.practicalistapeliculas.model.Movie;
+import org.upv.lista.list.netflix.model.Movie;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas;
+package org.upv.lista.list;
 
 import org.junit.Test;
 

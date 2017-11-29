@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.model;
+package org.upv.lista.list.netflix.model;
 
 /**
  * Created by Lionel on 07/11/2017.

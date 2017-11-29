@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.activity;
+package org.upv.lista.list.netflix.activity;
 
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
@@ -13,12 +13,12 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.adapters.RecyclerItemClickListener;
-import org.upv.practicalistapeliculas.adapters.MovieListAdapter;
-import org.upv.practicalistapeliculas.model.Movie;
-import org.upv.practicalistapeliculas.movie.MovieList;
-import org.upv.practicalistapeliculas.movie.Utils;
+import org.upv.lista.list.R;
+import org.upv.lista.list.netflix.adapters.RecyclerItemClickListener;
+import org.upv.lista.list.netflix.adapters.MovieListAdapter;
+import org.upv.lista.list.netflix.model.Movie;
+import org.upv.lista.list.netflix.movie.MovieList;
+import org.upv.lista.list.netflix.movie.Utils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

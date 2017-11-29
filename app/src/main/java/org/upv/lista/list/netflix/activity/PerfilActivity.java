@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.activity;
+package org.upv.lista.list.netflix.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
@@ -17,12 +16,11 @@ import android.widget.ImageView;
 
 import com.google.gson.Gson;
 
-import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.model.User;
+import org.upv.lista.list.R;
+import org.upv.lista.list.netflix.model.User;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class PerfilActivity extends AppCompatActivity {

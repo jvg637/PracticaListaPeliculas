@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.adapters;
+package org.upv.lista.list.netflix.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.upv.practicalistapeliculas.utils.ListasVector;
-import org.upv.practicalistapeliculas.R;
+import org.upv.lista.list.netflix.utils.ListasVector;
+import org.upv.lista.list.R;
 
 /**
  * Created by Lionel on 07/11/2017.

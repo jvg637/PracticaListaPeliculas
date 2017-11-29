@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.utils;
+package org.upv.lista.list.netflix.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

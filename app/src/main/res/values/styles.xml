@@ -21,11 +21,11 @@
         <item name="android:windowReturnTransition">
             @transition/transition_slide </item>
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
-        <!--Para elementos comparticos -->
-        <!--<item name="android:windowSharedElementEnterTransition">-->
-            <!--@transition/transition_slide </item>-->
-        <!--<item name="android:windowSharedElementExitTransition">-->
-            <!--@transition/transition_curva </item>-->
+        Para elementos comparticos
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/transition_slide </item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/transition_curva </item>
     </style>
 
     <style name="AppThemeListas" parent="AppTheme">

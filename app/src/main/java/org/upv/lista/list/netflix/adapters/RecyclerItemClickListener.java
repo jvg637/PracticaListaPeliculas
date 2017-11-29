@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.adapters;
+package org.upv.lista.list.netflix.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

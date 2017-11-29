@@ -1,4 +1,4 @@
-package org.upv.practicalistapeliculas.activity;
+package org.upv.lista.list.netflix.activity;
 
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -26,20 +26,20 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import org.upv.practicalistapeliculas.model.Lista;
-import org.upv.practicalistapeliculas.adapters.ListaAdapter;
-import org.upv.practicalistapeliculas.utils.ListasVector;
-import org.upv.practicalistapeliculas.R;
-import org.upv.practicalistapeliculas.adapters.RecyclerItemClickListener;
-import org.upv.practicalistapeliculas.model.User;
+import org.upv.lista.list.netflix.model.Lista;
+import org.upv.lista.list.netflix.adapters.ListaAdapter;
+import org.upv.lista.list.netflix.utils.ListasVector;
+import org.upv.lista.list.R;
+import org.upv.lista.list.netflix.adapters.RecyclerItemClickListener;
+import org.upv.lista.list.netflix.model.User;
 
 import java.util.Iterator;
 import java.util.Set;
 
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USERS;
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USERS_KEY_USERS;
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USER_LOGIN_PREFERENCES;
-import static org.upv.practicalistapeliculas.activity.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USERS;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USERS_KEY_USERS;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES;
+import static org.upv.lista.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
 
 /**
  * Created by Lionel on 07/11/2017.
