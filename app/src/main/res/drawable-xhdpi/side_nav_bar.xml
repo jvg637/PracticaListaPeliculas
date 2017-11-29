@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:startColor="@color/colorSideNavBarStart_1"
-        android:endColor="@color/colorSideNavBarEnd_1"
+        android:startColor="@color/colorSideNavBarStart"
+        android:endColor="@color/colorSideNavBarEnd"
         android:angle="180" />
 </shape>
