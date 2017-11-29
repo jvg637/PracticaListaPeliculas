@@ -23,6 +23,15 @@
 
         <activity android:name=".activity.ListasActivity" android:theme="@style/AppThemeListas" />
 
+        <activity android:name=".activity.SplashActivity" android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
         <activity android:name=".activity.InicioSesionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,8 +39,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegistroActivity">
-
-        </activity>
+        -->
+        <activity android:name=".activity.InicioSesionActivity"></activity>
+        <activity android:name=".activity.RegistroActivity"></activity>
     </application>
 </manifest>
