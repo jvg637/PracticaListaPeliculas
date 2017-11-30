@@ -68,7 +68,7 @@ public class MovieListActivity extends AppCompatActivity {
         movieRatings = prefs.getStringSet("ratings", movieRatings);
         gson = new Gson();
         for (String movieRating : (Iterable<String>) movieRatings) {
-            String[] rating = gson.fromJson(movieRating, String.class).split("-");
+            String[] rating = gson.fromJson(movieRating, String.class).split("╩");
             for (Movie movie : movieList) {
                 if (movie.getId() == Long.valueOf(rating[0])) {
                     movie.addRating(Float.parseFloat(rating[1]));
@@ -100,10 +100,4 @@ public class MovieListActivity extends AppCompatActivity {
         }));
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        adapter = new MovieListAdapter();
-        recycler.setAdapter(adapter);
-    }
 }

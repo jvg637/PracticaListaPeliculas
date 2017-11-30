@@ -79,12 +79,12 @@ public class User implements Serializable {
     }
 
     public String getRating(long idPelicula) {
-        String ret = "0.0f- ";
+        String ret = "0.0f╩ ";
         if (listRatings != null && !listRatings.isEmpty()) {
             for (String str : listRatings) {
-                String[] rating = str.split("-");
+                String[] rating = str.split("╩");
                 if (Long.valueOf(rating[0]) == idPelicula) {
-                    ret = rating[1] + "-" + rating[2];
+                    ret = rating[1] + "╩" + rating[2];
                     break;
                 }
             }
@@ -93,7 +93,7 @@ public class User implements Serializable {
     }
 
     public void setRating(long idPelicula, float rating, String comment) {
-        String ratingComment = idPelicula + "-" + rating + "-" + comment;
+        String ratingComment = idPelicula + "╩" + rating + "╩" + comment;
         if (listRatings == null) {
             listRatings = new ArrayList<>();
         }
@@ -108,7 +108,7 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        Log.d("x", "Comprobando " + ((User) o).getUsername() + " con " + this.getUsername());
+        //Log.d("x", "Comprobando " + ((User) o).getUsername() + " con " + this.getUsername());
 
         if (username != null ? !username.equals(user.username) : user.username != null)
             return false;

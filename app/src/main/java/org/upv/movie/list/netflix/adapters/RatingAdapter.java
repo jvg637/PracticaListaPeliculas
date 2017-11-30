@@ -43,8 +43,8 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
         for(String anUserList : items) {
             if(i == position) {
                 User userAux = gson.fromJson(anUserList, User.class);
-                if(!userAux.getRating(idPelicula).equals("0.0f- ")) {
-                    String[] ratingComment = userAux.getRating(idPelicula).split("-");
+                if(!userAux.getRating(idPelicula).equals("0.0f╩ ")) {
+                    String[] ratingComment = userAux.getRating(idPelicula).split("╩");
                     holder.userRating.setRating(Float.parseFloat(ratingComment[0]));
                     holder.userComment.setText(ratingComment[1]);
                     holder.userName.setText(userAux.getUsername());
@@ -52,6 +52,7 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
                     break;
                 }
             } else {
+                holder.userRating.setRating(0.0f);
                 i++;
             }
         }

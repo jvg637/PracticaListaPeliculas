@@ -111,7 +111,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         //Se comprueba si el usuario ha valorado
         user = readUserFromPreferences();
 
-        String[] ratingComment = user.getRating(movie.getId()).split("-");
+        String[] ratingComment = user.getRating(movie.getId()).split("╩");
         rating.setRating(Float.parseFloat(ratingComment[0]));
         comment.setText(ratingComment[1]);
         rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -210,7 +210,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             movieRatings = new HashSet<String>();
         }
         Gson gson = new Gson();
-        String json = gson.toJson(id + "-" + userRating);
+        String json = gson.toJson(id + "╩" + userRating);
 
         //make a copy, update it and save it
         Set oldSet = prefs.getStringSet("ratings", movieRatings);

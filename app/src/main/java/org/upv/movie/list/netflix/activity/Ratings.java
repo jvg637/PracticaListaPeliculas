@@ -43,6 +43,9 @@ public class Ratings extends AppCompatActivity {
         prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
         userList = prefs.getStringSet("users", userList );
 
+        //Nos quedamos solo con los que han votado a la pelicula con idPelicula
+
+
         // Obtener el Recycler
         recycler = findViewById(R.id.rating_list_recycler);
         recycler.setHasFixedSize(true);
@@ -58,5 +61,6 @@ public class Ratings extends AppCompatActivity {
         ratingBar = findViewById(R.id.rating_average);
         Movie movie = movieList.get(idPelicula);
         ratingBar.setRating(movie.getAverageRating());
+        ratingBar.setEnabled(false);
     }
 }
