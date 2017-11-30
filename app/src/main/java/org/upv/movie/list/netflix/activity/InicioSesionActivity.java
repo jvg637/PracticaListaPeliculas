@@ -106,7 +106,7 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     }
 
-    public void mostrarContraseña(View v) {
+    public void mostrarContrasena(View v) {
 
         if (mostrar.isChecked()) {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT /*| InputType.TYPE_TEXT_VARIATION_NORMAL*/);

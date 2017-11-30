@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:onClick="mostrarContraseña"
+            android:onClick="mostrarContrasena"
             android:text="Mostrar contraseña"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"
