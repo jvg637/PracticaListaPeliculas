@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.PerfilActivity" android:label="@string/label_activity_perfil"></activity>
+        <activity android:name=".activity.PerfilActivity" android:label="@string/label_activity_perfil"/>
 
         <activity android:name=".activity.ShowEditMovieActivity" />
 
         <activity android:name=".activity.Ratings" />
 
-        <activity android:name=".activity.MovieListActivity"></activity>
+        <activity android:name=".activity.MovieListActivity"/>
 
         <activity android:name=".activity.ListasActivity" android:theme="@style/AppThemeListas" />
 
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         -->
-        <activity android:name=".activity.InicioSesionActivity"></activity>
-        <activity android:name=".activity.RegistroActivity"></activity>
+        <activity android:name=".activity.InicioSesionActivity"/>
+        <activity android:name=".activity.RegistroActivity"/>
     </application>
 </manifest>

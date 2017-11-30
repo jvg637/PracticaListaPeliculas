@@ -40,7 +40,7 @@ public class Movie implements Serializable {
     private String actors;
     private String directors;
     private String producers;
-    private static List<Float> ratings;
+    private List<Float> ratings;
 
     public Movie() {
         ratings = new ArrayList<>();

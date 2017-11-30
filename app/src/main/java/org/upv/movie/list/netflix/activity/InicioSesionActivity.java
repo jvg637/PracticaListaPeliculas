@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.User;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     private static final int ALTA_USUARIO = 20001;
     private SharedPreferences prefs;
-    private Set userList = new HashSet<User>();
+    private Set userList;/* = new HashSet<User>();*/
     private boolean recordarUsuario = false;
     EditText contraseña;
     EditText usuario;
@@ -40,7 +41,8 @@ public class InicioSesionActivity extends AppCompatActivity {
 
         this.userList = prefs.getStringSet("users", userList);
 
-        if (this.userList.size() == 0) {
+        if (this.userList == null || this.userList.size() == 0) {
+            this.userList = new HashSet<User>();
             SharedPreferences.Editor editor = prefs.edit();
 
             User mainUser = new User("usuario1", "usuario1");
@@ -48,7 +50,7 @@ public class InicioSesionActivity extends AppCompatActivity {
             Gson gson = new Gson();
             String json = gson.toJson(mainUser);
 
-            userList.add(json);
+            this.userList.add(json);
             editor.putStringSet("users", userList);
             editor.commit();
         }
@@ -112,7 +114,7 @@ public class InicioSesionActivity extends AppCompatActivity {
     public void mostrarContraseña(View v) {
 
         if (mostrar.isChecked()) {
-            contraseña.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+            contraseña.setInputType(InputType.TYPE_CLASS_TEXT /*| InputType.TYPE_TEXT_VARIATION_NORMAL*/);
         } else {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
@@ -178,5 +180,10 @@ public class InicioSesionActivity extends AppCompatActivity {
             usuario.setText(data.getExtras().getString("usuario"));
             contraseña.setText(data.getExtras().getString("password"));
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -49,6 +50,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     //private SharedPreferences prefs;
     //Lista de valoraciones
     private Set movieRatings;
+    private User user;
+    private Movie movie;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,7 +109,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
 
     private void mostrarPelicula(final int id) {
-        final Movie movie = MovieList.list.get(id);
+        movie = MovieList.list.get(id);
 
         title.setText(movie.getTitle());
         category.setText(movie.getCategory());
@@ -117,46 +120,40 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         producers.setText(movie.getProducers());
 
         //Se comprueba si el usuario ha valorado
-        final User user = readUserFromPreferences();
+        user = readUserFromPreferences();
 
         String[] ratingComment = user.getRating(movie.getId()).split("-");
-        Float userVal = Float.parseFloat(ratingComment[0]);
-        rating.setRating(userVal);
-        if (userVal == 0.0f) {
-            rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                @Override
-                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                    userRating = rating;
-                }
-            });
-
-            pushComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (userRating != null && comment.getText().length() != 0) {
-                        user.setRating(id, userRating, comment.getText().toString());
-                        writeUserToPreferences(user);
-                        writeRatingToPreferences(id);
-                        movie.addRating(userRating);
-                        showAllComments(id);
-                    } else {
-                        Toast.makeText(getApplication(), R.string.ASEM_add_comment_rating, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        } else {
-            //rating.setEnabled(false);
-            comment.setText(ratingComment[1]);
-            //comment.setFocusable(false);
-            //pushComment.setEnabled(false);
-        }
-
-        showComments.setOnClickListener(new View.OnClickListener() {
+        rating.setRating(Float.parseFloat(ratingComment[0]));
+        comment.setText(ratingComment[1]);
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
-            public void onClick(View v) {
-                showAllComments(id);
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                userRating = rating;
             }
         });
+
+        pushComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userRating != null && comment.getText().length() != 0) {
+                    user.setRating(id, userRating, comment.getText().toString());
+                    writeUserToPreferences(user);
+                    writeRatingToPreferences(id);
+                    movie.addRating(userRating);
+                    showAllComments(id);
+                } else {
+                    Toast.makeText(getApplication(), R.string.ASEM_add_comment_rating, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        showComments.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showAllComments(id);
+        }
+    });
 
 
 
@@ -219,38 +216,47 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
     public void writeUserToPreferences(User user) {
         SharedPreferences prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
+        userList = prefs.getStringSet("users", userList );
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(user);
-
+        Set newStrSet = new HashSet<User>();
         for(String anUserList : userList) {
             User userAux = gson.fromJson(anUserList, User.class);
-            if(userAux.getUsername().equals(user.getUsername())) {
-                if(userList.size() > 1) {
+            if(!userAux.getUsername().equals(user.getUsername())) {
+                newStrSet.add(anUserList);
+                /*if(userList.size() > 1) {
                     userList.remove(userAux);
                     userList.add(json);
                 } else {
                     userList = new HashSet<>();
                     userList.add(json);
-                }
+                }*/
             }
         }
-
-        //editor = prefs.edit();
-        editor.putStringSet(USERS_KEY_USERS, userList);
-        editor.apply();
+        String json = gson.toJson(user);
+        newStrSet.add(json);
+        editor.putStringSet("users", newStrSet);
+        editor.commit();
     }
 
     private void writeRatingToPreferences(int id) {
         SharedPreferences prefs = getSharedPreferences("Valoraciones", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        movieRatings = new HashSet<String>();
+
         movieRatings = prefs.getStringSet("ratings", movieRatings);
+        if(movieRatings == null) {
+            movieRatings = new HashSet<String>();
+        }
         Gson gson = new Gson();
         String json = gson.toJson(id + "-" + userRating);
-        movieRatings.add(json);
-        editor.putStringSet("ratings", movieRatings);
-        editor.apply();
+
+        //make a copy, update it and save it
+        Set oldSet = prefs.getStringSet("ratings", movieRatings);
+        Set newStrSet = new HashSet<String>();
+        newStrSet.add(json);
+        newStrSet.addAll(oldSet);
+        editor.putStringSet("ratings", newStrSet);
+        editor.commit();
     }
 
     private void showAllComments(int id) {

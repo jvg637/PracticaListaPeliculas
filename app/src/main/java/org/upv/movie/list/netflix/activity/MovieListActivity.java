@@ -76,6 +76,7 @@ public class MovieListActivity extends AppCompatActivity {
             for (Movie movie : movieList) {
                 if (movie.getId() == Long.valueOf(rating[0])) {
                     movie.addRating(Float.parseFloat(rating[1]));
+                    break;
                 }
             }
         }

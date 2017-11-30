@@ -28,7 +28,7 @@ public class RegistroActivity extends AppCompatActivity {
     private EditText usuario ;
     private EditText contraseña ;
     private EditText email ;
-    private Set userList = new HashSet<User>();
+    private Set userList;/* = new HashSet<User>();*/
     private Button bRegistrar;
 
     @Override
@@ -60,15 +60,19 @@ public class RegistroActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        this.userList = prefs.getStringSet("users", userList );
-
         User mainUser = new User(usuario.getText().toString(), contraseña.getText().toString());
+        mainUser.setDEFAULT_PHOTO(R.mipmap.ic_perfil_round);
         Gson gson = new Gson();
         String json = gson.toJson(mainUser);
 
-        userList.add(json);
+        Set oldSet = prefs.getStringSet("users", userList);
 
-        editor.putStringSet("users", userList);
+        //make a copy, update it and save it
+        Set newStrSet = new HashSet<User>();
+        newStrSet.add(json);
+        newStrSet.addAll(oldSet);
+
+        editor.putStringSet("users", newStrSet);
         editor.commit();
 
         Intent data = new Intent();

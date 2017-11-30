@@ -6,7 +6,9 @@ import android.util.Log;
 import org.upv.movie.list.netflix.R;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,14 +21,14 @@ public class User implements Serializable {
     private String password;
     private String fullname;
     private int DEFAULT_PHOTO = R.mipmap.ic_perfil;
-    private Map<Long, String> listRatings;
+    private List<String> listRatings;
 
 
     @SuppressLint("UseSparseArrays")
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        listRatings = new HashMap<>();
+        listRatings = new ArrayList<>();
     }
 
     @SuppressLint("UseSparseArrays")
@@ -34,7 +36,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.mail = email;
-        listRatings = new HashMap<>();
+        listRatings = new ArrayList<>();
     }
 
     @SuppressLint("UseSparseArrays")
@@ -43,7 +45,7 @@ public class User implements Serializable {
         this.password = password;
         this.mail = email;
         this.fullname = fullname;
-        listRatings = new HashMap<>();
+        listRatings = new ArrayList<>();
     }
 
     public int getDEFAULT_PHOTO() {
@@ -79,23 +81,25 @@ public class User implements Serializable {
     }
 
     public String getRating(long idPelicula) {
-        if(listRatings != null && listRatings.containsKey(idPelicula)) {
-            return listRatings.get(idPelicula);
-        } else {
-            return "0.0f- ";
+        String ret = "0.0f- ";
+        if (listRatings != null && !listRatings.isEmpty()) {
+            for (String str : listRatings) {
+                String[] rating = str.split("-");
+                if (Long.valueOf(rating[0]) == idPelicula) {
+                    ret = rating[1] + "-" + rating[2];
+                    break;
+                }
+            }
         }
+        return ret;
     }
 
     public void setRating(long idPelicula, float rating, String comment) {
-        String ratingComment = rating + "-" + comment;
-        if(listRatings != null) {
-            if (!listRatings.containsKey(idPelicula)) {
-                listRatings.put(idPelicula, ratingComment);
-            }
-        } else {
-            listRatings = new HashMap<>();
-            listRatings.put(idPelicula, ratingComment);
+        String ratingComment = idPelicula + "-" + rating + "-" + comment;
+        if (listRatings == null) {
+            listRatings = new ArrayList<>();
         }
+        listRatings.add(ratingComment);
     }
 
     @Override
@@ -106,7 +110,7 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        Log.d("x", "Comprobando " + ((User) o).getUsername() + " con " + this.getUsername() );
+        Log.d("x", "Comprobando " + ((User) o).getUsername() + " con " + this.getUsername());
 
         if (username != null ? !username.equals(user.username) : user.username != null)
             return false;
