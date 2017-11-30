@@ -26,8 +26,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintLeft_toRightOf="@+id/movie_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_title"
-        tools:text="13 elementos" />
+        app:layout_constraintTop_toBottomOf="@+id/movie_title" />
 
     <TextView
         android:id="@+id/movie_title"
@@ -36,8 +35,7 @@
         android:layout_margin="8dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         app:layout_constraintLeft_toRightOf="@+id/movie_poster"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Personal" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <RatingBar
         android:id="@+id/movie_rating"
@@ -47,6 +45,14 @@
         android:layout_margin="8dp"
         app:layout_constraintStart_toEndOf="@+id/movie_poster"
         app:layout_constraintTop_toBottomOf="@+id/movie_year" />
+
+    <TextView
+        android:id="@+id/num_ratings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/movie_rating"
+        app:layout_constraintTop_toBottomOf="@+id/movie_year"
+        android:layout_margin="8dp" />
 
 </android.support.constraint.ConstraintLayout>
 

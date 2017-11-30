@@ -145,7 +145,7 @@ public class Movie implements Serializable {
     public Float getAverageRating() {
         Float res = 0.0f;
         int tam = ratings.size();
-        if(tam > 0) {
+        if (tam > 0) {
             for (Float rating : ratings) {
                 res += rating;
             }
@@ -153,6 +153,10 @@ public class Movie implements Serializable {
         } else {
             return res;
         }
+    }
+
+    public int getNumRatings() {
+        return ratings.size();
     }
 
     public void addRating(Float rating) {

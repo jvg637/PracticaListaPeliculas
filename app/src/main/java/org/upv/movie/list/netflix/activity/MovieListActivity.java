@@ -56,7 +56,6 @@ public class MovieListActivity extends AppCompatActivity {
         Gson gson = new Gson();
         if (movieList.isEmpty()) {
             String json = Utils.loadJSONFromResource(this, R.raw.movies);
-
             Type collection = new TypeToken<ArrayList<Movie>>() {
             }.getType();
             MovieList.list = gson.fromJson(json, collection);
@@ -87,7 +86,7 @@ public class MovieListActivity extends AppCompatActivity {
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
-        adapter = new MovieListAdapter(movieList);
+        adapter = new MovieListAdapter();
         recycler.setAdapter(adapter);
 
         recycler.addOnItemTouchListener(new RecyclerItemClickListener(MovieListActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -104,7 +103,7 @@ public class MovieListActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        adapter = new MovieListAdapter(movieList);
+        adapter = new MovieListAdapter();
         recycler.setAdapter(adapter);
     }
 }

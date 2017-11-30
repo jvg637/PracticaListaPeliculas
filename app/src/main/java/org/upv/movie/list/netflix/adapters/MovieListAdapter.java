@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.Movie;
+import org.upv.movie.list.netflix.movie.MovieList;
 import org.upv.movie.list.netflix.utils.DownloadImageTask;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     private List<Movie> items;
 
-    public MovieListAdapter(List<Movie> items) {
-        this.items = items;
+    public MovieListAdapter() {
+        this.items = MovieList.list;
     }
 
     @Override
@@ -37,6 +38,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         holder.title.setText(items.get(position).getTitle());
         holder.category.setText(items.get(position).getCategory());
         holder.rating.setRating(items.get(position).getAverageRating());
+        holder.numRatings.setText(new StringBuilder().append("(").append(items.get(position).getNumRatings()).append(" user ratings)").toString());
         //Descargamos la imagen y se la añadimos al ImageView
         new DownloadImageTask(holder.poster).execute(items.get(position).getCardImageUrl());
 
@@ -53,6 +55,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         private TextView title;
         private TextView category;
         private RatingBar rating;
+        private TextView numRatings;
 
         private MovieListViewHolder(View v) {
             super(v);
@@ -60,6 +63,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             title = v.findViewById(R.id.movie_title);
             category = v.findViewById(R.id.movie_year);
             rating = v.findViewById(R.id.movie_rating);
+            numRatings = v.findViewById(R.id.num_ratings);
         }
     }
 }
