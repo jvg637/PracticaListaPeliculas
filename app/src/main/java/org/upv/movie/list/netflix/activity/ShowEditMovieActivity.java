@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -29,7 +28,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.upv.movie.list.netflix.activity.PerfilActivity.USERS;
-import static org.upv.movie.list.netflix.activity.PerfilActivity.USERS_KEY_USERS;
 import static org.upv.movie.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES;
 import static org.upv.movie.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
 
@@ -46,9 +44,6 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     private Button showComments, pushComment;
     private Float userRating;
     private Set<String> userList;
-    //private SharedPreferences.Editor editor;
-    //private SharedPreferences prefs;
-    //Lista de valoraciones
     private Set movieRatings;
     private User user;
     private Movie movie;
@@ -70,11 +65,6 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         showComments = findViewById(R.id.buttonShowComments);
         pushComment = findViewById(R.id.buttonComment);
         comment = findViewById(R.id.comment);
-        //btnSave = findViewById(R.id.fab);
-
-        /*prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
-        editor = prefs.edit();
-        userList = prefs.getStringSet("users", userList );*/
 
         Intent data = getIntent();
         int id = -1;
@@ -86,7 +76,6 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         if (id == -1) {
             // Mode Edit
         } else {
-//            leerDatos();
             // Mode View
             postponeEnterTransition();
             mostrarPelicula(id);
@@ -131,7 +120,6 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                 userRating = rating;
             }
         });
-
         pushComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,15 +135,12 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             }
         });
 
-
         showComments.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            showAllComments(id);
-        }
-    });
-
-
+            @Override
+            public void onClick(View v) {
+                showAllComments(id);
+            }
+        });
 
         new DownloadImageTask(photo).execute(movie.getBackgroundImageUrl());
         protectFields();
@@ -164,8 +149,6 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                 .inflateTransition(R.transition.transition_curva);
         getWindow().setSharedElementEnterTransition(lista_enter);
         scheduleStartPostponedTransition(photo);
-
-
     }
 
     private void protectFields() {
@@ -177,22 +160,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         actors.setFocusable(false);
         directors.setFocusable(false);
         producers.setFocusable(false);
-        //rating.setEnabled(false);
-        //btnSave.setVisibility(View.GONE);
     }
 
-//    private void leerDatos() {
-//        if (MovieList.list != null)
-//            MovieList.list.clear();
-//        else
-//            MovieList.list = new ArrayList<>();
-//
-//        String json = Utils.loadJSONFromResource(this, R.raw.movies);
-//        Gson gson = new Gson();
-//        Type collection = new TypeToken<ArrayList<Movie>>() {
-//        }.getType();
-//        MovieList.list = gson.fromJson(json, collection);
-//    }
 
     public User readUserFromPreferences() {
         User user = null;
@@ -200,7 +169,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
         String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
         SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
-        userList = prefs.getStringSet("users", userList );
+        userList = prefs.getStringSet("users", userList);
 
         Gson gson = new Gson();
 
@@ -216,21 +185,14 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
     public void writeUserToPreferences(User user) {
         SharedPreferences prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
-        userList = prefs.getStringSet("users", userList );
+        userList = prefs.getStringSet("users", userList);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         Set newStrSet = new HashSet<User>();
-        for(String anUserList : userList) {
+        for (String anUserList : userList) {
             User userAux = gson.fromJson(anUserList, User.class);
-            if(!userAux.getUsername().equals(user.getUsername())) {
+            if (!userAux.getUsername().equals(user.getUsername())) {
                 newStrSet.add(anUserList);
-                /*if(userList.size() > 1) {
-                    userList.remove(userAux);
-                    userList.add(json);
-                } else {
-                    userList = new HashSet<>();
-                    userList.add(json);
-                }*/
             }
         }
         String json = gson.toJson(user);
@@ -244,7 +206,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
 
         movieRatings = prefs.getStringSet("ratings", movieRatings);
-        if(movieRatings == null) {
+        if (movieRatings == null) {
             movieRatings = new HashSet<String>();
         }
         Gson gson = new Gson();

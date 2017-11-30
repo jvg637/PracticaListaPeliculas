@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,7 +19,6 @@ import com.google.gson.Gson;
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.User;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -63,7 +61,6 @@ public class InicioSesionActivity extends AppCompatActivity {
         Gson gson = new Gson();
 
         Iterator<String> userListIterator = this.userList.iterator();
-        Log.d("x", "Tamaño" + this.userList.size() + " User: " + userToCheck.getUsername());
 
         while (userListIterator.hasNext() && validUser == false) {
             userAux = gson.fromJson(userListIterator.next(), User.class);
@@ -78,8 +75,6 @@ public class InicioSesionActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("Recordar usuario", Context.MODE_PRIVATE);
         String username = "";
         String password = "";
-
-        Log.e("x", "recordando");
 
         if (prefs.getBoolean("recordar", this.recordarUsuario)) {
             this.recordarme.setChecked(true);
@@ -121,15 +116,6 @@ public class InicioSesionActivity extends AppCompatActivity {
     }
 
     public void acceder(View view) {
-       /* if(usuario.getText().toString().equals("usuario1") && contraseña.getText().toString().equals("usuario1")){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            //startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-        }else{
-            String s = "Usuario o contraseña incorrecto, intentelo de nuevo";
-            Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        }*/
-
         if (this.checkUser(new User(this.usuario.getText().toString(), this.contraseña.getText().toString()))) {
             SharedPreferences prefs = getSharedPreferences("Recordar usuario", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
@@ -149,7 +135,6 @@ public class InicioSesionActivity extends AppCompatActivity {
             editorLogin.commit();
 
             Intent intent = new Intent(this, ListasActivity.class);
-//            startActivity(intent);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         } else {
             String s = "Usuario o contraseña incorrecto, intentelo de nuevo";
@@ -157,16 +142,8 @@ public class InicioSesionActivity extends AppCompatActivity {
         }
     }
 
-    /*public void borrarCampos (View view){
-        //EditText contraseña = (EditText) findViewById(R.id.contraseña);
-        usuario.setText("");
-        contraseña.setText("");
-        usuario.requestFocus();
-    }*/
-
     public void altaUsuario(View view) {
         Intent intent = new Intent(this, RegistroActivity.class);
-//        startActivity(intent);
         intent.putExtra("usuario", usuario.getText().toString());
         intent.putExtra("password", contraseña.getText().toString());
         ActivityCompat.startActivityForResult(this, intent, ALTA_USUARIO, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
@@ -185,5 +162,10 @@ public class InicioSesionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

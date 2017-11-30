@@ -24,11 +24,8 @@ import org.upv.movie.list.netflix.movie.Utils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -97,9 +94,6 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(MovieListActivity.this, ShowEditMovieActivity.class);
-//                intent.putExtra("ID", movieList.get(position).getId());
-//                startActivity(intent);
-
                 intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int)movieList.get(position).getId());
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this, new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
                 ActivityCompat.startActivity(MovieListActivity.this, intent, options.toBundle());

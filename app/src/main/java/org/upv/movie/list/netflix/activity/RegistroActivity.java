@@ -28,7 +28,7 @@ public class RegistroActivity extends AppCompatActivity {
     private EditText usuario ;
     private EditText contraseña ;
     private EditText email ;
-    private Set userList;/* = new HashSet<User>();*/
+    private Set userList;
     private Button bRegistrar;
 
     @Override
@@ -36,10 +36,10 @@ public class RegistroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.formulario_alta);
 
-        usuario = (EditText) findViewById(R.id.nombreUsuario_formularioAlta);
-        contraseña = (EditText) findViewById(R.id.contraseña_formularioAlta);
-        email = (EditText) findViewById(R.id.email_formularioAlta);
-        bRegistrar = (Button) findViewById(R.id.boton_registrar);
+        usuario = findViewById(R.id.nombreUsuario_formularioAlta);
+        contraseña = findViewById(R.id.contraseña_formularioAlta);
+        email = findViewById(R.id.email_formularioAlta);
+        bRegistrar = findViewById(R.id.boton_registrar);
 
 
         if (getIntent().getExtras()!=null) {
@@ -79,7 +79,6 @@ public class RegistroActivity extends AppCompatActivity {
         data.putExtra("usuario", usuario.getText().toString());
         data.putExtra("password", contraseña.getText().toString());
         setResult(Activity.RESULT_OK,data);
-
         finish();
     }
 

@@ -63,7 +63,6 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
     }
 
     public static class RatingViewHolder extends RecyclerView.ViewHolder {
-
         private ImageView userImage;
         private TextView userComment;
         private TextView userName;

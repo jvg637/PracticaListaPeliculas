@@ -23,13 +23,11 @@ public class ListaAdapter extends RecyclerView.Adapter <ListaAdapter.ListaViewHo
     }
 
     @Override public ListaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.elemento_lista, viewGroup, false);
         return new ListaViewHolder(v);
     }
 
     @Override public void onBindViewHolder(ListaViewHolder viewHolder, int i) {
-
         viewHolder.imagen.setImageResource(listasVector.elemento(i).getImagen());
         viewHolder.titulo.setText(listasVector.elemento(i).getTitulo());
         viewHolder.descripcion.setText(listasVector.elemento(i).getDescripcion());
@@ -40,7 +38,6 @@ public class ListaAdapter extends RecyclerView.Adapter <ListaAdapter.ListaViewHo
     }
 
     public static class ListaViewHolder extends RecyclerView.ViewHolder {
-
         // Campos respectivos de un item
         public ImageView imagen;
         public TextView titulo;
@@ -48,9 +45,9 @@ public class ListaAdapter extends RecyclerView.Adapter <ListaAdapter.ListaViewHo
 
         public ListaViewHolder(View v) {
             super(v);
-            imagen = (ImageView) v.findViewById(R.id.imagen);
-            titulo = (TextView) v.findViewById(R.id.titulo);
-            descripcion = (TextView) v.findViewById(R.id.descripcion);
+            imagen = v.findViewById(R.id.imagen);
+            titulo = v.findViewById(R.id.titulo);
+            descripcion = v.findViewById(R.id.descripcion);
         }
     }
 }

@@ -33,12 +33,6 @@ public class PerfilActivity extends AppCompatActivity {
     public static final String USERS = "Usuarios";
     public static final String USERS_KEY_USERS = "users";
 
-    private static final String DEFAULT_EMAIL = "usuario1@gmail.com";
-    private static final String DEFAULT_USER = "usuario1";
-    private static final String DEFAULT_PASSWORD = "usuario1";
-    private static final String DEFAULT_NAME = "Usuario Garcia";
-
-
     private EditText usuario;
     private EditText contraseña;
     private EditText email;
@@ -71,7 +65,6 @@ public class PerfilActivity extends AppCompatActivity {
             name.setText("Nombre de Usuario1");
             email.setText(user.getMail());
             photo.setImageResource(user.getDEFAULT_PHOTO());
-//        contraseña.setText(user.getPassword());
         } else {
             Snackbar.make(findViewById(R.id.container), "Usuario no ha hecho login!", Snackbar.LENGTH_LONG).show();
         }
@@ -103,29 +96,20 @@ public class PerfilActivity extends AppCompatActivity {
 
     public void saveUserPreferences() {
         User newUser = new User(usuario.getText().toString(), contraseña.getText().toString(), email.getText().toString(), name.getText().toString());
-
-
         SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
-
         Set userList = prefs.getStringSet(USERS_KEY_USERS, null);
-
-        Set  userListNew = new HashSet<>();
+        Set userListNew = new HashSet<>();
 
         if (userList == null) {
             userList = new HashSet<>();
         }
-
         Gson gson = new Gson();
-
         Iterator<String> userListIterator = userList.iterator();
 
         if (userList.size() == 0) {
-
             String json = gson.toJson(newUser);
             userListNew.add(json);
-
-        }
-        else {
+        } else {
             while (userListIterator.hasNext()) {
                 User userAux = gson.fromJson(userListIterator.next(), User.class);
                 if (newUser.getUsername().equals(userAux.getUsername())) {
@@ -137,7 +121,6 @@ public class PerfilActivity extends AppCompatActivity {
                 }
             }
         }
-
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(USERS_KEY_USERS, userListNew);
         editor.commit();
@@ -145,7 +128,6 @@ public class PerfilActivity extends AppCompatActivity {
 
 
     public void mostrarContraseña(View v) {
-
         if (mostrar.isChecked()) {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT |
                     InputType.TYPE_TEXT_VARIATION_NORMAL);
@@ -157,28 +139,19 @@ public class PerfilActivity extends AppCompatActivity {
 
 
     public void saveUser(View view) {
-
-        if (usuario.getText().toString().isEmpty() || contraseña.getText().toString().isEmpty()
-                || name.getText().toString().isEmpty()) {
-
-
-            Snackbar.make(findViewById(R.id.container), "Introduza todos los campos", Snackbar.LENGTH_LONG)
-                    .show();
+        if (usuario.getText().toString().isEmpty() || contraseña.getText().toString().isEmpty() || name.getText().toString().isEmpty()) {
+            Snackbar.make(findViewById(R.id.container), "Introduza todos los campos", Snackbar.LENGTH_LONG).show();
         } else {
             saveUserPreferences();
-
             setResult(RESULT_OK);
             finish();
-
         }
-
     }
 
 
     public User readUserFromPreferences() {
         User userAux = null;
         User user = null;
-//        boolean encontrado = false;
 
         SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
         String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
@@ -187,7 +160,6 @@ public class PerfilActivity extends AppCompatActivity {
         this.userList = prefs.getStringSet(USERS_KEY_USERS, null);
 
         Gson gson = new Gson();
-
         Iterator<String> userListIterator = this.userList.iterator();
 
         while (userListIterator.hasNext()) {
@@ -197,7 +169,6 @@ public class PerfilActivity extends AppCompatActivity {
                 break;
             }
         }
-
         return user;
     }
 }
