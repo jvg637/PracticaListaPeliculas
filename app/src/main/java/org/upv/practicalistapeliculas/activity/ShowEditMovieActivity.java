@@ -49,8 +49,10 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     private Button showComments, pushComment;
     private Float userRating;
     private Set<String> userList;
-    private SharedPreferences.Editor editor;
-    private SharedPreferences prefs;
+    //private SharedPreferences.Editor editor;
+    //private SharedPreferences prefs;
+    //Lista de valoraciones
+    private Set movieRatings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,9 +73,9 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         comment = findViewById(R.id.comment);
         //btnSave = findViewById(R.id.fab);
 
-        prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
+        /*prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
         editor = prefs.edit();
-        userList = prefs.getStringSet("users", userList );
+        userList = prefs.getStringSet("users", userList );*/
 
         Intent data = getIntent();
         int id = -1;
@@ -120,6 +122,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
         //Se comprueba si el usuario ha valorado
         final User user = readUserFromPreferences();
+
         String[] ratingComment = user.getRating(movie.getId()).split("-");
         Float userVal = Float.parseFloat(ratingComment[0]);
         rating.setRating(userVal);
@@ -137,6 +140,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                     if (userRating != null && comment.getText().length() != 0) {
                         user.setRating(id, userRating, comment.getText().toString());
                         writeUserToPreferences(user);
+                        writeRatingToPreferences(id);
                         movie.addRating(userRating);
                         showAllComments(id);
                     } else {
@@ -145,10 +149,10 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                 }
             });
         } else {
-            rating.setEnabled(false);
+            //rating.setEnabled(false);
             comment.setText(ratingComment[1]);
-            comment.setFocusable(false);
-            pushComment.setEnabled(false);
+            //comment.setFocusable(false);
+            //pushComment.setEnabled(false);
         }
 
         showComments.setOnClickListener(new View.OnClickListener() {
@@ -202,10 +206,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
         SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
         String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
-
-        prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
-
-        //Set<String> userList = prefs.getStringSet(USERS_KEY_USERS, null);
+        SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
+        userList = prefs.getStringSet("users", userList );
 
         Gson gson = new Gson();
 
@@ -220,6 +222,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     }
 
     public void writeUserToPreferences(User user) {
+        SharedPreferences prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(user);
 
@@ -230,14 +234,26 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                     userList.remove(userAux);
                     userList.add(json);
                 } else {
-                    userList = new HashSet<String>();
+                    userList = new HashSet<>();
                     userList.add(json);
                 }
             }
         }
 
-        editor = prefs.edit();
+        //editor = prefs.edit();
         editor.putStringSet(USERS_KEY_USERS, userList);
+        editor.apply();
+    }
+
+    private void writeRatingToPreferences(int id) {
+        SharedPreferences prefs = getSharedPreferences("Valoraciones", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        movieRatings = new HashSet<String>();
+        movieRatings = prefs.getStringSet("ratings", movieRatings);
+        Gson gson = new Gson();
+        String json = gson.toJson(id + "-" + userRating);
+        movieRatings.add(json);
+        editor.putStringSet("ratings", movieRatings);
         editor.apply();
     }
 

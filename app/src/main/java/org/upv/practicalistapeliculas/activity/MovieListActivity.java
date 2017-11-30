@@ -1,6 +1,8 @@
 package org.upv.practicalistapeliculas.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -22,10 +24,17 @@ import org.upv.practicalistapeliculas.movie.Utils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class MovieListActivity extends AppCompatActivity {
+
+    private SharedPreferences prefs;
 
     /// RECYCLER ///
     private RecyclerView recycler;
@@ -34,6 +43,9 @@ public class MovieListActivity extends AppCompatActivity {
 
     //Lista peliculas
     private List<Movie> movieList;
+
+    //Lista de valoraciones
+    private Set movieRatings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +56,28 @@ public class MovieListActivity extends AppCompatActivity {
          * Posiblemente esto no haya que hacerlo mas adelante, de momento es para evitar un NullPointerException
          */
         movieList = new ArrayList<>();
+        Gson gson = new Gson();
         if (movieList.isEmpty()) {
             String json = Utils.loadJSONFromResource(this, R.raw.movies);
-            Gson gson = new Gson();
+
             Type collection = new TypeToken<ArrayList<Movie>>() {
             }.getType();
             MovieList.list = gson.fromJson(json, collection);
             movieList = MovieList.list;
+        }
+
+        //Leo de preferencias las valoraciones de todas las peliculas
+        prefs = getSharedPreferences("Valoraciones", Context.MODE_PRIVATE);
+        movieRatings = new HashSet<String>();
+        movieRatings = prefs.getStringSet("ratings", movieRatings);
+        gson = new Gson();
+        for (String movieRating : (Iterable<String>) movieRatings) {
+            String[] rating = gson.fromJson(movieRating, String.class).split("-");
+            for (Movie movie : movieList) {
+                if (movie.getId() == Long.valueOf(rating[0])) {
+                    movie.addRating(Float.parseFloat(rating[1]));
+                }
+            }
         }
 
         // Obtener el Recycler
