@@ -21,7 +21,7 @@
         <item name="android:windowReturnTransition">
             @transition/transition_slide </item>
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
-        <!--Para elementos comparticos -->
+        Para elementos comparticos
         <item name="android:windowSharedElementEnterTransition">
             @transition/transition_slide </item>
         <item name="android:windowSharedElementExitTransition">
