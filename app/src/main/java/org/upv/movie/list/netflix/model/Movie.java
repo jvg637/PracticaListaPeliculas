@@ -65,6 +65,7 @@ public class Movie implements Serializable {
     @SerializedName("producers")
     private String producers;
 
+    @SerializedName("ratings")
     private List<Float> ratings;
 
     public Movie() {
