@@ -14,33 +14,35 @@ public class ListasVector implements Listas {
 
     protected List<Lista> vectorListas;
 
-    public ListasVector(){
+    public ListasVector() {
         vectorListas = new ArrayList<Lista>();
-    };
+    }
 
-    public Lista elemento(int id){
+    ;
+
+    public Lista elemento(int id) {
         return vectorListas.get(id);
     }
 
-    public void anyade(Lista lista){
+    public void anyade(Lista lista) {
         vectorListas.add(lista);
     }
 
-    public int nueva(){
+    public int nueva() {
         Lista lista = new Lista();
         vectorListas.add(lista);
         return vectorListas.size() - 1;
     }
 
-    public void borrar(int id){
+    public void borrar(int id) {
         vectorListas.remove(id);
     }
 
-    public int tamanyo(){
+    public int tamanyo() {
         return vectorListas.size();
     }
 
-    public void actualiza(int id, Lista lista){
+    public void actualiza(int id, Lista lista) {
         vectorListas.set(id, lista);
     }
 }

@@ -1,7 +1,6 @@
 package org.upv.movie.list.netflix.model;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import org.upv.movie.list.netflix.R;
 
@@ -44,6 +43,14 @@ public class User implements Serializable {
         this.mail = email;
         this.fullname = fullname;
         listRatings = new ArrayList<>();
+    }
+
+    @SuppressLint("UseSparseArrays")
+    public User(String username, int photo, String commentRating) {
+        this.username = username;
+        this.DEFAULT_PHOTO = photo;
+        listRatings = new ArrayList<>();
+        listRatings.add(commentRating);
     }
 
     public int getDEFAULT_PHOTO() {
@@ -107,8 +114,6 @@ public class User implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
-
-        //Log.d("x", "Comprobando " + ((User) o).getUsername() + " con " + this.getUsername());
 
         if (username != null ? !username.equals(user.username) : user.username != null)
             return false;

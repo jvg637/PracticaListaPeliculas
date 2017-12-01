@@ -27,7 +27,7 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     private static final int ALTA_USUARIO = 20001;
     private SharedPreferences prefs;
-    private Set userList;/* = new HashSet<User>();*/
+    private Set userList;
     private boolean recordarUsuario = false;
     EditText contraseña;
     EditText usuario;
@@ -64,7 +64,6 @@ public class InicioSesionActivity extends AppCompatActivity {
 
         while (userListIterator.hasNext() && validUser == false) {
             userAux = gson.fromJson(userListIterator.next(), User.class);
-
             validUser = userAux.equals(userToCheck);
         }
 
@@ -93,7 +92,6 @@ public class InicioSesionActivity extends AppCompatActivity {
         mostrar = findViewById(R.id.mostrar_contraseña);
         recordarme = findViewById(R.id.recordarme);
 
-
         rememberUser();
         initUserList();
     }
@@ -101,7 +99,6 @@ public class InicioSesionActivity extends AppCompatActivity {
     public void loguearCheckbox(View v) {
         String s = "Recordar datos de usuario: " + (recordarme.isChecked() ? "Sí" : "No");
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-
         this.recordarUsuario = recordarme.isChecked();
 
     }
@@ -125,7 +122,6 @@ public class InicioSesionActivity extends AppCompatActivity {
                 editor.putString("username", this.usuario.getText().toString());
                 editor.putString("password", this.contraseña.getText().toString());
             }
-
             editor.commit();
 
             // Graba en preferencias el login

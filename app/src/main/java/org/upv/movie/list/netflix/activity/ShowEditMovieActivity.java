@@ -36,8 +36,8 @@ import static org.upv.movie.list.netflix.activity.PerfilActivity.USER_LOGIN_PREF
  */
 
 public class ShowEditMovieActivity extends AppCompatActivity {
-    public static String PARAM_EXTRA_ID_PELICULA = "ID";
 
+    public static String PARAM_EXTRA_ID_PELICULA = "ID";
     private ImageView photo;
     private EditText title, category, summary, directors, actors, producers, studio, comment;
     private RatingBar rating;
@@ -114,12 +114,14 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         String[] ratingComment = user.getRating(movie.getId()).split("╩");
         rating.setRating(Float.parseFloat(ratingComment[0]));
         comment.setText(ratingComment[1]);
+
         rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 userRating = rating;
             }
         });
+
         pushComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +146,6 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
         new DownloadImageTask(photo).execute(movie.getBackgroundImageUrl());
         protectFields();
-
         Transition lista_enter = TransitionInflater.from(this)
                 .inflateTransition(R.transition.transition_curva);
         getWindow().setSharedElementEnterTransition(lista_enter);

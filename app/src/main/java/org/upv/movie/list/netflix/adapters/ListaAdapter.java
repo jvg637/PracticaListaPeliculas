@@ -14,7 +14,7 @@ import org.upv.movie.list.netflix.R;
  * Created by Lionel on 07/11/2017.
  */
 
-public class ListaAdapter extends RecyclerView.Adapter <ListaAdapter.ListaViewHolder>{
+public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHolder> {
 
     private ListasVector listasVector;
 
@@ -22,28 +22,31 @@ public class ListaAdapter extends RecyclerView.Adapter <ListaAdapter.ListaViewHo
         this.listasVector = listasVector;
     }
 
-    @Override public ListaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    @Override
+    public ListaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.elemento_lista, viewGroup, false);
         return new ListaViewHolder(v);
     }
 
-    @Override public void onBindViewHolder(ListaViewHolder viewHolder, int i) {
+    @Override
+    public void onBindViewHolder(ListaViewHolder viewHolder, int i) {
         viewHolder.imagen.setImageResource(listasVector.elemento(i).getImagen());
         viewHolder.titulo.setText(listasVector.elemento(i).getTitulo());
         viewHolder.descripcion.setText(listasVector.elemento(i).getDescripcion());
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return listasVector.tamanyo();
     }
 
-    public static class ListaViewHolder extends RecyclerView.ViewHolder {
+    static class ListaViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
-        public ImageView imagen;
-        public TextView titulo;
-        public TextView descripcion;
+        ImageView imagen;
+        TextView titulo;
+        TextView descripcion;
 
-        public ListaViewHolder(View v) {
+        ListaViewHolder(View v) {
             super(v);
             imagen = v.findViewById(R.id.imagen);
             titulo = v.findViewById(R.id.titulo);

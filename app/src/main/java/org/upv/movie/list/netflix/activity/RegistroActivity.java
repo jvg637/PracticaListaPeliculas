@@ -41,7 +41,6 @@ public class RegistroActivity extends AppCompatActivity {
         email = findViewById(R.id.email_formularioAlta);
         bRegistrar = findViewById(R.id.boton_registrar);
 
-
         if (getIntent().getExtras()!=null) {
             Bundle extras = getIntent().getExtras();
             String txtUsuario= extras.getString("usuario", "");
@@ -86,6 +85,4 @@ public class RegistroActivity extends AppCompatActivity {
         super.onStop();
         finish();
     }
-
-
 }

@@ -8,12 +8,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.User;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Miguel Á. Núñez on 25/11/2017.
@@ -21,10 +19,10 @@ import java.util.Set;
 
 public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingViewHolder> {
 
-    private Set<String> items;
+    private List<User> items;
     private int idPelicula;
 
-    public RatingAdapter(Set<String> items, int idPelicula) {
+    public RatingAdapter(List<User> items, int idPelicula) {
         this.items = items;
         this.idPelicula = idPelicula;
     }
@@ -37,25 +35,11 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
 
     @Override
     public void onBindViewHolder(RatingViewHolder holder, int position) {
-        int i = 0;
-        Gson gson = new Gson();
-
-        for(String anUserList : items) {
-            if(i == position) {
-                User userAux = gson.fromJson(anUserList, User.class);
-                if(!userAux.getRating(idPelicula).equals("0.0f╩ ")) {
-                    String[] ratingComment = userAux.getRating(idPelicula).split("╩");
-                    holder.userRating.setRating(Float.parseFloat(ratingComment[0]));
-                    holder.userComment.setText(ratingComment[1]);
-                    holder.userName.setText(userAux.getUsername());
-                    holder.userImage.setImageResource(userAux.getDEFAULT_PHOTO());
-                    break;
-                }
-            } else {
-                holder.userRating.setRating(0.0f);
-                i++;
-            }
-        }
+        String[] ratingComment = items.get(position).getRating(idPelicula).split("╩");
+        holder.userRating.setRating(Float.parseFloat(ratingComment[0]));
+        holder.userComment.setText(ratingComment[1]);
+        holder.userName.setText(items.get(position).getUsername());
+        holder.userImage.setImageResource(items.get(position).getDEFAULT_PHOTO());
     }
 
     @Override

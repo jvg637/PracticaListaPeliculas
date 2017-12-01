@@ -31,18 +31,8 @@ import java.util.Set;
 
 public class MovieListActivity extends AppCompatActivity {
 
-    private SharedPreferences prefs;
-
-    /// RECYCLER ///
-    private RecyclerView recycler;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager lManager;
-
     //Lista peliculas
     private List<Movie> movieList;
-
-    //Lista de valoraciones
-    private Set movieRatings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +53,8 @@ public class MovieListActivity extends AppCompatActivity {
         }
 
         //Leo de preferencias las valoraciones de todas las peliculas
-        prefs = getSharedPreferences("Valoraciones", Context.MODE_PRIVATE);
-        movieRatings = new HashSet<String>();
+        SharedPreferences prefs = getSharedPreferences("Valoraciones", Context.MODE_PRIVATE);
+        Set movieRatings = new HashSet<String>();
         movieRatings = prefs.getStringSet("ratings", movieRatings);
         gson = new Gson();
         for (String movieRating : (Iterable<String>) movieRatings) {
@@ -78,22 +68,22 @@ public class MovieListActivity extends AppCompatActivity {
         }
 
         // Obtener el Recycler
-        recycler = findViewById(R.id.movie_list_recycler);
+        RecyclerView recycler = findViewById(R.id.movie_list_recycler);
         recycler.setHasFixedSize(true);
 
         // Usar un administrador para LinearLayout
-        lManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
-        adapter = new MovieListAdapter();
+        RecyclerView.Adapter adapter = new MovieListAdapter();
         recycler.setAdapter(adapter);
 
         recycler.addOnItemTouchListener(new RecyclerItemClickListener(MovieListActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(MovieListActivity.this, ShowEditMovieActivity.class);
-                intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int)movieList.get(position).getId());
+                intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int) movieList.get(position).getId());
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this, new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
                 ActivityCompat.startActivity(MovieListActivity.this, intent, options.toBundle());
             }

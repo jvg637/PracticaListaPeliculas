@@ -45,14 +45,10 @@ import static org.upv.movie.list.netflix.activity.PerfilActivity.USER_LOGIN_PREF
  * Created by Lionel on 07/11/2017.
  */
 
-public class ListasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ListasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int ACTUALIZAR_PERFIL = 10000;
 
-    private RecyclerView recycler;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager lManager;
-    private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView username;
@@ -68,13 +64,13 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         listasVector.anyade(new Lista(R.drawable.ic_fav, "Favoritas", "Mis películas favoritas"));
         listasVector.anyade(new Lista(R.drawable.ic_star, "Mejor valoradas", "La películas con mejor valoración"));
 
-        recycler = findViewById(R.id.recycler);
+        RecyclerView recycler = findViewById(R.id.recycler);
 
-        lManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
 
         recycler.setLayoutManager(lManager);
 
-        adapter = new ListaAdapter(listasVector);
+        RecyclerView.Adapter adapter = new ListaAdapter(listasVector);
         recycler.setAdapter(adapter);
 
         recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -85,7 +81,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             }
         }));
 
-        fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +107,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item){
+    public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_1) {
             // Editar perfil
@@ -120,7 +116,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             ActivityCompat.startActivityForResult(this, intent, ACTUALIZAR_PERFIL, options.toBundle());
         }
 
-        DrawerLayout drawer = findViewById( R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -135,7 +131,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    private void setNavigationPerfil(){
+    private void setNavigationPerfil() {
         // Navigation drawer user/foto
         User user = readUserFromPreferences();
         String email = user.getMail();

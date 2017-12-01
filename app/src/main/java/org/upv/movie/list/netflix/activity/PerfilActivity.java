@@ -126,17 +126,14 @@ public class PerfilActivity extends AppCompatActivity {
         editor.commit();
     }
 
-
     public void mostrarContraseña(View v) {
         if (mostrar.isChecked()) {
-            contraseña.setInputType(InputType.TYPE_CLASS_TEXT |
-                    InputType.TYPE_TEXT_VARIATION_NORMAL);
+            contraseña.setInputType(InputType.TYPE_CLASS_TEXT);
         } else {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT |
                     InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
     }
-
 
     public void saveUser(View view) {
         if (usuario.getText().toString().isEmpty() || contraseña.getText().toString().isEmpty() || name.getText().toString().isEmpty()) {
@@ -147,7 +144,6 @@ public class PerfilActivity extends AppCompatActivity {
             finish();
         }
     }
-
 
     public User readUserFromPreferences() {
         User userAux = null;

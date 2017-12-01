@@ -41,7 +41,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         holder.numRatings.setText(new StringBuilder().append("(").append(items.get(position).getNumRatings()).append(" user ratings)").toString());
         //Descargamos la imagen y se la añadimos al ImageView
         new DownloadImageTask(holder.poster).execute(items.get(position).getCardImageUrl());
-        //holder.poster.setImageResource(R.drawable.cowboy);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         return items.size();
     }
 
-    public static class MovieListViewHolder extends RecyclerView.ViewHolder {
+    static class MovieListViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView poster;
         private TextView title;

@@ -10,13 +10,13 @@ public class Lista {
     private String descripcion;
     private int imagen;
 
-    public Lista(){
+    public Lista() {
         this.titulo = "";
         this.descripcion = "";
         this.imagen = 0;
     }
 
-    public Lista(int imagen, String titulo, String descripcion){
+    public Lista(int imagen, String titulo, String descripcion) {
         this.imagen = imagen;
         this.titulo = titulo;
         this.descripcion = descripcion;
