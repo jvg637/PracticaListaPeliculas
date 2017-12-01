@@ -29,6 +29,13 @@
     <string name="AP_email">Email</string>
 
     <!-- Textos correspondientes al xml de activity_show_edit_movie (ASEM) -->
+    <string name="ASEM_title">Title</string>
+    <string name="ASEM_category">Category</string>
+    <string name="ASEM_study">Study</string>
+    <string name="ASEM_sinopsis">Synopsis</string>
+    <string name="ASEM_actors">Actors</string>
+    <string name="ASEM_directors">Directors</string>
+    <string name="ASEM_producers">Producers</string>
     <string name="ASEM_comment">Your Comment</string>
     <string name="ASEM_average">Average</string>
     <string name="ASEM_show_comments">Show Comments</string>
@@ -39,7 +46,6 @@
     <string name="CL_toolbar_title">Movie Lists</string>
 
     <!-- Textos correspondientes al xml de elemento_lista (EL) -->
-    <string name="EL_title">Title</string>
     <string name="EL_description">Description</string>
 
     <!-- Textos correspondientes al xml de formulario_alta (FA) -->
