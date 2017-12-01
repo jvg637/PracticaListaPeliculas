@@ -1,17 +1,32 @@
 <resources>
-    <string name="app_name">Lista Peliculas</string>
+    <string name="app_name">Movie Lists</string>
     <string name="action_settings">Settings</string>
-    <string name="label_activity_perfil">Perfil</string>
+    <string name="label_activity_perfil">Profile</string>
 
-    <string name="toolbar_title">Listas de películas</string>
+    <!-- Nombre de Transiciones -->
     <string name="shared_photo_list_movie">shared_photo_list_movie</string>
     <string name="shared_photo_perfil">shared_photo_perfil</string>
     <!-- shared transitions-->
     <!--<string name="transition_name_boton">enter_transition_perfil</string>-->
 
-    <string name="drawer_open">navigation drawer abierto</string>
-    <string name="drawer_close">navigation drawer cerrado</string>
-    <string name="drawer_edit_user">Editar perfil usuario</string>
+    <string name="drawer_open">navigation drawer open</string>
+    <string name="drawer_close">navigation drawer close</string>
+    <!-- <string name="drawer_edit_user">Edit User Profile</string> -->
+
+    <!-- Textos correspondientes al xml de activity_inicio_sesion (AIS) -->
+    <string name="AIS_Log_in">Log In</string>
+    <string name="AIS_username">Username or email</string>
+    <string name="AIS_password">Password</string>
+    <string name="AIS_remember">Remember me</string>
+    <string name="AIS_show_password">Show Password</string>
+    <string name="AIS_register">REGISTER</string>
+    <string name="AIS_forgot">I FORGOT MY PASSWORD</string>
+
+    <!-- Textos correspondientes al xml de activity_perfil (AP) -->
+    <string name="AP_edit_profile">Edit User Profile</string>
+    <string name="AP_user">User</string>
+    <string name="AP_name">Complete Name</string>
+    <string name="AP_email">Email</string>
 
     <!-- Textos correspondientes al xml de activity_show_edit_movie (ASEM) -->
     <string name="ASEM_comment">Your Comment</string>
@@ -19,4 +34,33 @@
     <string name="ASEM_show_comments">Show Comments</string>
     <string name="ASEM_push_comment">Post your comment</string>
     <string name="ASEM_add_comment_rating">You must add a comment and a rating</string>
+
+    <!-- Textos correspondientes al xml de content_listas (CL) -->
+    <string name="CL_toolbar_title">Movie Lists</string>
+
+    <!-- Textos correspondientes al xml de elemento_lista (EL) -->
+    <string name="EL_title">Title</string>
+    <string name="EL_description">Description</string>
+
+    <!-- Textos correspondientes al xml de formulario_alta (FA) -->
+    <string name="FA_register">Register</string>
+
+    <!-- Textos correspondientes al xml de nav_header_main (NHM) -->
+    <string name="NHM_mail">usuario1@gmail.com</string>
+
+    <!-- Textos correspondientes a InicioSesionActivity (ISA) -->
+    <string name="ISA_remember">remember user data: </string>
+    <string name="ISA_bad_user">Incorrect username or password, try again</string>
+
+    <!-- Textos correspondientes a ListasActivity (LA) -->
+    <string name="LA_favorites">Favorites</string>
+    <string name="LA_best">Best rated</string>
+    <string name="LA_favorites_desc">My favorite movies</string>
+    <string name="LA_best_desc">The films with the best rating</string>
+    <string name="LA_fab_press">The FAB was pressed</string>
+
+    <!-- Textos correspondientes a PerfilActivity (PA) -->
+    <string name="PA_user_log">User has not logged in!</string>
+    <string name="PA_fields">Enter all fields</string>
+
 </resources>

@@ -66,7 +66,7 @@ public class PerfilActivity extends AppCompatActivity {
             email.setText(user.getMail());
             photo.setImageResource(user.getDEFAULT_PHOTO());
         } else {
-            Snackbar.make(findViewById(R.id.container), "Usuario no ha hecho login!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.container), getString(R.string.PA_user_log), Snackbar.LENGTH_LONG).show();
         }
 
         Transition lista_enter = TransitionInflater.from(this)
@@ -137,7 +137,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     public void saveUser(View view) {
         if (usuario.getText().toString().isEmpty() || contraseña.getText().toString().isEmpty() || name.getText().toString().isEmpty()) {
-            Snackbar.make(findViewById(R.id.container), "Introduza todos los campos", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.container), getString(R.string.PA_fields), Snackbar.LENGTH_LONG).show();
         } else {
             saveUserPreferences();
             setResult(RESULT_OK);

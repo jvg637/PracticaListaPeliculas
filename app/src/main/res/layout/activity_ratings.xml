@@ -32,6 +32,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:isIndicator="true"
             android:numStars="5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/rating_average"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rating_average"
             tools:layout_editor_absoluteX="16dp" />
 
 

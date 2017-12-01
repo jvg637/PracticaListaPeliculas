@@ -97,7 +97,7 @@ public class InicioSesionActivity extends AppCompatActivity {
     }
 
     public void loguearCheckbox(View v) {
-        String s = "Recordar datos de usuario: " + (recordarme.isChecked() ? "Sí" : "No");
+        String s = getString(R.string.ISA_remember) + (recordarme.isChecked() ? getString(android.R.string.yes) : getString(android.R.string.no));
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         this.recordarUsuario = recordarme.isChecked();
 
@@ -133,7 +133,7 @@ public class InicioSesionActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ListasActivity.class);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         } else {
-            String s = "Usuario o contraseña incorrecto, intentelo de nuevo";
+            String s = getString(R.string.ISA_bad_user);
             Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         }
     }

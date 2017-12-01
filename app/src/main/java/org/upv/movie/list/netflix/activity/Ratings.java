@@ -38,7 +38,7 @@ public class Ratings extends AppCompatActivity {
         userList = prefs.getStringSet("users", userList);
 
         //Nos quedamos solo con los que han votado a la pelicula con idPelicula
-        List<User> userRatingMovie = new ArrayList<User>();
+        List<User> userRatingMovie = new ArrayList<>();
         Gson gson = new Gson();
         for (String anUserList : userList) {
             User userAux = gson.fromJson(anUserList, User.class);
@@ -63,6 +63,5 @@ public class Ratings extends AppCompatActivity {
         RatingBar ratingBar = findViewById(R.id.rating_average);
         Movie movie = movieList.get(idPelicula);
         ratingBar.setRating(movie.getAverageRating());
-        ratingBar.setEnabled(false);
     }
 }

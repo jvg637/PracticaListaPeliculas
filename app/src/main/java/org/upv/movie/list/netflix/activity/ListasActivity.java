@@ -61,8 +61,8 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 
         // Inicializar los elementos (ejemplo)
         ListasVector listasVector = new ListasVector();
-        listasVector.anyade(new Lista(R.drawable.ic_fav, "Favoritas", "Mis películas favoritas"));
-        listasVector.anyade(new Lista(R.drawable.ic_star, "Mejor valoradas", "La películas con mejor valoración"));
+        listasVector.anyade(new Lista(R.drawable.ic_fav, getString(R.string.LA_favorites), getString(R.string.LA_favorites_desc)));
+        listasVector.anyade(new Lista(R.drawable.ic_star, getString(R.string.LA_best), getString(R.string.LA_best_desc)));
 
         RecyclerView recycler = findViewById(R.id.recycler);
 
@@ -85,7 +85,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Se presionó el FAB", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, getString(R.string.LA_fab_press), Snackbar.LENGTH_LONG).show();
             }
         });
 

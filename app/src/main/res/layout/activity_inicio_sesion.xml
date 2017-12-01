@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Iniciar sesión"
+            android:text="@string/AIS_Log_in"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo" />
 
@@ -40,10 +40,9 @@
 
             <EditText
                 android:id="@+id/usuario"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre de usuario o correo"
+                android:hint="@string/AIS_username"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp"
@@ -65,8 +64,7 @@
                 android:id="@+id/contraseña"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
-
+                android:hint="@string/AIS_password"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textSize="14dp" />
@@ -79,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:onClick="loguearCheckbox"
-            android:text="Recordarme"
+            android:text="@string/AIS_remember"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -91,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:onClick="mostrarContrasena"
-            android:text="Mostrar contraseña"
+            android:text="@string/AIS_show_password"
             android:textColor="@android:color/darker_gray"
             android:textSize="12dp"
             app:layout_constraintLeft_toRightOf="@+id/recordarme"
@@ -101,17 +99,15 @@
             android:id="@+id/butt_acceder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:elevation="2dp"
             android:onClick="acceder"
-            android:text="Iniciar Sesión"
+            android:text="@string/AIS_Log_in"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/butt_borrar"
             app:layout_constraintTop_toBottomOf="@+id/recordarme" />
-        <!--android:background="@drawable/ripple2" -->
 
         <Button
             android:id="@+id/butt_borrar"
@@ -119,10 +115,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:clickable="true"
-
             android:elevation="2dp"
             android:onClick="altaUsuario"
-            android:text="REGISTRARSE"
+            android:text="@string/AIS_register"
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toRightOf="@+id/butt_acceder"
             app:layout_constraintRight_toRightOf="parent"
@@ -133,9 +128,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-
             android:clickable="true"
-            android:text="HE OLVIDADO MI CONTRASEÑA"
+            android:text="@string/AIS_forgot"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/butt_acceder" />
 
