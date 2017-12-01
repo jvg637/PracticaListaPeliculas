@@ -65,6 +65,12 @@ public class Movie implements Serializable {
     @SerializedName("producers")
     private String producers;
 
+    public void clearRatings() {
+        if (ratings!=null) {
+            ratings.clear();
+        }
+    }
+
     @SerializedName("ratings")
     private List<Float> ratings;
 
@@ -184,6 +190,7 @@ public class Movie implements Serializable {
     public int getNumRatings() {
         return ratings.size();
     }
+
 
     public void addRating(Float rating) {
         ratings.add(rating);

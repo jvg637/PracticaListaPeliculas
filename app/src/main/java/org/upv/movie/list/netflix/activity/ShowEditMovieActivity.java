@@ -1,5 +1,6 @@
 package org.upv.movie.list.netflix.activity;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,6 +48,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     private Set movieRatings;
     private User user;
     private Movie movie;
+
+    private boolean rated = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,11 +128,11 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         pushComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userRating != null && comment.getText().length() != 0) {
+                if (userRating != null ) {
                     user.setRating(id, userRating, comment.getText().toString());
                     writeUserToPreferences(user);
                     writeRatingToPreferences(id);
-                    movie.addRating(userRating);
+                    rated = true;
                     showAllComments(id);
                 } else {
                     Toast.makeText(getApplication(), R.string.ASEM_add_comment_rating, Toast.LENGTH_SHORT).show();
@@ -211,13 +214,32 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             movieRatings = new HashSet<String>();
         }
         Gson gson = new Gson();
-        String json = gson.toJson(id + "╩" + userRating);
+        String json = gson.toJson(id + "╩" + userRating + "╩"  + user.getUsername());
 
         //make a copy, update it and save it
-        Set oldSet = prefs.getStringSet("ratings", movieRatings);
-        Set newStrSet = new HashSet<String>();
+        Set <String> oldSet = prefs.getStringSet("ratings", movieRatings);
+        Set  <String>newStrSet = new HashSet<>();
         newStrSet.add(json);
-        newStrSet.addAll(oldSet);
+
+        movie.clearRatings();
+        movie.addRating(userRating);
+
+        for ( String clave:
+        oldSet ) {
+            String claveAux = gson.fromJson(clave,String.class);
+
+            String[] rating = claveAux.split("╩");
+
+            if (id == Integer.parseInt(rating[0]) && user.getUsername().equals(rating[2])) {
+
+
+            } else {
+                newStrSet.add(clave);
+                movie.addRating(Float.parseFloat(rating[1]));
+            }
+        }
+
+//        newStrSet.addAll(oldSet);
         editor.putStringSet("ratings", newStrSet);
         editor.commit();
     }
@@ -225,6 +247,16 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     private void showAllComments(int id) {
         Intent intent = new Intent(getApplication(), Ratings.class);
         intent.putExtra("idPelicula", id);
-        startActivity(intent);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (rated)
+            setResult(RESULT_OK);
+
+        super.onBackPressed();
+
     }
 }

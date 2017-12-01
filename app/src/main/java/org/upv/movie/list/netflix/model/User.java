@@ -104,6 +104,16 @@ public class User implements Serializable {
         if (listRatings == null) {
             listRatings = new ArrayList<>();
         }
+
+        for (String ratingMovie : listRatings
+                ) {
+            String[] elements = ratingMovie.split("╩");
+            if (Long.parseLong(elements[0]) == idPelicula) {
+                   listRatings.remove(ratingMovie);
+                   break;
+            }
+        }
+
         listRatings.add(ratingComment);
     }
 

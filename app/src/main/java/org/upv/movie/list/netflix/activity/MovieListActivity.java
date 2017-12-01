@@ -31,6 +31,7 @@ import java.util.Set;
 
 public class MovieListActivity extends AppCompatActivity {
 
+    private static final int REFRESH_RATINGS = 10000;
     //Lista peliculas
     private List<Movie> movieList;
 
@@ -76,7 +77,7 @@ public class MovieListActivity extends AppCompatActivity {
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
-        RecyclerView.Adapter adapter = new MovieListAdapter();
+        adapter = new MovieListAdapter();
         recycler.setAdapter(adapter);
 
         recycler.addOnItemTouchListener(new RecyclerItemClickListener(MovieListActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -85,9 +86,20 @@ public class MovieListActivity extends AppCompatActivity {
                 Intent intent = new Intent(MovieListActivity.this, ShowEditMovieActivity.class);
                 intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int) movieList.get(position).getId());
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this, new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
-                ActivityCompat.startActivity(MovieListActivity.this, intent, options.toBundle());
+                ActivityCompat.startActivityForResult(MovieListActivity.this,  intent, REFRESH_RATINGS,options.toBundle());
+
             }
         }));
     }
 
+    private RecyclerView.Adapter adapter;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK)
+            adapter.notifyDataSetChanged();
+
+    }
 }
