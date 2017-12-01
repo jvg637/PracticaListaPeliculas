@@ -16,6 +16,8 @@ package org.upv.movie.list.netflix.model;
 
 import android.util.Log;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,17 +31,40 @@ import java.util.List;
 public class Movie implements Serializable {
     static final long serialVersionUID = 727566175075960653L;
     private static long count = 0;
+
+    @SerializedName("id")
     private long id;
+
+    @SerializedName("title")
     private String title;
+
+    @SerializedName("description")
     private String description;
+
+    @SerializedName("bgImageUrl")
     private String bgImageUrl;
+
+    @SerializedName("cardImageUrl")
     private String cardImageUrl;
+
+    @SerializedName("videoUrl")
     private String videoUrl;
+
+    @SerializedName("studio")
     private String studio;
+
+    @SerializedName("category")
     private String category;
+
+    @SerializedName("actors")
     private String actors;
+
+    @SerializedName("directors")
     private String directors;
+
+    @SerializedName("producers")
     private String producers;
+
     private List<Float> ratings;
 
     public Movie() {
