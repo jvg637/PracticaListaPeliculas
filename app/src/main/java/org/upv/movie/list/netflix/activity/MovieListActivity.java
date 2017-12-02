@@ -26,27 +26,46 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 
 public class MovieListActivity extends AppCompatActivity {
 
     private static final int REFRESH_RATINGS = 10000;
+    private RecyclerView.Adapter adapter;
     //Lista peliculas
     private List<Movie> movieList;
+
+    //Indicador de archivo de idioma
+    private int archivoMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
-        /*
-         * Posiblemente esto no haya que hacerlo mas adelante, de momento es para evitar un NullPointerException
-         */
+        //Detectamos el idioma que tiene el dispositivo
+        String language = Locale.getDefault().getLanguage();
+
+        //Cargamos el archivo movies que corresponda con el idioma
+        switch (language) {
+            case "es":
+                archivoMovie = R.raw.movies_es;
+                break;
+            case "fr":
+                archivoMovie = R.raw.movies_fr;
+                break;
+            default:
+                archivoMovie = R.raw.movies;
+                break;
+        }
+
+        //Cargamos las peliculas en MovieList
         movieList = new ArrayList<>();
         Gson gson = new Gson();
         if (movieList.isEmpty()) {
-            String json = Utils.loadJSONFromResource(this, R.raw.movies);
+            String json = Utils.loadJSONFromResource(this, archivoMovie);
             Type collection = new TypeToken<ArrayList<Movie>>() {
             }.getType();
             MovieList.list = gson.fromJson(json, collection);
@@ -85,21 +104,17 @@ public class MovieListActivity extends AppCompatActivity {
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(MovieListActivity.this, ShowEditMovieActivity.class);
                 intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int) movieList.get(position).getId());
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this, new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
-                ActivityCompat.startActivityForResult(MovieListActivity.this,  intent, REFRESH_RATINGS,options.toBundle());
-
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this,
+                        new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
+                ActivityCompat.startActivityForResult(MovieListActivity.this, intent, REFRESH_RATINGS, options.toBundle());
             }
         }));
     }
 
-    private RecyclerView.Adapter adapter;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK)
             adapter.notifyDataSetChanged();
-
     }
 }
