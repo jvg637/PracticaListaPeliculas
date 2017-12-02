@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -80,7 +81,9 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             // Mode Edit
         } else {
             // Mode View
-            postponeEnterTransition();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                postponeEnterTransition();
+            }
             mostrarPelicula(id);
         }
 
@@ -93,7 +96,9 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                     @Override
                     public boolean onPreDraw() {
                         sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                        startPostponedEnterTransition();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            startPostponedEnterTransition();
+                        }
                         return true;
                     }
                 });
@@ -128,7 +133,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         pushComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userRating != null ) {
+                if (userRating != null) {
                     user.setRating(id, userRating, comment.getText().toString());
                     writeUserToPreferences(user);
                     writeRatingToPreferences(id);
@@ -149,9 +154,13 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
         new DownloadImageTask(photo).execute(movie.getBackgroundImageUrl());
         protectFields();
-        Transition lista_enter = TransitionInflater.from(this)
-                .inflateTransition(R.transition.transition_curva);
-        getWindow().setSharedElementEnterTransition(lista_enter);
+        Transition lista_enter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            lista_enter = TransitionInflater.from(this).inflateTransition(R.transition.transition_curva);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementEnterTransition(lista_enter);
+        }
         scheduleStartPostponedTransition(photo);
     }
 
@@ -214,27 +223,23 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             movieRatings = new HashSet<String>();
         }
         Gson gson = new Gson();
-        String json = gson.toJson(id + "╩" + userRating + "╩"  + user.getUsername());
+        String json = gson.toJson(id + "╩" + userRating + "╩" + user.getUsername());
 
         //make a copy, update it and save it
-        Set <String> oldSet = prefs.getStringSet("ratings", movieRatings);
-        Set  <String>newStrSet = new HashSet<>();
+        Set oldSet = prefs.getStringSet("ratings", movieRatings);
+        Set<String> newStrSet = new HashSet<>();
         newStrSet.add(json);
 
         movie.clearRatings();
         movie.addRating(userRating);
 
-        for ( String clave:
-        oldSet ) {
-            String claveAux = gson.fromJson(clave,String.class);
+        for (Object clave : oldSet) {
+            String claveAux = gson.fromJson((String) clave, String.class);
 
             String[] rating = claveAux.split("╩");
 
-            if (id == Integer.parseInt(rating[0]) && user.getUsername().equals(rating[2])) {
-
-
-            } else {
-                newStrSet.add(clave);
+            if (id != Integer.parseInt(rating[0]) && !user.getUsername().equals(rating[2])) {
+                newStrSet.add((String) clave);
                 movie.addRating(Float.parseFloat(rating[1]));
             }
         }
@@ -247,7 +252,11 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     private void showAllComments(int id) {
         Intent intent = new Intent(getApplication(), Ratings.class);
         intent.putExtra("idPelicula", id);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        } else {
+            startActivity(intent);
+        }
     }
 
     @Override

@@ -2,7 +2,9 @@ package org.upv.movie.list.netflix.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -69,26 +71,29 @@ public class PerfilActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.container), getString(R.string.PA_user_log), Snackbar.LENGTH_LONG).show();
         }
 
-        Transition lista_enter = TransitionInflater.from(this)
-                .inflateTransition(R.transition.transition_pefil_enter);
-        Transition curve_shared = TransitionInflater.from(this)
-                .inflateTransition(R.transition.transition_curva);
-        getWindow().setEnterTransition(lista_enter);
-        getWindow().setSharedElementEnterTransition(curve_shared);
+        Transition lista_enter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            lista_enter = TransitionInflater.from(this).inflateTransition(R.transition.transition_pefil_enter);
+            Transition curve_shared = TransitionInflater.from(this).inflateTransition(R.transition.transition_curva);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setEnterTransition(lista_enter);
+                getWindow().setSharedElementEnterTransition(curve_shared);
+                postponeEnterTransition();
+                scheduleStartPostponedTransition(photo);
+            }
+        }
 
-        postponeEnterTransition();
-
-        scheduleStartPostponedTransition(photo);
     }
 
 
     private void scheduleStartPostponedTransition(final View sharedElement) {
         sharedElement.getViewTreeObserver().addOnPreDrawListener(
                 new ViewTreeObserver.OnPreDrawListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public boolean onPreDraw() {
                         sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                        startPostponedEnterTransition();
+                            startPostponedEnterTransition();
                         return true;
                     }
                 });

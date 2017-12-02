@@ -105,6 +105,7 @@
             android:onClick="acceder"
             android:text="@string/AIS_Log_in"
             android:textColor="@android:color/white"
+            android:background="@color/colorAccent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/butt_borrar"
             app:layout_constraintTop_toBottomOf="@+id/recordarme" />
@@ -119,6 +120,7 @@
             android:onClick="altaUsuario"
             android:text="@string/AIS_register"
             android:textColor="@android:color/white"
+            android:background="@color/colorAccent"
             app:layout_constraintLeft_toRightOf="@+id/butt_acceder"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/butt_acceder" />

@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -77,7 +78,11 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             @Override
             public void onItemClick(View v, int position) {
                 Intent intent = new Intent(ListasActivity.this, MovieListActivity.class);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
+                } else {
+                    startActivity(intent);
+                }
             }
         }));
 

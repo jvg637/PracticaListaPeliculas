@@ -5,6 +5,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,12 +36,12 @@ public class InicioSesionActivity extends AppCompatActivity {
     CheckBox recordarme;
 
     private void initUserList() {
-        this.prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
+        prefs = getSharedPreferences("Usuarios", Context.MODE_PRIVATE);
 
-        this.userList = prefs.getStringSet("users", userList);
+        userList = prefs.getStringSet("users", userList);
 
-        if (this.userList == null || this.userList.size() == 0) {
-            this.userList = new HashSet<User>();
+        if (userList == null || userList.size() == 0) {
+            userList = new HashSet<User>();
             SharedPreferences.Editor editor = prefs.edit();
 
             User mainUser = new User("usuario1", "usuario1");
@@ -48,22 +49,22 @@ public class InicioSesionActivity extends AppCompatActivity {
             Gson gson = new Gson();
             String json = gson.toJson(mainUser);
 
-            this.userList.add(json);
+            userList.add(json);
             editor.putStringSet("users", userList);
-            editor.commit();
+            editor.apply();
         }
     }
 
     private boolean checkUser(User userToCheck) {
         User userAux = null;
         boolean validUser = false;
-        this.userList = prefs.getStringSet("users", this.userList);
+        userList = prefs.getStringSet("users", userList);
         Gson gson = new Gson();
 
-        Iterator<String> userListIterator = this.userList.iterator();
+        Iterator userListIterator = userList.iterator();
 
-        while (userListIterator.hasNext() && validUser == false) {
-            userAux = gson.fromJson(userListIterator.next(), User.class);
+        while (userListIterator.hasNext() && !validUser) {
+            userAux = gson.fromJson((String) userListIterator.next(), User.class);
             validUser = userAux.equals(userToCheck);
         }
 
@@ -75,10 +76,10 @@ public class InicioSesionActivity extends AppCompatActivity {
         String username = "";
         String password = "";
 
-        if (prefs.getBoolean("recordar", this.recordarUsuario)) {
-            this.recordarme.setChecked(true);
-            this.usuario.setText(prefs.getString("username", username));
-            this.contraseña.setText(prefs.getString("password", password));
+        if (prefs.getBoolean("recordar", recordarUsuario)) {
+            recordarme.setChecked(true);
+            usuario.setText(prefs.getString("username", username));
+            contraseña.setText(prefs.getString("password", password));
         }
     }
 
@@ -99,39 +100,43 @@ public class InicioSesionActivity extends AppCompatActivity {
     public void loguearCheckbox(View v) {
         String s = getString(R.string.ISA_remember) + (recordarme.isChecked() ? getString(android.R.string.yes) : getString(android.R.string.no));
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        this.recordarUsuario = recordarme.isChecked();
+        recordarUsuario = recordarme.isChecked();
 
     }
 
     public void mostrarContrasena(View v) {
 
         if (mostrar.isChecked()) {
-            contraseña.setInputType(InputType.TYPE_CLASS_TEXT /*| InputType.TYPE_TEXT_VARIATION_NORMAL*/);
+            contraseña.setInputType(InputType.TYPE_CLASS_TEXT);
         } else {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
     }
 
     public void acceder(View view) {
-        if (this.checkUser(new User(this.usuario.getText().toString(), this.contraseña.getText().toString()))) {
+        if (checkUser(new User(usuario.getText().toString(), contraseña.getText().toString()))) {
             SharedPreferences prefs = getSharedPreferences("Recordar usuario", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("recordar", recordarme.isChecked());
 
             if (recordarUsuario) {
-                editor.putString("username", this.usuario.getText().toString());
-                editor.putString("password", this.contraseña.getText().toString());
+                editor.putString("username", usuario.getText().toString());
+                editor.putString("password", contraseña.getText().toString());
             }
-            editor.commit();
+            editor.apply();
 
             // Graba en preferencias el login
             SharedPreferences prefsLogin = getSharedPreferences(PerfilActivity.USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editorLogin = prefsLogin.edit();
-            editorLogin.putString(PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER, this.usuario.getText().toString());
-            editorLogin.commit();
+            editorLogin.putString(PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER, usuario.getText().toString());
+            editorLogin.apply();
 
             Intent intent = new Intent(this, ListasActivity.class);
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            } else {
+                startActivity(intent);
+            }
         } else {
             String s = getString(R.string.ISA_bad_user);
             Toast.makeText(this, s, Toast.LENGTH_LONG).show();
@@ -142,7 +147,11 @@ public class InicioSesionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RegistroActivity.class);
         intent.putExtra("usuario", usuario.getText().toString());
         intent.putExtra("password", contraseña.getText().toString());
-        ActivityCompat.startActivityForResult(this, intent, ALTA_USUARIO, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityCompat.startActivityForResult(this, intent, ALTA_USUARIO, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        } else {
+            startActivity(intent);
+        }
     }
 
     @Override

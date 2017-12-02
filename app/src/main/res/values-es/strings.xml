@@ -30,6 +30,7 @@
     <string name="AP_email">Email</string>
 
     <!-- Textos correspondientes al xml de activity_show_edit_movie (ASEM) -->
+    <string name="ASEM_image_desc">Cartel de película</string>
     <string name="ASEM_title">Título</string>
     <string name="ASEM_category">Categoría</string>
     <string name="ASEM_study">Estudio</string>
