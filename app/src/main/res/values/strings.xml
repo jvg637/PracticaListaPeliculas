@@ -39,6 +39,7 @@
     <string name="ASEM_producers">Producers</string>
     <string name="ASEM_comment">Your Comment</string>
     <string name="ASEM_average">Average</string>
+    <string name="ASEM_button_trailer">Button Trailer Player</string>
     <string name="ASEM_show_comments">Show Comments</string>
     <string name="ASEM_push_comment">Post your comment</string>
     <string name="ASEM_add_comment_rating">You must add a comment and a rating</string>

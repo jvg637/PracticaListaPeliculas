@@ -1,9 +1,12 @@
 package org.upv.movie.list.netflix.activity;
 
 import android.app.ActivityOptions;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,9 +17,12 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.gson.Gson;
 
@@ -49,7 +55,11 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     private Set movieRatings;
     private User user;
     private Movie movie;
-
+    private VideoView myVideoView;
+    private ImageButton btnPlayPause;
+    private int position = 0;
+    private ProgressDialog progressDialog;
+    private MediaController mediaControls;
     private boolean rated = false;
 
     @Override
@@ -69,6 +79,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         showComments = findViewById(R.id.buttonShowComments);
         pushComment = findViewById(R.id.buttonComment);
         comment = findViewById(R.id.comment);
+        myVideoView = findViewById(R.id.video_view);
+        btnPlayPause = findViewById(R.id.btn_play_pause);
 
         Intent data = getIntent();
         int id = -1;
@@ -85,9 +97,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                 postponeEnterTransition();
             }
             mostrarPelicula(id);
+            cargaVideo(id);
         }
-
-
     }
 
     private void scheduleStartPostponedTransition(final View sharedElement) {
@@ -104,10 +115,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                 });
     }
 
-
     private void mostrarPelicula(final int id) {
         movie = MovieList.list.get(id);
-
         title.setText(movie.getTitle());
         category.setText(movie.getCategory());
         summary.setText(movie.getDescription());
@@ -164,6 +173,59 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         scheduleStartPostponedTransition(photo);
     }
 
+    private void cargaVideo(int id) {
+        //set the media controller buttons
+        /*if (mediaControls == null) {
+            mediaControls = new MediaController(ShowEditMovieActivity.this);
+        }*/
+
+        btnPlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // create a progress bar while the video file is loading
+                progressDialog = new ProgressDialog(ShowEditMovieActivity.this);
+                // set a message for the progress bar
+                progressDialog.setMessage("Loading...");
+                //set the progress bar not cancelable on users' touch
+                progressDialog.setCanceledOnTouchOutside(false);
+                // show the progress bar
+                progressDialog.show();
+
+                try {
+                    if (!myVideoView.isPlaying()) {
+                        //set the media controller in the VideoView
+                        myVideoView.setMediaController(mediaControls);
+                        //set the uri of the video to be played
+                        myVideoView.setVideoPath(movie.getVideoUrl());
+                        myVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mediaPlayer) {
+                                btnPlayPause.setImageResource(R.drawable.ic_play);
+                            }
+                        });
+                    } else {
+                        progressDialog.dismiss();
+                        myVideoView.pause();
+                        btnPlayPause.setImageResource(R.drawable.ic_play);
+                    }
+                } catch (Exception e) {
+                    progressDialog.dismiss();
+                    e.printStackTrace();
+                }
+                myVideoView.requestFocus();
+                myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        progressDialog.dismiss();
+                        mediaPlayer.setLooping(true);
+                        btnPlayPause.setImageResource(R.drawable.ic_pause);
+                        myVideoView.start();
+                    }
+                });
+            }
+        });
+    }
+
     private void protectFields() {
         photo.setFocusable(false);
         title.setFocusable(false);
@@ -175,15 +237,12 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         producers.setFocusable(false);
     }
 
-
     public User readUserFromPreferences() {
         User user = null;
-
         SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
         String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
         SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
         userList = prefs.getStringSet("users", userList);
-
         Gson gson = new Gson();
 
         for (String anUserList : userList) {
@@ -211,7 +270,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         String json = gson.toJson(user);
         newStrSet.add(json);
         editor.putStringSet("users", newStrSet);
-        editor.commit();
+        editor.apply();
     }
 
     private void writeRatingToPreferences(int id) {
@@ -243,10 +302,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                 movie.addRating(Float.parseFloat(rating[1]));
             }
         }
-
-//        newStrSet.addAll(oldSet);
         editor.putStringSet("ratings", newStrSet);
-        editor.commit();
+        editor.apply();
     }
 
     private void showAllComments(int id) {
@@ -261,11 +318,8 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         if (rated)
             setResult(RESULT_OK);
-
         super.onBackPressed();
-
     }
 }

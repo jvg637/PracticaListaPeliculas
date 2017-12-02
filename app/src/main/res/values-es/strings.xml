@@ -40,8 +40,9 @@
     <string name="ASEM_producers">Productores</string>
     <string name="ASEM_comment">Tu comentario</string>
     <string name="ASEM_average">Media</string>
-    <string name="ASEM_show_comments">Mostrar Comentarios</string>
-    <string name="ASEM_push_comment">Publicar tu comentario</string>
+    <string name="ASEM_button_trailer">Botón reproductor trailer</string>
+    <string name="ASEM_show_comments">Ver Comentarios</string>
+    <string name="ASEM_push_comment">Enviar tu comentario</string>
     <string name="ASEM_add_comment_rating">Debes añadir un comentario y una valoración</string>
 
     <!-- Textos correspondientes al xml de content_listas (CL) -->
