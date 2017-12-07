@@ -38,7 +38,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         holder.title.setText(items.get(position).getTitle());
         holder.category.setText(items.get(position).getCategory());
         holder.rating.setRating(items.get(position).getAverageRating());
-        holder.numRatings.setText(new StringBuilder().append("(").append(items.get(position).getNumRatings()).append(" user ratings)").toString());
+        String s = holder.itemView.getResources().getString(R.string.MLA_user_ratings);
+        holder.numRatings.setText(new StringBuilder().append("(").append(items.get(position).getNumRatings()).append(" " + s + ")").toString());
         //Descargamos la imagen y se la añadimos al ImageView
         new DownloadImageTask(holder.poster).execute(items.get(position).getCardImageUrl());
     }

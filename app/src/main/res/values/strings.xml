@@ -71,4 +71,10 @@
     <string name="PA_user_log">User has not logged in!</string>
     <string name="PA_fields">Enter all fields</string>
 
+    <!-- Textos correspondientes a MovieListAdapter (EL) -->
+    <string name="MLA_user_ratings">user ratings</string>
+
+    <!-- Textos correspondientes al xml de activity_main_drawer (NHM) -->
+    <string name="AMD_share">Share</string>
+
 </resources>

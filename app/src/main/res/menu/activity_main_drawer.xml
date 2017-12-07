@@ -9,17 +9,8 @@
             android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/AP_edit_profile" />
         <item
-            android:id="@+id/nav_2"
-            android:icon="@android:drawable/ic_menu_gallery"
-            android:title=" Opción 2" />
+            android:id="@+id/nav_compartir"
+            android:icon="@android:drawable/ic_menu_share"
+            android:title="@string/AMD_share" />
     </group>
-    <item android:title="Acciones adicionales">
-        <menu>
-            <item
-                android:id="@+id/nav_compartir"
-                android:icon="@android:drawable/ic_menu_share"
-                android:title="Compartir" />
-        </menu>
-    </item>
-
 </menu>

@@ -71,4 +71,10 @@
     <!-- Textos correspondientes a PerfilActivity (PA) -->
     <string name="PA_user_log">El usuario no ha iniciado sesión!</string>
     <string name="PA_fields">Introduzca todos los campos</string>
+
+    <!-- Textos correspondientes a MovieListAdapter (EL) -->
+    <string name="MLA_user_ratings">valoraciónes usuarios</string>
+
+    <!-- Textos correspondientes al xml de activity_main_drawer (NHM) -->
+    <string name="AMD_share">Compartir</string>
 </resources>
