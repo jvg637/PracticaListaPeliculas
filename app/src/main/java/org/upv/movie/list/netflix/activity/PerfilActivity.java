@@ -72,28 +72,29 @@ public class PerfilActivity extends AppCompatActivity {
         }
 
         Transition lista_enter = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             lista_enter = TransitionInflater.from(this).inflateTransition(R.transition.transition_pefil_enter);
             Transition curve_shared = TransitionInflater.from(this).inflateTransition(R.transition.transition_curva);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setEnterTransition(lista_enter);
-                getWindow().setSharedElementEnterTransition(curve_shared);
-                postponeEnterTransition();
-                scheduleStartPostponedTransition(photo);
-            }
+
+            getWindow().setEnterTransition(lista_enter);
+            getWindow().setSharedElementEnterTransition(curve_shared);
+            postponeEnterTransition();
+            scheduleStartPostponedTransition(photo);
+
         }
 
     }
 
 
     private void scheduleStartPostponedTransition(final View sharedElement) {
+
         sharedElement.getViewTreeObserver().addOnPreDrawListener(
                 new ViewTreeObserver.OnPreDrawListener() {
                     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public boolean onPreDraw() {
                         sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                            startPostponedEnterTransition();
+                        startPostponedEnterTransition();
                         return true;
                     }
                 });

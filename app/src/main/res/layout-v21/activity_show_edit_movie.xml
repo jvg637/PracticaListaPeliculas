@@ -105,8 +105,6 @@
                     android:hint="@string/ASEM_sinopsis"
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
-                    android:lines="3"
-                    android:minLines="3"
                     android:scrollbars="vertical"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
