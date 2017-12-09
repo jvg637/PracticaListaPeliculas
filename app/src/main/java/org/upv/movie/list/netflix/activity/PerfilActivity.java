@@ -131,7 +131,7 @@ public class PerfilActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    public void mostrarContraseña(View v) {
+    public void mostrarContrasena(View v) {
         if (mostrar.isChecked()) {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT);
         } else {
