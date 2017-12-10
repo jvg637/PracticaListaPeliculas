@@ -47,6 +47,7 @@ import org.upv.movie.list.netflix.utils.ListasVector;
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.adapters.RecyclerItemClickListener;
 import org.upv.movie.list.netflix.model.User;
+import org.upv.movie.list.netflix.utils.RateMyApp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -82,6 +83,9 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listas);
+
+        // Puntuar mi aplicación
+        new RateMyApp(this).app_launched();
 
         // Banner
         adView = (AdView) findViewById(R.id.adView);
@@ -346,7 +350,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     private final String ID_ARTICULO = "org.upv.movie.list.netflix.removeadvertising";
     private final int INAPP_BILLING = 1;
     private final String developerPayLoad = "clave de seguridad";
-    public static boolean showInterticial = false;
+    public static boolean showInterticial = true;
 
     @Override
     public void onDestroy() {

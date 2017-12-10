@@ -78,5 +78,8 @@
     <string name="AMD_share">Share</string>
     <string name="quitar_anuncios">Remove Advertising</string>
     <string name="compra_completada">Item purchased!</string>
+    <string name="compartido_por"> Shared By: </string>
+    <string name="select_application">Select Application</string>
+    <string name="no_video_bonificado">No more ads will show for your loyalty</string>
 
 </resources>

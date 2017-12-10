@@ -8,10 +8,10 @@
             android:id="@+id/nav_1"
             android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/AP_edit_profile" />
-        <item
-            android:id="@+id/nav_compartir"
-            android:icon="@android:drawable/ic_menu_share"
-            android:title="@string/AMD_share" />
+        <!--<item-->
+            <!--android:id="@+id/nav_compartir"-->
+            <!--android:icon="@android:drawable/ic_menu_share"-->
+            <!--android:title="@string/AMD_share" />-->
 
         <item
             android:id="@+id/nav_remove_advertising"

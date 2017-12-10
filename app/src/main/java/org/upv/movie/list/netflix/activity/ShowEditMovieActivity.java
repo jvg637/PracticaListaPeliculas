@@ -6,11 +6,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -40,6 +45,9 @@ import org.upv.movie.list.netflix.utils.DownloadImageTask;
 import org.upv.movie.list.netflix.model.Movie;
 import org.upv.movie.list.netflix.movie.MovieList;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -80,6 +88,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
     private View main_container;
     private Snackbar msg = null;
+    private ImageButton shareButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,7 +148,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                         msg.dismiss();
                     }
 
-                    msg = Snackbar.make(main_container, "Ya no se mostrarán más anuncios por su fidelidad", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                    msg = Snackbar.make(main_container, R.string.no_video_bonificado, Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             msg.dismiss();
@@ -179,6 +188,15 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         myVideoView = findViewById(R.id.video_view);
         btnPlayPause = findViewById(R.id.btn_play_pause);
 
+        shareButton = findViewById(R.id.buttonShare);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bitmap bitmap = ((BitmapDrawable) photo.getDrawable()).getBitmap();
+                compatirBitmap(bitmap, getString(R.string.ASEM_title) +": " + title.getText().toString()  + getString(R.string.compartido_por) + "http://play.google.com/store/apps/details?id=" + getPackageName());
+            }
+        });
+
         Intent data = getIntent();
         int id = -1;
 
@@ -197,6 +215,36 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             cargaVideo(id);
         }
     }
+
+
+    void compatirBitmap(Bitmap bitmap, String texto) {
+        // guardamos bitmap en el directorio cache
+        try {
+            File cachePath = new File(getCacheDir(), "images");
+            cachePath.mkdirs();
+            FileOutputStream s = new FileOutputStream(cachePath + "/image.png");
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, s);
+            s.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Obtenemos la URI usando el FileProvider
+        File path = new File(getCacheDir(), "images");
+        File file = new File(path, "image.png");
+        Uri uri = FileProvider.getUriForFile(this, "org.upv.movie.list.netflix.fileprovider", file);
+        //Compartimos la URI
+        if (uri != null) {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // temp permission for receiving app to read this file
+            i.setType( getContentResolver().getType(uri));
+            i.putExtra(Intent.EXTRA_STREAM, uri);
+            i.putExtra(Intent.EXTRA_TEXT, texto);
+            startActivity(Intent.createChooser(i, getString(R.string.select_application)));
+        }
+    }
+
+
 
     private void saveNoMoreRewardedVideo() {
         rewardUser();

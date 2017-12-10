@@ -79,4 +79,7 @@
     <string name="AMD_share">Partager</string>
     <string name="quitar_anuncios">Supprimer les annonces</string>
     <string name="compra_completada">Item Acheté</string>
+    <string name="compartido_por"> Partagé par: </string>
+    <string name="select_application">Sélectionnez l\'application</string>
+    <string name="no_video_bonificado">Plus de publicités pour leur fidélité</string>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.upv.movie.list.netflix">
+
     <uses-permission android:name="com.android.vending.BILLING" />
     <!-- Internet permission -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,17 +15,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.PerfilActivity" android:label="@string/label_activity_perfil"/>
+        <activity
+            android:name=".activity.PerfilActivity"
+            android:label="@string/label_activity_perfil" />
 
         <activity android:name=".activity.ShowEditMovieActivity" />
 
         <activity android:name=".activity.Ratings" />
 
-        <activity android:name=".activity.MovieListActivity"/>
+        <activity android:name=".activity.MovieListActivity" />
 
-        <activity android:name=".activity.ListasActivity" android:theme="@style/AppThemeListas" />
+        <activity
+            android:name=".activity.ListasActivity"
+            android:theme="@style/AppThemeListas" />
 
-        <activity android:name=".activity.SplashActivity" android:theme="@style/SplashTheme">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +48,17 @@
             </intent-filter>
         </activity>
         -->
-        <activity android:name=".activity.InicioSesionActivity"/>
-        <activity android:name=".activity.RegistroActivity"/>
+        <activity android:name=".activity.InicioSesionActivity" />
+        <activity android:name=".activity.RegistroActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="org.upv.movie.list.netflix.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 </manifest>

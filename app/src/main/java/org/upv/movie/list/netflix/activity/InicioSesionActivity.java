@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.User;
+import org.upv.movie.list.netflix.utils.RateMyApp;
 
 import java.util.HashSet;
 import java.util.Iterator;
