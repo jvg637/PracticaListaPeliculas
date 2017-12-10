@@ -25,6 +25,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 
 import org.upv.movie.list.netflix.model.Lista;
@@ -55,10 +57,19 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     private TextView username;
     private ImageView userfoto;
 
+    // Publicidad
+
+    private AdView adView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listas);
+
+        // Banner
+        adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         // Inicializar los elementos (ejemplo)
         ListasVector listasVector = new ListasVector();

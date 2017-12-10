@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -24,6 +24,13 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.gson.Gson;
 
 import org.upv.movie.list.netflix.R;
@@ -33,9 +40,11 @@ import org.upv.movie.list.netflix.model.Movie;
 import org.upv.movie.list.netflix.movie.MovieList;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static org.upv.movie.list.netflix.activity.PerfilActivity.USERS;
+import static org.upv.movie.list.netflix.activity.PerfilActivity.USERS_KEY_USERS;
 import static org.upv.movie.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES;
 import static org.upv.movie.list.netflix.activity.PerfilActivity.USER_LOGIN_PREFERENCES_KEY_USER;
 
@@ -62,10 +71,96 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     private MediaController mediaControls;
     private boolean rated = false;
 
+    //  Admob Intersticial
+    private InterstitialAd interstitialAd;
+
+    // Admob Video Bonificado
+    private RewardedVideoAd ad;
+
+    private View main_container;
+    private Snackbar msg = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_edit_movie);
+
+        main_container = findViewById(R.id.main_container);
+
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(MainActivityApplication.ADMOD_ID_INTERSTICIAL);
+        interstitialAd.loadAd(new AdRequest.Builder()
+//                .addTestDevice("ID_DISPOSITIVO_FISICO_TEST")
+                .build());
+
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+//                interstitialAd.loadAd(new AdRequest.Builder()
+////                        .addTestDevice("ID_BLOQUE_ANUNCIOS_INTERSTICIAL")
+//                        .build());
+            }
+
+            public void onAdLoaded() {
+                interstitialAd.show();
+            }
+        });
+
+
+        ad = MobileAds.getRewardedVideoAdInstance(this);
+        ad.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+//                Toast.makeText(ShowEditMovieActivity.this, "Vídeo Bonificado cargado", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                ad.loadAd(MainActivityApplication.ADMOD_ID_BONIFICADO, new AdRequest.Builder()
+//                        .addTestDevice("ID_DISPOSITIVO_FISICO_TEST")
+                        .build());
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+
+                saveNoMoreRewardedVideo();
+                if (msg != null) {
+                    msg.dismiss();
+                }
+
+                msg = Snackbar.make(main_container, "Ya no se mostrarán más anuncios por su fidelidad", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        msg.dismiss();
+                    }
+                });
+
+                msg.show();
+//                Toast.makeText(ShowEditMovieActivity.this, "onRewarded: moneda virtual: " + rewardItem.getType() + "  aumento: " + rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+//
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+            }
+        });
+
+        ad.loadAd(MainActivityApplication.ADMOD_ID_BONIFICADO, new AdRequest.Builder()
+//                .addTestDevice("ID_DISPOSITIVO_FISICO_TEST")
+                .build());
 
         photo = findViewById(R.id.photo);
         title = findViewById(R.id.title);
@@ -99,6 +194,10 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             mostrarPelicula(id);
             cargaVideo(id);
         }
+    }
+
+    private void saveNoMoreRewardedVideo() {
+        rewardUser();
     }
 
     private void scheduleStartPostponedTransition(final View sharedElement) {
@@ -182,6 +281,11 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         btnPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                if (!user.isUserRewarded() && ad.isLoaded()) {
+                    ad.show();
+                }
                 // create a progress bar while the video file is loading
                 progressDialog = new ProgressDialog(ShowEditMovieActivity.this);
                 // set a message for the progress bar
@@ -321,5 +425,51 @@ public class ShowEditMovieActivity extends AppCompatActivity {
         if (rated)
             setResult(RESULT_OK);
         super.onBackPressed();
+    }
+
+
+
+
+    public void rewardUser() {
+        User userAux = null;
+
+        SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
+        String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
+
+        SharedPreferences prefs = getSharedPreferences(USERS, Context.MODE_PRIVATE);
+        userList = prefs.getStringSet(USERS_KEY_USERS, null);
+
+        Gson gson = new Gson();
+        Iterator<String> userListIterator = this.userList.iterator();
+
+        while (userListIterator.hasNext()) {
+            userAux = gson.fromJson(userListIterator.next(), User.class);
+            if (userLogged.equals(userAux.getUsername())) {
+                user = userAux;
+                break;
+            }
+        }
+
+        user.setUserRewarded(true);
+
+
+        Set userListNew = new HashSet<>();
+
+        userListIterator = userList.iterator();
+
+            while (userListIterator.hasNext()) {
+                userAux = gson.fromJson(userListIterator.next(), User.class);
+                if (user.getUsername().equals(userAux.getUsername())) {
+                    String json = gson.toJson(user);
+                    userListNew.add(json);
+                } else {
+                    String json = gson.toJson(userAux);
+                    userListNew.add(json);
+                }
+            }
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet(USERS_KEY_USERS, userListNew);
+        editor.commit();
     }
 }

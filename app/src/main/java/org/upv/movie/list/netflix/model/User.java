@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String fullname;
     private int DEFAULT_PHOTO = R.mipmap.ic_perfil;
     private List<String> listRatings;
+    private boolean isUserRewarded;
 
 
     @SuppressLint("UseSparseArrays")
@@ -26,6 +27,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         listRatings = new ArrayList<>();
+        isUserRewarded = false;
     }
 
     @SuppressLint("UseSparseArrays")
@@ -34,6 +36,7 @@ public class User implements Serializable {
         this.password = password;
         this.mail = email;
         listRatings = new ArrayList<>();
+        isUserRewarded = false;
     }
 
     @SuppressLint("UseSparseArrays")
@@ -43,6 +46,7 @@ public class User implements Serializable {
         this.mail = email;
         this.fullname = fullname;
         listRatings = new ArrayList<>();
+        isUserRewarded = false;
     }
 
     @SuppressLint("UseSparseArrays")
@@ -51,6 +55,7 @@ public class User implements Serializable {
         this.DEFAULT_PHOTO = photo;
         listRatings = new ArrayList<>();
         listRatings.add(commentRating);
+        isUserRewarded = false;
     }
 
     public int getDEFAULT_PHOTO() {
@@ -137,5 +142,13 @@ public class User implements Serializable {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public boolean isUserRewarded() {
+        return isUserRewarded;
+    }
+
+    public void setUserRewarded(boolean userRewarded) {
+        this.isUserRewarded = userRewarded;
     }
 }

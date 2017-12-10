@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "548611799697",
+    "firebase_url": "https://listapeliculas-7a2f0.firebaseio.com",
+    "project_id": "listapeliculas-7a2f0",
+    "storage_bucket": "listapeliculas-7a2f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548611799697:android:2ea975df77f7838c",
+        "android_client_info": {
+          "package_name": "org.upv.movie.list.netflix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548611799697-j7aessugs6eih4u2vgmmcb8d0rjnhsco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKnam4AKg2woqhtIy8Zus_DL-9nnvNzf4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
