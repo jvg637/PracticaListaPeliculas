@@ -1,11 +1,17 @@
 package org.upv.movie.list.netflix.activity;
 
 import android.app.ActivityOptions;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -24,11 +30,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.upv.movie.list.netflix.model.Lista;
 import org.upv.movie.list.netflix.adapters.ListaAdapter;
 import org.upv.movie.list.netflix.utils.ListasVector;
@@ -36,6 +48,7 @@ import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.adapters.RecyclerItemClickListener;
 import org.upv.movie.list.netflix.model.User;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -61,6 +74,10 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 
     private AdView adView;
 
+    // InApp Billing
+    private IInAppBillingService serviceBilling;
+    private ServiceConnection serviceConnection;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +87,13 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+        serviceConectInAppBilling();
 
         // Inicializar los elementos (ejemplo)
         ListasVector listasVector = new ListasVector();
         listasVector.anyade(new Lista(R.drawable.ic_fav, getString(R.string.LA_favorites), getString(R.string.LA_favorites_desc)));
         listasVector.anyade(new Lista(R.drawable.ic_star, getString(R.string.LA_best), getString(R.string.LA_best_desc)));
+
 
         RecyclerView recycler = findViewById(R.id.recycler);
 
@@ -117,7 +136,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         setNavigationPerfil();
     }
 
@@ -130,11 +148,56 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             Intent intent = new Intent(this, PerfilActivity.class);
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, new Pair<>(findViewById(R.id.navUserFoto), getString(R.string.shared_photo_perfil)));
             ActivityCompat.startActivityForResult(this, intent, ACTUALIZAR_PERFIL, options.toBundle());
+        } else if (id == R.id.nav_remove_advertising) {
+            comprarProducto();
         }
+// else if (id == R.id.nav_consulta_inapps_disponibles) {
+//            getInAppInformationOfProducts();
+//        } else if (id == R.id.nav_remove_advertising_manual) {
+//            setAds(showInterticial );
+//
+//            showInterticial=!showInterticial;
+//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void checkPurchasedInAppProducts() {
+        Bundle ownedItemsInApp = null;
+        if (serviceBilling != null) {
+            try {
+                ownedItemsInApp = serviceBilling.getPurchases(3, getPackageName(), "inapp", null);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            int response = ownedItemsInApp.getInt("RESPONSE_CODE");
+            System.out.println(response);
+            if (response == 0) {
+                ArrayList<String> ownedSkus = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList<String> purchaseDataList = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                ArrayList<String> signatureList = ownedItemsInApp.getStringArrayList("INAPP_DATA_SIGNATURE_LIST");
+                String continuationToken = ownedItemsInApp.getString("INAPP_CONTINUATION_TOKEN");
+                for (int i = 0; i < purchaseDataList.size(); ++i) {
+                    String purchaseData = purchaseDataList.get(i);
+                    String signature = signatureList.get(i);
+                    String sku = ownedSkus.get(i);
+                    System.out.println("Inapp Purchase data: " + purchaseData);
+                    System.out.println("Inapp Signature: " + signature);
+                    System.out.println("Inapp Sku: " + sku);
+                    if (sku.equals(ID_ARTICULO)) {
+//                        Toast.makeText(this, "Inapp comprado: " + sku + "el dia " + purchaseData, Toast.LENGTH_LONG).show();
+                        // Quitar publicidad
+//                        removeAdvertising();
+                        setAds(false);
+                    } else {
+                        setAds(true);
+                    }
+
+                }
+            }
+        }
     }
 
     @Override
@@ -170,6 +233,55 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             userfoto = navigationView.getHeaderView(0).findViewById(R.id.navUserFoto);
             userfoto.setImageResource(user.getDEFAULT_PHOTO());
         }
+
+        switch (requestCode) {
+            case INAPP_BILLING: {
+                int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
+                String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+                String dataSignature = data.getStringExtra("INAPP_DATA_SIGNATURE");
+                if (resultCode == RESULT_OK) {
+                    try {
+                        JSONObject jo = new JSONObject(purchaseData);
+                        String sku = jo.getString("productId");
+                        String developerPayload = jo.getString("developerPayload");
+                        String purchaseToken = jo.getString("purchaseToken");
+                        if (sku.equals(ID_ARTICULO)) {
+                            Toast.makeText(this, R.string.compra_completada, Toast.LENGTH_LONG).show();
+//                            removeAvertising();
+                            setAds(false);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    public void getInAppInformationOfProducts() {
+        ArrayList<String> skuList = new ArrayList<String>();
+        skuList.add(ID_ARTICULO);
+        Bundle querySkus = new Bundle();
+        querySkus.putStringArrayList("ITEM_ID_LIST", skuList);
+        Bundle skuDetails;
+        ArrayList<String> responseList;
+        try {
+            skuDetails = serviceBilling.getSkuDetails(3, getPackageName(), "inapp", querySkus);
+            int response = skuDetails.getInt("RESPONSE_CODE");
+            if (response == 0) {
+                responseList = skuDetails.getStringArrayList("DETAILS_LIST");
+                assert responseList != null;
+                for (String thisResponse : responseList) {
+                    JSONObject object = new JSONObject(thisResponse);
+                    String ref = object.getString("productId");
+                    System.out.println("InApp Reference: " + ref);
+                    String price = object.getString("price");
+                    System.out.println("InApp Price: " + price);
+                }
+            }
+        } catch (RemoteException | JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private User readUserFromPreferences() {
@@ -190,4 +302,72 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         }
         return user;
     }
+
+    // In-App Billing
+    public void serviceConectInAppBilling() {
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                serviceBilling = null;
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                serviceBilling = IInAppBillingService.Stub.asInterface(service);
+                checkPurchasedInAppProducts();
+            }
+        };
+        Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void comprarProducto() {
+        if (serviceBilling != null) {
+            Bundle buyIntentBundle = null;
+            try {
+                buyIntentBundle = serviceBilling.getBuyIntent(3, getPackageName(), ID_ARTICULO, "inapp", developerPayLoad);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+            try {
+                if (pendingIntent != null) {
+                    startIntentSenderForResult(pendingIntent.getIntentSender(), INAPP_BILLING, new Intent(), 0, 0, 0);
+                }
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "InApp Billing service not available", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private final String ID_ARTICULO = "org.upv.movie.list.netflix.removeadvertising";
+    private final int INAPP_BILLING = 1;
+    private final String developerPayLoad = "clave de seguridad";
+    public static boolean showInterticial = false;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (serviceConnection != null) {
+            unbindService(serviceConnection);
+        }
+    }
+
+    private void setAds(Boolean adsEnabled) {
+        if (adsEnabled) {
+            showInterticial = true;
+            adView.setVisibility(View.VISIBLE);
+            navigationView.getMenu().findItem(R.id.nav_remove_advertising).setVisible(true);
+        } else
+
+        {
+            showInterticial = false;
+            adView.setVisibility(View.GONE);
+            navigationView.getMenu().findItem(R.id.nav_remove_advertising).setVisible(false);
+        }
+    }
+
 }

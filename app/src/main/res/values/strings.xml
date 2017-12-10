@@ -76,5 +76,7 @@
 
     <!-- Textos correspondientes al xml de activity_main_drawer (NHM) -->
     <string name="AMD_share">Share</string>
+    <string name="quitar_anuncios">Remove Advertising</string>
+    <string name="compra_completada">Item purchased!</string>
 
 </resources>

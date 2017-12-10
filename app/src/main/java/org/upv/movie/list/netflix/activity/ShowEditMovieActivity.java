@@ -1,6 +1,7 @@
 package org.upv.movie.list.netflix.activity;
 
 import android.app.ActivityOptions;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -93,75 +94,76 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 //                .addTestDevice("ID_DISPOSITIVO_FISICO_TEST")
                 .build());
 
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
+        if (ListasActivity.showInterticial) {
+            interstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
 //                interstitialAd.loadAd(new AdRequest.Builder()
 ////                        .addTestDevice("ID_BLOQUE_ANUNCIOS_INTERSTICIAL")
 //                        .build());
-            }
-
-            public void onAdLoaded() {
-                interstitialAd.show();
-            }
-        });
-
-
-        ad = MobileAds.getRewardedVideoAdInstance(this);
-        ad.setRewardedVideoAdListener(new RewardedVideoAdListener() {
-            @Override
-            public void onRewardedVideoAdLoaded() {
-//                Toast.makeText(ShowEditMovieActivity.this, "Vídeo Bonificado cargado", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-                ad.loadAd(MainActivityApplication.ADMOD_ID_BONIFICADO, new AdRequest.Builder()
-//                        .addTestDevice("ID_DISPOSITIVO_FISICO_TEST")
-                        .build());
-            }
-
-            @Override
-            public void onRewarded(RewardItem rewardItem) {
-
-                saveNoMoreRewardedVideo();
-                if (msg != null) {
-                    msg.dismiss();
                 }
 
-                msg = Snackbar.make(main_container, "Ya no se mostrarán más anuncios por su fidelidad", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                public void onAdLoaded() {
+                    interstitialAd.show();
+                }
+            });
+
+
+            ad = MobileAds.getRewardedVideoAdInstance(this);
+            ad.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoAdLoaded() {
+//                Toast.makeText(ShowEditMovieActivity.this, "Vídeo Bonificado cargado", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onRewardedVideoAdOpened() {
+                }
+
+                @Override
+                public void onRewardedVideoStarted() {
+                }
+
+                @Override
+                public void onRewardedVideoAdClosed() {
+                    ad.loadAd(MainActivityApplication.ADMOD_ID_BONIFICADO, new AdRequest.Builder()
+//                        .addTestDevice("ID_DISPOSITIVO_FISICO_TEST")
+                            .build());
+                }
+
+                @Override
+                public void onRewarded(RewardItem rewardItem) {
+
+                    saveNoMoreRewardedVideo();
+                    if (msg != null) {
                         msg.dismiss();
                     }
-                });
 
-                msg.show();
+                    msg = Snackbar.make(main_container, "Ya no se mostrarán más anuncios por su fidelidad", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            msg.dismiss();
+                        }
+                    });
+
+                    msg.show();
 //                Toast.makeText(ShowEditMovieActivity.this, "onRewarded: moneda virtual: " + rewardItem.getType() + "  aumento: " + rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
 //
-            }
+                }
 
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-            }
+                @Override
+                public void onRewardedVideoAdLeftApplication() {
+                }
 
-            @Override
-            public void onRewardedVideoAdFailedToLoad(int i) {
-            }
-        });
+                @Override
+                public void onRewardedVideoAdFailedToLoad(int i) {
+                }
+            });
 
-        ad.loadAd(MainActivityApplication.ADMOD_ID_BONIFICADO, new AdRequest.Builder()
+            ad.loadAd(MainActivityApplication.ADMOD_ID_BONIFICADO, new AdRequest.Builder()
 //                .addTestDevice("ID_DISPOSITIVO_FISICO_TEST")
-                .build());
-
+                    .build());
+        }
         photo = findViewById(R.id.photo);
         title = findViewById(R.id.title);
         category = findViewById(R.id.category);
@@ -282,9 +284,10 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                if (!user.isUserRewarded() && ad.isLoaded()) {
-                    ad.show();
+                if (ListasActivity.showInterticial) {
+                    if (!user.isUserRewarded() && ad.isLoaded()) {
+                        ad.show();
+                    }
                 }
                 // create a progress bar while the video file is loading
                 progressDialog = new ProgressDialog(ShowEditMovieActivity.this);
@@ -428,8 +431,6 @@ public class ShowEditMovieActivity extends AppCompatActivity {
     }
 
 
-
-
     public void rewardUser() {
         User userAux = null;
 
@@ -457,16 +458,16 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
         userListIterator = userList.iterator();
 
-            while (userListIterator.hasNext()) {
-                userAux = gson.fromJson(userListIterator.next(), User.class);
-                if (user.getUsername().equals(userAux.getUsername())) {
-                    String json = gson.toJson(user);
-                    userListNew.add(json);
-                } else {
-                    String json = gson.toJson(userAux);
-                    userListNew.add(json);
-                }
+        while (userListIterator.hasNext()) {
+            userAux = gson.fromJson(userListIterator.next(), User.class);
+            if (user.getUsername().equals(userAux.getUsername())) {
+                String json = gson.toJson(user);
+                userListNew.add(json);
+            } else {
+                String json = gson.toJson(userAux);
+                userListNew.add(json);
             }
+        }
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(USERS_KEY_USERS, userListNew);
