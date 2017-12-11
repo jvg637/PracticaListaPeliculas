@@ -30,7 +30,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
 
     @Override
     public void onBindViewHolder(ListaViewHolder viewHolder, int i) {
-        viewHolder.imagen.setImageResource(listasVector.elemento(i).getImagen());
+        viewHolder.imagen.setImageResource(listasVector.elemento(i).getIcono());
         viewHolder.titulo.setText(listasVector.elemento(i).getTitulo());
         viewHolder.descripcion.setText(listasVector.elemento(i).getDescripcion());
     }

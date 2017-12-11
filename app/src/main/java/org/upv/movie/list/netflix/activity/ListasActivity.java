@@ -65,11 +65,20 @@ import static org.upv.movie.list.netflix.activity.PerfilActivity.USER_LOGIN_PREF
 public class ListasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int ACTUALIZAR_PERFIL = 10000;
+    private static final int NUEVA_LISTA = 10001;
+    private static String FICHERO_LISTAS = "listas.txt";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView username;
     private ImageView userfoto;
+
+    private RecyclerView recycler;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager lManager;
+
+    private ListasVector listaPeliculasTodosUsuarios;
+    private ListasVector listaPeliculasUsuario;
 
     // Publicidad
 
@@ -93,19 +102,14 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         adView.loadAd(adRequest);
         serviceConectInAppBilling();
 
-        // Inicializar los elementos (ejemplo)
-        ListasVector listasVector = new ListasVector();
-        listasVector.anyade(new Lista(R.drawable.ic_fav, getString(R.string.LA_favorites), getString(R.string.LA_favorites_desc)));
-        listasVector.anyade(new Lista(R.drawable.ic_star, getString(R.string.LA_best), getString(R.string.LA_best_desc)));
 
+        // Initializar Listas
+        initListasPeliculas();
 
-        RecyclerView recycler = findViewById(R.id.recycler);
-
-        RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
-
+        recycler = findViewById(R.id.recycler);
+        lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
-
-        RecyclerView.Adapter adapter = new ListaAdapter(listasVector);
+        adapter = new ListaAdapter(listaPeliculasUsuario);
         recycler.setAdapter(adapter);
 
         recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -124,7 +128,8 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, getString(R.string.LA_fab_press), Snackbar.LENGTH_LONG).show();
+                Intent intent = new Intent(view.getContext(), NuevaListaActivity.class);
+                startActivityForResult(intent, NUEVA_LISTA);
             }
         });
 
@@ -141,6 +146,16 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setNavigationPerfil();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -162,6 +177,12 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 //
 //            showInterticial=!showInterticial;
 //        }
+
+        else if(id == R.id.nav_delete_file_listas){
+            listaPeliculasTodosUsuarios.delete(this, FICHERO_LISTAS);
+            initListasPeliculas();
+            adapter.notifyDataSetChanged();
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -236,6 +257,41 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 
             userfoto = navigationView.getHeaderView(0).findViewById(R.id.navUserFoto);
             userfoto.setImageResource(user.getDEFAULT_PHOTO());
+        }
+        else if (requestCode==NUEVA_LISTA && resultCode==RESULT_OK) {
+            User user = readUserFromPreferences();
+            String titulo = data.getExtras().getString("titulo");
+            String descripcion = data.getExtras().getString("descripcion");
+            int icono = data.getExtras().getInt("icono");
+
+            switch(icono){
+                case 0:
+                    icono = R.drawable.ic_fav;
+                    break;
+                case 1:
+                    icono = R.drawable.ic_star;
+                    break;
+                case 2:
+                    icono = R.drawable.ic_thumb_up;
+                    break;
+                case 3:
+                    icono = R.drawable.ic_thumb_down;
+                    break;
+                case 4:
+                    icono = R.drawable.ic_schedule;
+                    break;
+                case 5:
+                    icono = R.drawable.ic_help;
+                    break;
+                default:
+                    icono = R.drawable.ic_star;
+                    break;
+            }
+
+            listaPeliculasUsuario.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
+            listaPeliculasTodosUsuarios.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
+            listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
+            adapter.notifyDataSetChanged();
         }
 
         switch (requestCode) {
@@ -374,4 +430,38 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
+    private void initListasPeliculas(){
+
+        listaPeliculasTodosUsuarios = new ListasVector();
+        listaPeliculasUsuario = new ListasVector();
+        User user = readUserFromPreferences();
+
+        if(listaPeliculasTodosUsuarios.fileExists(this, FICHERO_LISTAS) == false) {
+
+            // Inicializar lista "Todas"
+            ArrayList<Integer> pelicluasTodas = new ArrayList<>();
+            for (int i = 0; i < 9; i++) pelicluasTodas.add(i);
+            listaPeliculasTodosUsuarios.anyade(new Lista("todas",
+                    getResources().getString(R.string.LA_default_list_title),
+                    getResources().getString(R.string.LA_default_list_description),
+                    R.drawable.ic_star, pelicluasTodas));
+
+            listaPeliculasUsuario.anyade(new Lista("todas",
+                    getResources().getString(R.string.LA_default_list_title),
+                    getResources().getString(R.string.LA_default_list_description),
+                    R.drawable.ic_star, pelicluasTodas));
+
+            listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
+        }
+        else {
+            listaPeliculasTodosUsuarios.abrir(this, FICHERO_LISTAS);
+
+            for (Lista l : listaPeliculasTodosUsuarios.elementos()) {
+
+                if (l.getUsuario().equals("todas") || l.getUsuario().equals(user.getUsername())) {
+                    listaPeliculasUsuario.anyade(new Lista(user.getUsername(), l.getTitulo(), l.getDescripcion(), l.getIcono(), l.getPeliculas()));
+                }
+            }
+        }
+    }
 }

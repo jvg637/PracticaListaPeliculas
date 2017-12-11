@@ -66,7 +66,8 @@
     <string name="LA_best">Mejor valorados</string>
     <string name="LA_favorites_desc">Mis películas favoritas</string>
     <string name="LA_best_desc">Las películas con mejor valoración</string>
-    <string name="LA_fab_press">El FAB ha sido presionado</string>
+    <string name="LA_default_list_title">Todas</string>
+    <string name="LA_default_list_description">Todas las películas disponibles</string>
 
     <!-- Textos correspondientes a PerfilActivity (PA) -->
     <string name="PA_user_log">El usuario no ha iniciado sesión!</string>
@@ -82,4 +83,10 @@
     <string name="compartido_por"> Compartido por: </string>
     <string name="select_application">Selecciona aplicación</string>
     <string name="no_video_bonificado">Ya no se mostrarán más anuncios por su fidelidad</string>
+
+    <!-- Textos correspondientes al xml de activity_nueva_lista (ANL) -->
+    <string name="ANL_add_new_list">Añadir una nueva lista</string>
+    <string name="ANL_new_list_title">Título</string>
+    <string name="ANL_new_list_description">Descripción</string>
+    <string name="ANL_new_list_icon">Icono</string>
 </resources>
