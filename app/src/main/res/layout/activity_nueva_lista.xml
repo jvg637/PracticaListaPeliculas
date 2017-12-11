@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Añadir una nueva lista"
+        android:text="@string/ANL_add_new_list"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
             android:id="@+id/et_titulo_anl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Título" />
+            android:hint="@string/ANL_new_list_title" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +51,7 @@
             android:id="@+id/et_descripcion_anl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="descripcion" />
+            android:hint="@string/ANL_new_list_description" />
     </android.support.design.widget.TextInputLayout>
 
     <TextView
@@ -60,7 +60,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Icono:"
+        android:text="@string/ANL_new_list_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_descripcion_anl" />
 
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:text="OK"
+        android:text="ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Cancel"
+        android:text="cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bt_ok_anl" />
 

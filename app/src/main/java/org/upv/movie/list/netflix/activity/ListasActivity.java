@@ -277,6 +277,12 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 case 3:
                     icono = R.drawable.ic_thumb_down;
                     break;
+                case 4:
+                    icono = R.drawable.ic_schedule;
+                    break;
+                case 5:
+                    icono = R.drawable.ic_help;
+                    break;
                 default:
                     icono = R.drawable.ic_star;
                     break;
@@ -435,8 +441,15 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             // Inicializar lista "Todas"
             ArrayList<Integer> pelicluasTodas = new ArrayList<>();
             for (int i = 0; i < 9; i++) pelicluasTodas.add(i);
-            listaPeliculasTodosUsuarios.anyade(new Lista("todas","Todas","Todas las peliculas disponibles", R.drawable.ic_star, pelicluasTodas));
-            listaPeliculasUsuario.anyade(new Lista("todas","Todas","Todas las peliculas disponibles", R.drawable.ic_star, pelicluasTodas));
+            listaPeliculasTodosUsuarios.anyade(new Lista("todas",
+                    getResources().getString(R.string.LA_default_list_title),
+                    getResources().getString(R.string.LA_default_list_description),
+                    R.drawable.ic_star, pelicluasTodas));
+
+            listaPeliculasUsuario.anyade(new Lista("todas",
+                    getResources().getString(R.string.LA_default_list_title),
+                    getResources().getString(R.string.LA_default_list_description),
+                    R.drawable.ic_star, pelicluasTodas));
 
             listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
         }

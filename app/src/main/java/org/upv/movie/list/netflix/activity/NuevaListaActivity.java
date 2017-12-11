@@ -21,8 +21,9 @@ public class NuevaListaActivity extends AppCompatActivity {
     EditText descripcion;
     Spinner icono;
     //String [] textArray = {"image 1", "image 2"};
-    String[] textArray = {"", "", "", ""};
-    Integer[] imageArray = {R.drawable.ic_fav, R.drawable.ic_star, R.drawable.ic_thumb_up, R.drawable.ic_thumb_down};
+    String[] textArray = {"", "", "", "", "", ""};
+    Integer[] imageArray = {R.drawable.ic_fav, R.drawable.ic_star, R.drawable.ic_thumb_up, R.drawable.ic_thumb_down, R.drawable.ic_schedule, R.drawable.ic_help};
+
     Button ok;
     Button cancel;
 
@@ -40,6 +41,7 @@ public class NuevaListaActivity extends AppCompatActivity {
         icono.setAdapter(adapter);
 
         ok = (Button) findViewById(R.id.bt_ok_anl);
+        ok.setText(android.R.string.ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +56,7 @@ public class NuevaListaActivity extends AppCompatActivity {
 
 
         cancel = (Button) findViewById(R.id.bt_cancel_anl);
+        cancel.setText(android.R.string.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
