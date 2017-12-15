@@ -68,6 +68,8 @@
     <string name="LA_best_desc">Les films les mieux notés</string>
     <string name="LA_default_list_title">Tous</string>
     <string name="LA_default_list_description">Tous les films disponibles</string>
+    <string name="LA_delete_list_dialog">Voulez-vous supprimer la liste \u0022</string>
+    <string name="LA_no_delete_list_dialog">La liste par défaut ne peut être supprimée!</string>
 
     <!-- Textos correspondientes a PerfilActivity (PA) -->
     <string name="PA_user_log">L\'utilisateur ne s\'est pas connecté!</string>

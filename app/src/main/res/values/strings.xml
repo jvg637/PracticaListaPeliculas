@@ -67,6 +67,8 @@
     <string name="LA_best_desc">The films with the best rating</string>
     <string name="LA_default_list_title">All</string>
     <string name="LA_default_list_description">All available films</string>
+    <string name="LA_delete_list_dialog">Do you want to delete the list \u0022</string>
+    <string name="LA_no_delete_list_dialog">The default list can not be deleted!</string>
 
     <!-- Textos correspondientes a PerfilActivity (PA) -->
     <string name="PA_user_log">User has not logged in!</string>

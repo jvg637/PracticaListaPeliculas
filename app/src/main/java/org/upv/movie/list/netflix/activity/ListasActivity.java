@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
@@ -22,6 +23,7 @@ import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +43,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.upv.movie.list.netflix.adapters.RecyclerViewTouchListener;
 import org.upv.movie.list.netflix.model.Lista;
 import org.upv.movie.list.netflix.adapters.ListaAdapter;
 import org.upv.movie.list.netflix.utils.ListasVector;
@@ -112,14 +115,25 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         adapter = new ListaAdapter(listaPeliculasUsuario);
         recycler.setAdapter(adapter);
 
-        recycler.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+        recycler.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recycler, new RecyclerViewTouchListener.RecyclerViewClickListener() {
             @Override
-            public void onItemClick(View v, int position) {
+            public void onClick(View view, int position) {
                 Intent intent = new Intent(ListasActivity.this, MovieListActivity.class);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
                 } else {
                     startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                // No se puede eliminar la lista por defecto
+                if(position == 0) {
+                    noDeleteListDialog();
+                }
+                else {
+                    deleteListDialog(listaPeliculasUsuario.elemento(position).getTitulo(), position);
                 }
             }
         }));
@@ -177,12 +191,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 //
 //            showInterticial=!showInterticial;
 //        }
-
-        else if(id == R.id.nav_delete_file_listas){
-            listaPeliculasTodosUsuarios.delete(this, FICHERO_LISTAS);
-            initListasPeliculas();
-            adapter.notifyDataSetChanged();
-        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -436,32 +444,94 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         listaPeliculasUsuario = new ListasVector();
         User user = readUserFromPreferences();
 
+        // Si fichero existe
         if(listaPeliculasTodosUsuarios.fileExists(this, FICHERO_LISTAS) == false) {
 
-            // Inicializar lista "Todas"
-            ArrayList<Integer> pelicluasTodas = new ArrayList<>();
-            for (int i = 0; i < 9; i++) pelicluasTodas.add(i);
-            listaPeliculasTodosUsuarios.anyade(new Lista("todas",
-                    getResources().getString(R.string.LA_default_list_title),
-                    getResources().getString(R.string.LA_default_list_description),
-                    R.drawable.ic_star, pelicluasTodas));
-
-            listaPeliculasUsuario.anyade(new Lista("todas",
-                    getResources().getString(R.string.LA_default_list_title),
-                    getResources().getString(R.string.LA_default_list_description),
-                    R.drawable.ic_star, pelicluasTodas));
-
-            listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
+            // Se agrega la lista por defecto "Todas"
+            agregaListaPorDefecto(user);
         }
         else {
+            // Initializa la lista desde el fichero
             listaPeliculasTodosUsuarios.abrir(this, FICHERO_LISTAS);
 
+            // Se agrega la lista por defecto "Todas"
+            agregaListaPorDefecto(user);
+
+            // Se initializa la lista del usuario
             for (Lista l : listaPeliculasTodosUsuarios.elementos()) {
 
-                if (l.getUsuario().equals("todas") || l.getUsuario().equals(user.getUsername())) {
+                if (l.getUsuario().equals(user.getUsername())) {
                     listaPeliculasUsuario.anyade(new Lista(user.getUsername(), l.getTitulo(), l.getDescripcion(), l.getIcono(), l.getPeliculas()));
                 }
             }
         }
+    }
+
+    private void agregaListaPorDefecto(User user){
+
+        // Inicializa la lista por defecto "Todas"
+        ArrayList<Integer> pelicluasTodas = new ArrayList<>();
+        for (int i = 0; i < 9; i++) pelicluasTodas.add(i);
+
+        listaPeliculasUsuario.anyade(new Lista(user.getUsername(),
+                getResources().getString(R.string.LA_default_list_title),
+                getResources().getString(R.string.LA_default_list_description),
+                R.drawable.ic_star, pelicluasTodas));
+    }
+
+    private void deleteListDialog(String listaTitulo, int position){
+
+        final int pos = position;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + listaTitulo +"\" ?");
+
+        // OK button
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int cnt = 0;
+                for (Lista l : listaPeliculasTodosUsuarios.elementos()) {
+
+                    // Si usuario, icono, titulo y descripcion coinciden
+                    if((l.getUsuario().equals(listaPeliculasUsuario.elemento(pos).getUsuario()))&&
+                            (l.getIcono() == listaPeliculasUsuario.elemento(pos).getIcono())&&
+                            (l.getTitulo().equals(listaPeliculasUsuario.elemento(pos).getTitulo()))&&
+                            (l.getDescripcion().equals(listaPeliculasUsuario.elemento(pos).getDescripcion()))){
+                        listaPeliculasTodosUsuarios.borrar(cnt);
+                        listaPeliculasTodosUsuarios.guardar(getApplicationContext(), FICHERO_LISTAS);
+                        listaPeliculasUsuario.borrar(pos);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    }
+                    cnt++;
+                }
+            }
+        });
+
+        // Cancel button
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void noDeleteListDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getResources().getString(R.string.LA_no_delete_list_dialog));
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
