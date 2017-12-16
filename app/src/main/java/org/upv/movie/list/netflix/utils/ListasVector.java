@@ -30,7 +30,7 @@ public class ListasVector implements Listas {
         return vectorListas.get(id);
     }
 
-    public List<Lista> elementos(){return vectorListas;};
+    public List<Lista> elementos(){return vectorListas;}
 
     public void anyade(Lista lista) {
         vectorListas.add(lista);

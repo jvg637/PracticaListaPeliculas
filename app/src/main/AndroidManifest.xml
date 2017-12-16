@@ -51,6 +51,7 @@
         <activity android:name=".activity.InicioSesionActivity" />
         <activity android:name=".activity.RegistroActivity" />
         <activity android:name=".activity.NuevaListaActivity"/>
+        <activity android:name=".activity.NewMovieActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

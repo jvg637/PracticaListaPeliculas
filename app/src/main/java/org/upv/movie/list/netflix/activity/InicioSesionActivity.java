@@ -102,7 +102,6 @@ public class InicioSesionActivity extends AppCompatActivity {
         String s = getString(R.string.ISA_remember) + (recordarme.isChecked() ? getString(android.R.string.yes) : getString(android.R.string.no));
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         recordarUsuario = recordarme.isChecked();
-
     }
 
     public void mostrarContrasena(View v) {

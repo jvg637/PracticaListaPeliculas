@@ -1,13 +1,11 @@
 package org.upv.movie.list.netflix.activity;
 
 import android.app.ActivityOptions;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -193,7 +191,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bitmap bitmap = ((BitmapDrawable) photo.getDrawable()).getBitmap();
-                compatirBitmap(bitmap, getString(R.string.ASEM_title) +": " + title.getText().toString()  + getString(R.string.compartido_por) + "http://play.google.com/store/apps/details?id=" + getPackageName());
+                compatirBitmap(bitmap, getString(R.string.ASEM_title) + ": " + title.getText().toString() + getString(R.string.compartido_por) + "http://play.google.com/store/apps/details?id=" + getPackageName());
             }
         });
 
@@ -204,9 +202,7 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             id = data.getExtras().getInt(PARAM_EXTRA_ID_PELICULA, -1);
         }
 
-        if (id == -1) {
-            // Mode Edit
-        } else {
+        if (id != -1) {
             // Mode View
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 postponeEnterTransition();
@@ -237,13 +233,12 @@ public class ShowEditMovieActivity extends AppCompatActivity {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             // temp permission for receiving app to read this file
-            i.setType( getContentResolver().getType(uri));
+            i.setType(getContentResolver().getType(uri));
             i.putExtra(Intent.EXTRA_STREAM, uri);
             i.putExtra(Intent.EXTRA_TEXT, texto);
             startActivity(Intent.createChooser(i, getString(R.string.select_application)));
         }
     }
-
 
 
     private void saveNoMoreRewardedVideo() {
@@ -324,14 +319,10 @@ public class ShowEditMovieActivity extends AppCompatActivity {
 
     private void cargaVideo(int id) {
         //set the media controller buttons
-        /*if (mediaControls == null) {
-            mediaControls = new MediaController(ShowEditMovieActivity.this);
-        }*/
-
+        mediaControls = new MediaController(this);
         btnPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (ListasActivity.showInterticial) {
                     if (!user.isUserRewarded() && ad.isLoaded()) {
                         ad.show();
@@ -340,32 +331,17 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                 // create a progress bar while the video file is loading
                 progressDialog = new ProgressDialog(ShowEditMovieActivity.this);
                 // set a message for the progress bar
-                progressDialog.setMessage("Loading...");
+                progressDialog.setMessage(getString(R.string.ASEM_loading));
                 //set the progress bar not cancelable on users' touch
                 progressDialog.setCanceledOnTouchOutside(false);
                 // show the progress bar
                 progressDialog.show();
-
-                try {
-                    if (!myVideoView.isPlaying()) {
-                        //set the media controller in the VideoView
-                        myVideoView.setMediaController(mediaControls);
-                        //set the uri of the video to be played
-                        myVideoView.setVideoPath(movie.getVideoUrl());
-                        myVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mediaPlayer) {
-                                btnPlayPause.setImageResource(R.drawable.ic_play);
-                            }
-                        });
-                    } else {
-                        progressDialog.dismiss();
-                        myVideoView.pause();
-                        btnPlayPause.setImageResource(R.drawable.ic_play);
-                    }
-                } catch (Exception e) {
+                myVideoView.setVideoPath(movie.getVideoUrl());
+                if (myVideoView.isPlaying()) {
                     progressDialog.dismiss();
-                    e.printStackTrace();
+                    myVideoView.pause();
+                    btnPlayPause.setVisibility(View.VISIBLE);
+                    //btnPlayPause.setImageResource(R.drawable.ic_play);
                 }
                 myVideoView.requestFocus();
                 myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -373,7 +349,11 @@ public class ShowEditMovieActivity extends AppCompatActivity {
                     public void onPrepared(MediaPlayer mediaPlayer) {
                         progressDialog.dismiss();
                         mediaPlayer.setLooping(true);
-                        btnPlayPause.setImageResource(R.drawable.ic_pause);
+                        btnPlayPause.setVisibility(View.GONE);
+                        //btnPlayPause.setImageResource(R.drawable.ic_pause);
+                        mediaControls.setAnchorView(myVideoView);
+                        //set the media controller in the VideoView
+                        myVideoView.setMediaController(mediaControls);
                         myVideoView.start();
                     }
                 });

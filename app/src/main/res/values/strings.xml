@@ -43,6 +43,7 @@
     <string name="ASEM_show_comments">Show Comments</string>
     <string name="ASEM_push_comment">Post your comment</string>
     <string name="ASEM_add_comment_rating">You must add a comment and a rating</string>
+    <string name="ASEM_loading">Loading…</string>
 
     <!-- Textos correspondientes al xml de content_listas (CL) -->
     <string name="CL_toolbar_title">Movie Lists</string>
@@ -90,5 +91,8 @@
     <string name="ANL_new_list_title">Title</string>
     <string name="ANL_new_list_description">Description</string>
     <string name="ANL_new_list_icon">Icon</string>
+
+    <!-- Textos correspondientes al xml de activity_new_movie (ANM) -->
+    <string name="ANM_busqueda">Title, Category</string>
 
 </resources>

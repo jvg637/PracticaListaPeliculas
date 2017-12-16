@@ -119,6 +119,19 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(ListasActivity.this, MovieListActivity.class);
+
+                /**/
+                if(position != 0) {
+                    intent.putExtra("peliculasLista", listaPeliculasUsuario.elemento(position).getPeliculas());
+                    intent.putExtra("tituloLista", listaPeliculasUsuario.elemento(position).getTitulo());
+                    intent.putExtra("descLista", listaPeliculasUsuario.elemento(position).getDescripcion());
+                    intent.putExtra("iconoLista", listaPeliculasUsuario.elemento(position).getIcono());
+                    intent.putExtra("userLista", listaPeliculasUsuario.elemento(position).getUsuario());
+                } else {
+                    intent.putExtra("tituloLista", "todas");
+                }
+                /**/
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
                 } else {

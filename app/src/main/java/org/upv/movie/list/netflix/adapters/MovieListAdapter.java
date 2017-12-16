@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -13,18 +15,24 @@ import org.upv.movie.list.netflix.model.Movie;
 import org.upv.movie.list.netflix.movie.MovieList;
 import org.upv.movie.list.netflix.utils.DownloadImageTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Miguel Á. Núñez on 11/11/2017.
  */
 
-public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder> {
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder> implements Filterable {
 
     private List<Movie> items;
+    private List<Movie> moviesFilter;
+    private CustomFilter mFilter;
 
-    public MovieListAdapter() {
-        this.items = MovieList.list;
+    public MovieListAdapter(List<Movie> movieList) {
+        items = movieList;
+        moviesFilter = new ArrayList<>();
+        moviesFilter.addAll(items);
+        mFilter = new CustomFilter(MovieListAdapter.this);
     }
 
     @Override
@@ -35,18 +43,23 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieListViewHolder holder, int position) {
-        holder.title.setText(items.get(position).getTitle());
-        holder.category.setText(items.get(position).getCategory());
-        holder.rating.setRating(items.get(position).getAverageRating());
+        holder.title.setText(moviesFilter.get(position).getTitle());
+        holder.category.setText(moviesFilter.get(position).getCategory());
+        holder.rating.setRating(moviesFilter.get(position).getAverageRating());
         String s = holder.itemView.getResources().getString(R.string.MLA_user_ratings);
-        holder.numRatings.setText(new StringBuilder().append("(").append(items.get(position).getNumRatings()).append(" " + s + ")").toString());
+        holder.numRatings.setText(new StringBuilder().append("(").append(moviesFilter.get(position).getNumRatings()).append(" " + s + ")").toString());
         //Descargamos la imagen y se la añadimos al ImageView
-        new DownloadImageTask(holder.poster).execute(items.get(position).getCardImageUrl());
+        new DownloadImageTask(holder.poster).execute(moviesFilter.get(position).getCardImageUrl());
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return moviesFilter.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
     }
 
     static class MovieListViewHolder extends RecyclerView.ViewHolder {
@@ -66,4 +79,39 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             numRatings = v.findViewById(R.id.num_ratings);
         }
     }
+
+    /*Filtro*/
+    public class CustomFilter extends Filter {
+        private MovieListAdapter listAdapter;
+
+        private CustomFilter(MovieListAdapter listAdapter) {
+            super();
+            this.listAdapter = listAdapter;
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            moviesFilter.clear();
+            final FilterResults results = new FilterResults();
+            if (constraint.length() == 0) {
+                moviesFilter.addAll(items);
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+                for (final Movie movie : items) {
+                    if (movie.getTitle().contains(filterPattern) || movie.getCategory().contains(filterPattern)) {
+                        moviesFilter.add(movie);
+                    }
+                }
+            }
+            results.values = moviesFilter;
+            results.count = moviesFilter.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            this.listAdapter.notifyDataSetChanged();
+        }
+    }
+
 }
