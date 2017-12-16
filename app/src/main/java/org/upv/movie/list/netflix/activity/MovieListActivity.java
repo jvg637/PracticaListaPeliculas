@@ -1,12 +1,14 @@
 package org.upv.movie.list.netflix.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.adapters.RecyclerItemClickListener;
 import org.upv.movie.list.netflix.adapters.MovieListAdapter;
+import org.upv.movie.list.netflix.adapters.RecyclerViewTouchListener;
 import org.upv.movie.list.netflix.model.Lista;
 import org.upv.movie.list.netflix.model.Movie;
 import org.upv.movie.list.netflix.model.User;
@@ -57,6 +60,7 @@ public class MovieListActivity extends AppCompatActivity {
     private int iconoLista;
     private String userLista;
     private ListasVector listaPeliculasTodosUsuarios;
+    private String userLogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,10 @@ public class MovieListActivity extends AppCompatActivity {
 
         //Detectamos el idioma que tiene el dispositivo
         String language = Locale.getDefault().getLanguage();
+
+        //Obtenemos el usuario conectado
+        SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
+        userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
 
         fab = findViewById(R.id.fab_add_movie);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +109,7 @@ public class MovieListActivity extends AppCompatActivity {
         }.getType();
         MovieList.list = gson.fromJson(json, collection);
 
-        if(tituloLista.equals("todas")) {
+        if (tituloLista.equals("todas")) {
             movieList = MovieList.list;
             fab.setVisibility(View.GONE);
         } else {
@@ -110,9 +118,9 @@ public class MovieListActivity extends AppCompatActivity {
             descLista = getIntent().getExtras().getString("descLista");
             iconoLista = getIntent().getExtras().getInt("iconoLista");
             userLista = getIntent().getExtras().getString("userLista");
-            for (Movie movie:MovieList.list) {
-                for(int i = 0; i < idsPeliculasUser.size(); i++) {
-                    if(idsPeliculasUser.get(i) == movie.getId()) {
+            for (Movie movie : MovieList.list) {
+                for (int i = 0; i < idsPeliculasUser.size(); i++) {
+                    if (idsPeliculasUser.get(i) == movie.getId()) {
                         movieList.add(movie);
                     }
                 }
@@ -147,33 +155,41 @@ public class MovieListActivity extends AppCompatActivity {
         adapter = new MovieListAdapter(movieList);
         recycler.setAdapter(adapter);
 
-        recycler.addOnItemTouchListener(new RecyclerItemClickListener(MovieListActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+        recycler.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recycler, new RecyclerViewTouchListener.RecyclerViewClickListener() {
             @Override
-            public void onItemClick(View v, int position) {
+            public void onClick(View v, int position) {
                 Intent intent = new Intent(MovieListActivity.this, ShowEditMovieActivity.class);
                 intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int) movieList.get(position).getId());
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this,
                         new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
                 ActivityCompat.startActivityForResult(MovieListActivity.this, intent, REFRESH_RATINGS, options.toBundle());
             }
+
+
+
+            @Override
+            public void onLongClick(View view, int position) {
+                // No se puede eliminar la lista por defecto
+                deleteListDialog(movieList, position);
+            }
         }));
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ADD_MOVIE && resultCode == RESULT_OK) {
+        if (requestCode == ADD_MOVIE && resultCode == RESULT_OK) {
             long idPelicula = data.getExtras().getLong("idPelicula");
             idsPeliculasUser.add((int) idPelicula);
-            SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
-            String userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
+
             //Me falta averiguar como añadir en el fichero los datos que he modificado
-            for(int i=0; i<listaPeliculasTodosUsuarios.tamanyo(); i++){
-                if(listaPeliculasTodosUsuarios.elemento(i).getUsuario().equals(userLogged)
+            for (int i = 0; i < listaPeliculasTodosUsuarios.tamanyo(); i++) {
+                if (listaPeliculasTodosUsuarios.elemento(i).getUsuario().equals(userLogged)
                         && listaPeliculasTodosUsuarios.elemento(i).getTitulo().equals(tituloLista)
                         && listaPeliculasTodosUsuarios.elemento(i).getDescripcion().equals(descLista)
-                        && listaPeliculasTodosUsuarios.elemento(i).getIcono() == iconoLista){
-                    Lista peliculaAdd = new Lista(userLista,tituloLista,descLista,iconoLista,idsPeliculasUser);
+                        && listaPeliculasTodosUsuarios.elemento(i).getIcono() == iconoLista) {
+                    Lista peliculaAdd = new Lista(userLista, tituloLista, descLista, iconoLista, idsPeliculasUser);
                     listaPeliculasTodosUsuarios.actualiza(i, peliculaAdd);
                 }
             }
@@ -186,5 +202,34 @@ public class MovieListActivity extends AppCompatActivity {
         }
         if (resultCode == RESULT_OK)
             adapter.notifyDataSetChanged();
+    }
+
+    private void deleteListDialog(final List<Movie> movies, int position){
+
+        final int pos = position;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + movies.get(pos).getTitle() +"\" ?");
+
+        // OK button
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                movies.remove(pos);
+                adapter = new MovieListAdapter(movieList);
+                recycler.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Cancel button
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
