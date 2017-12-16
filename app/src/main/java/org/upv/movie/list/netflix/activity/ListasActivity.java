@@ -290,6 +290,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             } else {
                 if (action.equals("EDIT")) {
                     // Iniciar actividad edición con elemento  "positionListSelect"
+                    Toast.makeText(this, "Falta llamada a edición", Toast.LENGTH_SHORT).show();
                 }
             }
             adapter.notifyDataSetChanged();
