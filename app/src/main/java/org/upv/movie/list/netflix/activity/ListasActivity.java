@@ -69,6 +69,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 
     private static final int ACTUALIZAR_PERFIL = 10000;
     private static final int NUEVA_LISTA = 10001;
+    private static final int LIST_MOVIE = 10002;
     private static String FICHERO_LISTAS = "listas.txt";
 
     private DrawerLayout drawerLayout;
@@ -131,11 +132,11 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                     intent.putExtra("tituloLista", "todas");
                 }
                 /**/
-
+                positionListSelect = position;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
+                    ActivityCompat.startActivityForResult(ListasActivity.this, intent, LIST_MOVIE, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
                 } else {
-                    startActivity(intent);
+                    ActivityCompat.startActivityForResult(ListasActivity.this, intent,  LIST_MOVIE, null);
                 }
             }
 
@@ -267,6 +268,8 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         userfoto.setImageResource(photo);
     }
 
+    int positionListSelect = -1;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -278,6 +281,18 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
 
             userfoto = navigationView.getHeaderView(0).findViewById(R.id.navUserFoto);
             userfoto.setImageResource(user.getDEFAULT_PHOTO());
+        }
+        else if (requestCode==LIST_MOVIE && resultCode==RESULT_OK) {
+
+            String action = data.getStringExtra("ACTION");
+            if (action.equals("REMOVE")) {
+                deleteListDialog(listaPeliculasUsuario.elemento(positionListSelect).getTitulo(), positionListSelect);
+            } else {
+                if (action.equals("EDIT")) {
+                    // Iniciar actividad edición con elemento  "positionListSelect"
+                }
+            }
+            adapter.notifyDataSetChanged();
         }
         else if (requestCode==NUEVA_LISTA && resultCode==RESULT_OK) {
             User user = readUserFromPreferences();
@@ -492,7 +507,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 R.drawable.ic_star, pelicluasTodas));
     }
 
-    private void deleteListDialog(String listaTitulo, int position){
+    public void deleteListDialog(String listaTitulo, int position){
 
         final int pos = position;
 

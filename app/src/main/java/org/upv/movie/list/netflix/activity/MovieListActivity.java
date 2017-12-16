@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -112,6 +114,9 @@ public class MovieListActivity extends AppCompatActivity {
         if (tituloLista.equals("todas")) {
             movieList = MovieList.list;
             fab.setVisibility(View.GONE);
+            mState =true;
+            invalidateOptionsMenu();
+
         } else {
             //Aqui cargamos las listas de todos los usuarios y despues la del usuario que está con la sesión iniciada
             idsPeliculasUser = (ArrayList<Integer>) getIntent().getExtras().get("peliculasLista");
@@ -166,7 +171,6 @@ public class MovieListActivity extends AppCompatActivity {
             }
 
 
-
             @Override
             public void onLongClick(View view, int position) {
                 // No se puede eliminar la lista por defecto
@@ -200,16 +204,18 @@ public class MovieListActivity extends AppCompatActivity {
             recycler.setAdapter(adapter);
 
         }
-        if (resultCode == RESULT_OK)
+        if (resultCode == RESULT_OK) {
             adapter.notifyDataSetChanged();
+            invalidateOptionsMenu();
+        }
     }
 
-    private void deleteListDialog(final List<Movie> movies, int position){
+    private void deleteListDialog(final List<Movie> movies, int position) {
 
         final int pos = position;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + movies.get(pos).getTitle() +"\" ?");
+        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + movies.get(pos).getTitle() + "\" ?");
 
         // OK button
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -231,5 +237,41 @@ public class MovieListActivity extends AppCompatActivity {
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    boolean mState = false;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_list_movie, menu);
+
+
+        if (mState)
+        {
+            for (int i = 0; i < menu.size(); i++)
+                menu.getItem(i).setVisible(false);
+        }
+
+        if (movieList.size()<=0)
+            menu.getItem(1).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.action_edit) {
+            Intent intentData = new Intent();
+            intentData.putExtra("ACTION", "EDIT");
+            setResult(RESULT_OK, intentData);
+            finish();
+
+        } else if (id == R.id.action_delete) {
+            Intent intentData = new Intent();
+            intentData.putExtra("ACTION", "REMOVE");
+            setResult(RESULT_OK, intentData);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
