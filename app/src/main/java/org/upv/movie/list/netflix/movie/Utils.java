@@ -24,13 +24,11 @@ import java.io.InputStream;
  * A collection of utility methods, all static.
  */
 public class Utils {
-
     /*
      * Making sure public utility methods remain static
      */
     private Utils() {
     }
-
 
     /**
      * Shows a (long) toast

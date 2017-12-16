@@ -29,6 +29,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/imagen_xml"
                     android:scaleType="centerCrop"
                     android:src="@drawable/pattern" />
 
@@ -71,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/fab_plus"
             app:elevation="6dp"
             app:layout_anchor="@+id/nsv"

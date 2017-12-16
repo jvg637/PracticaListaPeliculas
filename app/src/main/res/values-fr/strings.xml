@@ -4,15 +4,12 @@
     <string name="action_settings">Paramètres</string>
     <string name="label_activity_perfil">Profil</string>
 
-    <!-- Nombre de Transiciones -->
+    <!-- Otros -->
     <string name="shared_photo_list_movie">shared_photo_list_movie</string>
     <string name="shared_photo_perfil">shared_photo_perfil</string>
-    <!-- shared transitions-->
-    <!--<string name="transition_name_boton">enter_transition_perfil</string>-->
-
     <string name="drawer_open">navigation drawer open</string>
     <string name="drawer_close">navigation drawer close</string>
-    <!-- <string name="drawer_edit_user">Edit User Profile</string> -->
+    <string name="imagen_xml">Image</string>
 
     <!-- Textos correspondientes al xml de activity_inicio_sesion (AIS) -->
     <string name="AIS_Log_in">Connexion</string>
@@ -59,7 +56,7 @@
     <string name="NHM_mail">usuario1@gmail.com</string>
 
     <!-- Textos correspondientes a InicioSesionActivity (ISA) -->
-    <string name="ISA_remember">Enregister les données de l\utilisateur: </string>
+    <string name="ISA_remember">Enregister les données de l\'utilisateur: </string>
     <string name="ISA_bad_user">Nom d\'utilisateur ou mot de passe incorrect</string>
 
     <!-- Textos correspondientes a ListasActivity (LA) -->
@@ -92,7 +89,17 @@
     <string name="ANL_new_list_title">Titre</string>
     <string name="ANL_new_list_description">Description</string>
     <string name="ANL_new_list_icon">Icône</string>
+    <string name="ANL_ok">Ok</string>
+    <string name="ANL_cancel">Annuler</string>
 
     <!-- Textos correspondientes al xml de activity_new_movie (ANM) -->
     <string name="ANM_busqueda">Titre, Catégorie</string>
+
+    <!-- Textos correspondientes al xmol de dialog_ratemyapp (DRMA) -->
+    <string name="DRMA_rate">S\'il vous plaît prendre une seconde pour évaluer l\'application</string>
+    <string name="DRMA_stars">1. Love MasterListas, s\'il vous plaît noter 5 étoiles dans PlayStore</string>
+    <string name="DRMA_problem">2. Avoir des problèmes, s\'il vous plaît contacter l\'auteur pour signaler le problème</string>
+    <string name="DRMA_author">CONTACTER L\'AUTEUR</string>
+    <string name="DRMA_5stars">NOTE 5 ÉTOILES</string>
+
 </resources>

@@ -35,8 +35,7 @@ public class RateMyApp {
     }
 
     public void app_launched() {
-        SharedPreferences prefs = callerActivity.getSharedPreferences(
-                "apprater", 0);
+        SharedPreferences prefs = callerActivity.getSharedPreferences("apprater", 0);
         if (prefs.getBoolean("dontshowagain", false)) {
             return;
         }
@@ -51,12 +50,10 @@ public class RateMyApp {
         exceedsSpecifiedLaunches = launch_count >= LAUNCHES_UNTIL_PROMPT;
         boolean exceedsDaysSinceFirstLaunch = System.currentTimeMillis() >=
                 date_firstLaunch + (DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000);
-        if ((exceedsSpecifiedLaunches || exceedsDaysSinceFirstLaunch) &&
-                !DAYS_AND_LAUNCHES) {
+        if ((exceedsSpecifiedLaunches || exceedsDaysSinceFirstLaunch) && !DAYS_AND_LAUNCHES) {
             editor.putLong("launch_count", 0);
             showRateDialog(editor);
-        } else if (exceedsSpecifiedLaunches && exceedsDaysSinceFirstLaunch &&
-                DAYS_AND_LAUNCHES) {
+        } else if (exceedsSpecifiedLaunches && exceedsDaysSinceFirstLaunch && DAYS_AND_LAUNCHES) {
             editor.putLong("launch_count", 0);
             showRateDialog(editor);
         }
@@ -68,17 +65,13 @@ public class RateMyApp {
         AlertDialog.Builder builder;
         LayoutInflater inflater = callerActivity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_ratemyapp, null);
-        Button rateButton = (Button) layout.findViewById(
-                R.id.ratemyapp_dialog_accept_button);
-        Button cancelButton = (Button) layout.findViewById(
-                R.id.ratemyapp_dialog_cancel_button);
-        Button laterButton = (Button) layout.findViewById(
-                R.id.ratemyapp_dialog_later_button);
+        Button rateButton = layout.findViewById(R.id.ratemyapp_dialog_accept_button);
+        Button cancelButton = layout.findViewById(R.id.ratemyapp_dialog_cancel_button);
+        Button laterButton = layout.findViewById(R.id.ratemyapp_dialog_later_button);
         rateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 callerActivity.startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://play.google.com/store/apps/details?id="
-                                + APP_PACKAGENAME)));
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + APP_PACKAGENAME)));
                 if (editor != null) {
                     editor.putBoolean("dontshowagain", true);
                     editor.apply();
@@ -92,14 +85,12 @@ public class RateMyApp {
                     editor.putLong("launch_count", 0);
                     editor.apply();
                 }
-
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/html");
                 intent.putExtra(Intent.EXTRA_EMAIL, "empresa@gmail.com");
                 intent.putExtra(Intent.EXTRA_SUBJECT, "MasterListas Issue: ");
                 intent.putExtra(Intent.EXTRA_TEXT, "Put inside the issue");
-                callerActivity.startActivity(
-                        Intent.createChooser(intent, "Send Email"));
+                callerActivity.startActivity(Intent.createChooser(intent, "Send Email"));
                 ratemyappDialog.dismiss();
             }
         });
@@ -116,8 +107,7 @@ public class RateMyApp {
         builder = new AlertDialog.Builder(callerActivity);
         builder.setView(layout);
         ratemyappDialog = builder.create();
-        ratemyappDialog.getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        ratemyappDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         ratemyappDialog.show();
     }
 }

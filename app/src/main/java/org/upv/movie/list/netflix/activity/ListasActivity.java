@@ -16,7 +16,6 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -35,10 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -48,7 +45,6 @@ import org.upv.movie.list.netflix.model.Lista;
 import org.upv.movie.list.netflix.adapters.ListaAdapter;
 import org.upv.movie.list.netflix.utils.ListasVector;
 import org.upv.movie.list.netflix.R;
-import org.upv.movie.list.netflix.adapters.RecyclerItemClickListener;
 import org.upv.movie.list.netflix.model.User;
 import org.upv.movie.list.netflix.utils.RateMyApp;
 
@@ -71,23 +67,14 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     private static final int NUEVA_LISTA = 10001;
     private static final int LIST_MOVIE = 10002;
     private static String FICHERO_LISTAS = "listas.txt";
-
-    private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView username;
     private ImageView userfoto;
-
-    private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager lManager;
-
     private ListasVector listaPeliculasTodosUsuarios;
     private ListasVector listaPeliculasUsuario;
-
     // Publicidad
-
     private AdView adView;
-
     // InApp Billing
     private IInAppBillingService serviceBilling;
     private ServiceConnection serviceConnection;
@@ -106,12 +93,11 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         adView.loadAd(adRequest);
         serviceConectInAppBilling();
 
-
         // Initializar Listas
         initListasPeliculas();
 
-        recycler = findViewById(R.id.recycler);
-        lManager = new LinearLayoutManager(this);
+        RecyclerView recycler = findViewById(R.id.recycler);
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
         adapter = new ListaAdapter(listaPeliculasUsuario);
         recycler.setAdapter(adapter);
@@ -121,8 +107,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             public void onClick(View view, int position) {
                 Intent intent = new Intent(ListasActivity.this, MovieListActivity.class);
 
-                /**/
-                if(position != 0) {
+                if (position != 0) {
                     intent.putExtra("peliculasLista", listaPeliculasUsuario.elemento(position).getPeliculas());
                     intent.putExtra("tituloLista", listaPeliculasUsuario.elemento(position).getTitulo());
                     intent.putExtra("descLista", listaPeliculasUsuario.elemento(position).getDescripcion());
@@ -131,22 +116,20 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 } else {
                     intent.putExtra("tituloLista", "todas");
                 }
-                /**/
                 positionListSelect = position;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ActivityCompat.startActivityForResult(ListasActivity.this, intent, LIST_MOVIE, ActivityOptions.makeSceneTransitionAnimation(ListasActivity.this).toBundle());
                 } else {
-                    ActivityCompat.startActivityForResult(ListasActivity.this, intent,  LIST_MOVIE, null);
+                    ActivityCompat.startActivityForResult(ListasActivity.this, intent, LIST_MOVIE, null);
                 }
             }
 
             @Override
             public void onLongClick(View view, int position) {
                 // No se puede eliminar la lista por defecto
-                if(position == 0) {
+                if (position == 0) {
                     noDeleteListDialog();
-                }
-                else {
+                } else {
                     deleteListDialog(listaPeliculasUsuario.elemento(position).getTitulo(), position);
                 }
             }
@@ -198,13 +181,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         } else if (id == R.id.nav_remove_advertising) {
             comprarProducto();
         }
-// else if (id == R.id.nav_consulta_inapps_disponibles) {
-//            getInAppInformationOfProducts();
-//        } else if (id == R.id.nav_remove_advertising_manual) {
-//            setAds(showInterticial );
-//
-//            showInterticial=!showInterticial;
-//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -225,7 +201,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 ArrayList<String> ownedSkus = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
                 ArrayList<String> purchaseDataList = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
                 ArrayList<String> signatureList = ownedItemsInApp.getStringArrayList("INAPP_DATA_SIGNATURE_LIST");
-                String continuationToken = ownedItemsInApp.getString("INAPP_CONTINUATION_TOKEN");
                 for (int i = 0; i < purchaseDataList.size(); ++i) {
                     String purchaseData = purchaseDataList.get(i);
                     String signature = signatureList.get(i);
@@ -234,14 +209,10 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                     System.out.println("Inapp Signature: " + signature);
                     System.out.println("Inapp Sku: " + sku);
                     if (sku.equals(ID_ARTICULO)) {
-//                        Toast.makeText(this, "Inapp comprado: " + sku + "el dia " + purchaseData, Toast.LENGTH_LONG).show();
-                        // Quitar publicidad
-//                        removeAdvertising();
                         setAds(false);
                     } else {
                         setAds(true);
                     }
-
                 }
             }
         }
@@ -278,12 +249,9 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             User user = readUserFromPreferences();
             username = navigationView.getHeaderView(0).findViewById(R.id.navUsername);
             username.setText(user.getMail());
-
             userfoto = navigationView.getHeaderView(0).findViewById(R.id.navUserFoto);
             userfoto.setImageResource(user.getDEFAULT_PHOTO());
-        }
-        else if (requestCode==LIST_MOVIE && resultCode==RESULT_OK) {
-
+        } else if (requestCode == LIST_MOVIE && resultCode == RESULT_OK) {
             String action = data.getStringExtra("ACTION");
             if (action.equals("REMOVE")) {
                 deleteListDialog(listaPeliculasUsuario.elemento(positionListSelect).getTitulo(), positionListSelect);
@@ -294,14 +262,13 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 }
             }
             adapter.notifyDataSetChanged();
-        }
-        else if (requestCode==NUEVA_LISTA && resultCode==RESULT_OK) {
+        } else if (requestCode == NUEVA_LISTA && resultCode == RESULT_OK) {
             User user = readUserFromPreferences();
             String titulo = data.getExtras().getString("titulo");
             String descripcion = data.getExtras().getString("descripcion");
             int icono = data.getExtras().getInt("icono");
 
-            switch(icono){
+            switch (icono) {
                 case 0:
                     icono = R.drawable.ic_fav;
                     break;
@@ -324,7 +291,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                     icono = R.drawable.ic_star;
                     break;
             }
-
             listaPeliculasUsuario.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
             listaPeliculasTodosUsuarios.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
             listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
@@ -344,7 +310,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                         String purchaseToken = jo.getString("purchaseToken");
                         if (sku.equals(ID_ARTICULO)) {
                             Toast.makeText(this, R.string.compra_completada, Toast.LENGTH_LONG).show();
-//                            removeAvertising();
                             setAds(false);
                         }
                     } catch (JSONException e) {
@@ -458,37 +423,29 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             showInterticial = true;
             adView.setVisibility(View.VISIBLE);
             navigationView.getMenu().findItem(R.id.nav_remove_advertising).setVisible(true);
-        } else
-
-        {
+        } else {
             showInterticial = false;
             adView.setVisibility(View.GONE);
             navigationView.getMenu().findItem(R.id.nav_remove_advertising).setVisible(false);
         }
     }
 
-    private void initListasPeliculas(){
-
+    private void initListasPeliculas() {
         listaPeliculasTodosUsuarios = new ListasVector();
         listaPeliculasUsuario = new ListasVector();
         User user = readUserFromPreferences();
 
         // Si fichero existe
-        if(listaPeliculasTodosUsuarios.fileExists(this, FICHERO_LISTAS) == false) {
-
+        if (listaPeliculasTodosUsuarios.fileExists(this, FICHERO_LISTAS) == false) {
             // Se agrega la lista por defecto "Todas"
             agregaListaPorDefecto(user);
-        }
-        else {
+        } else {
             // Initializa la lista desde el fichero
             listaPeliculasTodosUsuarios.abrir(this, FICHERO_LISTAS);
-
             // Se agrega la lista por defecto "Todas"
             agregaListaPorDefecto(user);
-
             // Se initializa la lista del usuario
             for (Lista l : listaPeliculasTodosUsuarios.elementos()) {
-
                 if (l.getUsuario().equals(user.getUsername())) {
                     listaPeliculasUsuario.anyade(new Lista(user.getUsername(), l.getTitulo(), l.getDescripcion(), l.getIcono(), l.getPeliculas()));
                 }
@@ -496,36 +453,30 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    private void agregaListaPorDefecto(User user){
-
+    private void agregaListaPorDefecto(User user) {
         // Inicializa la lista por defecto "Todas"
         ArrayList<Integer> pelicluasTodas = new ArrayList<>();
         for (int i = 0; i < 9; i++) pelicluasTodas.add(i);
-
         listaPeliculasUsuario.anyade(new Lista(user.getUsername(),
                 getResources().getString(R.string.LA_default_list_title),
                 getResources().getString(R.string.LA_default_list_description),
                 R.drawable.ic_star, pelicluasTodas));
     }
 
-    public void deleteListDialog(String listaTitulo, int position){
-
+    public void deleteListDialog(String listaTitulo, int position) {
         final int pos = position;
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + listaTitulo +"\" ?");
-
+        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + listaTitulo + "\" ?");
         // OK button
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 int cnt = 0;
                 for (Lista l : listaPeliculasTodosUsuarios.elementos()) {
-
                     // Si usuario, icono, titulo y descripcion coinciden
-                    if((l.getUsuario().equals(listaPeliculasUsuario.elemento(pos).getUsuario()))&&
-                            (l.getIcono() == listaPeliculasUsuario.elemento(pos).getIcono())&&
-                            (l.getTitulo().equals(listaPeliculasUsuario.elemento(pos).getTitulo()))&&
-                            (l.getDescripcion().equals(listaPeliculasUsuario.elemento(pos).getDescripcion()))){
+                    if ((l.getUsuario().equals(listaPeliculasUsuario.elemento(pos).getUsuario())) &&
+                            (l.getIcono() == listaPeliculasUsuario.elemento(pos).getIcono()) &&
+                            (l.getTitulo().equals(listaPeliculasUsuario.elemento(pos).getTitulo())) &&
+                            (l.getDescripcion().equals(listaPeliculasUsuario.elemento(pos).getDescripcion()))) {
                         listaPeliculasTodosUsuarios.borrar(cnt);
                         listaPeliculasTodosUsuarios.guardar(getApplicationContext(), FICHERO_LISTAS);
                         listaPeliculasUsuario.borrar(pos);
@@ -536,29 +487,24 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 }
             }
         });
-
         // Cancel button
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
             }
         });
-
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    private void noDeleteListDialog(){
+    private void noDeleteListDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getResources().getString(R.string.LA_no_delete_list_dialog));
-
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
         });
-
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();

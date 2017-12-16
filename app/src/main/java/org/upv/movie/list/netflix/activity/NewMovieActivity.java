@@ -23,9 +23,6 @@ import java.util.List;
  */
 
 public class NewMovieActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    private EditText inputSearch;
     //Lista peliculas
     private List<Movie> movieList;
 
@@ -36,10 +33,10 @@ public class NewMovieActivity extends AppCompatActivity {
 
         movieList = MovieList.list;
 
-        inputSearch = findViewById(R.id.inputSearch);
+        EditText inputSearch = findViewById(R.id.inputSearch);
 
         // Obtener el Recycler
-        recyclerView = findViewById(R.id.recycler_new_movie);
+        RecyclerView recyclerView = findViewById(R.id.recycler_new_movie);
         recyclerView.setHasFixedSize(true);
 
         // Usar un administrador para LinearLayout
@@ -67,15 +64,11 @@ public class NewMovieActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-                // TODO Auto-generated method stub
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-
             }
         });
     }

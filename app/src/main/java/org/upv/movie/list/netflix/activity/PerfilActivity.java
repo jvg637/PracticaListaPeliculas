@@ -30,26 +30,21 @@ public class PerfilActivity extends AppCompatActivity {
     // Datos del usuario que ha hecho login
     public static final String USER_LOGIN_PREFERENCES = "user";
     public static final String USER_LOGIN_PREFERENCES_KEY_USER = "user";
-
     // Fichero de usuarios
     public static final String USERS = "Usuarios";
     public static final String USERS_KEY_USERS = "users";
-
     private EditText usuario;
     private EditText contraseña;
     private EditText email;
     private EditText name;
     private ImageView photo;
     private CheckBox mostrar;
-
     private Set<String> userList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-
 
         usuario = findViewById(R.id.usuario);
         contraseña = findViewById(R.id.contraseña);
@@ -75,19 +70,14 @@ public class PerfilActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             lista_enter = TransitionInflater.from(this).inflateTransition(R.transition.transition_pefil_enter);
             Transition curve_shared = TransitionInflater.from(this).inflateTransition(R.transition.transition_curva);
-
             getWindow().setEnterTransition(lista_enter);
             getWindow().setSharedElementEnterTransition(curve_shared);
             postponeEnterTransition();
             scheduleStartPostponedTransition(photo);
-
         }
-
     }
 
-
     private void scheduleStartPostponedTransition(final View sharedElement) {
-
         sharedElement.getViewTreeObserver().addOnPreDrawListener(
                 new ViewTreeObserver.OnPreDrawListener() {
                     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

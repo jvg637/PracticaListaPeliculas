@@ -203,7 +203,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/video_view"
                 app:layout_constraintEnd_toEndOf="@+id/video_view"
                 app:layout_constraintStart_toStartOf="@+id/video_view"
-                app:layout_constraintTop_toTopOf="@+id/video_view"/>
+                app:layout_constraintTop_toTopOf="@+id/video_view" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -250,9 +250,10 @@
                     android:id="@+id/buttonShare"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_weight="0.25"
                     android:background="@android:drawable/ic_menu_share"
+                    android:contentDescription="@string/imagen_xml"
                     android:scaleType="fitCenter"
                     android:text="" />
 
@@ -260,10 +261,10 @@
                     android:id="@+id/buttonShowComments"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_weight="2"
                     android:text="@string/ASEM_show_comments"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/buttonComment"
@@ -273,7 +274,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_weight="2"
                     android:text="@string/ASEM_push_comment"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </android.support.design.widget.CoordinatorLayout>

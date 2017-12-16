@@ -118,13 +118,11 @@ public class User implements Serializable {
                    break;
             }
         }
-
         listRatings.add(ratingComment);
     }
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -132,7 +130,6 @@ public class User implements Serializable {
 
         if (username != null ? !username.equals(user.username) : user.username != null)
             return false;
-
         return password != null ? password.equals(user.password) : user.password == null;
     }
 

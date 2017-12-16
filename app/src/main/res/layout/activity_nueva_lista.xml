@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,7 +14,8 @@
         android:text="@string/ANL_add_new_list"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_titulo_anl"
@@ -62,7 +62,8 @@
         android:layout_marginTop="16dp"
         android:text="@string/ANL_new_list_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_descripcion_anl" />
+        app:layout_constraintTop_toBottomOf="@+id/til_descripcion_anl"
+        android:layout_marginLeft="8dp" />
 
     <Spinner
         android:id="@+id/sp_icono_anl"
@@ -81,9 +82,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:text="ok"
+        android:text="@string/ANL_ok"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="8dp" />
 
     <Button
         android:id="@+id/bt_cancel_anl"
@@ -91,8 +93,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:text="cancel"
+        android:text="@string/ANL_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_ok_anl" />
+        app:layout_constraintEnd_toStartOf="@+id/bt_ok_anl"
+        android:layout_marginRight="8dp" />
 
 </android.support.constraint.ConstraintLayout>

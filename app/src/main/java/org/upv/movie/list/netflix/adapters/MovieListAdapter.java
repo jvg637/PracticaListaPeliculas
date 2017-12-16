@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.Movie;
-import org.upv.movie.list.netflix.movie.MovieList;
 import org.upv.movie.list.netflix.utils.DownloadImageTask;
 
 import java.util.ArrayList;

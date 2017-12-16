@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.User;
-import org.upv.movie.list.netflix.utils.RateMyApp;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,18 +56,16 @@ public class InicioSesionActivity extends AppCompatActivity {
     }
 
     private boolean checkUser(User userToCheck) {
-        User userAux = null;
+        User userAux;
         boolean validUser = false;
         userList = prefs.getStringSet("users", userList);
         Gson gson = new Gson();
-
         Iterator userListIterator = userList.iterator();
 
         while (userListIterator.hasNext() && !validUser) {
             userAux = gson.fromJson((String) userListIterator.next(), User.class);
             validUser = userAux.equals(userToCheck);
         }
-
         return validUser;
     }
 
@@ -105,7 +102,6 @@ public class InicioSesionActivity extends AppCompatActivity {
     }
 
     public void mostrarContrasena(View v) {
-
         if (mostrar.isChecked()) {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT);
         } else {

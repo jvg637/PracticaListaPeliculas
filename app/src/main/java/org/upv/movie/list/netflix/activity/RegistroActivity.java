@@ -24,7 +24,6 @@ import java.util.Set;
  */
 
 public class RegistroActivity extends AppCompatActivity {
-
     private EditText usuario ;
     private EditText contraseña ;
     private EditText email ;
