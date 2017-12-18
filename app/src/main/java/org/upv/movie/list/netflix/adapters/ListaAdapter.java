@@ -22,6 +22,10 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
         this.listasVector = listasVector;
     }
 
+    public void setSource(ListasVector listasVector) {
+        this.listasVector = listasVector;
+    }
+
     @Override
     public ListaViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.elemento_lista, viewGroup, false);

@@ -100,5 +100,10 @@
     <string name="DRMA_problem">2. Have problems, please contact author to report issue</string>
     <string name="DRMA_author">CONTACT AUTHOR</string>
     <string name="DRMA_5stars">RATE 5 STAR</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="action">Action:</string>
+    <string name="field_empty">You must write at least a title!</string>
+    <string name="duplicated_item">Duplicated movie!</string>
 
 </resources>

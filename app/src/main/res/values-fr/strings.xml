@@ -101,5 +101,10 @@
     <string name="DRMA_problem">2. Avoir des problèmes, s\'il vous plaît contacter l\'auteur pour signaler le problème</string>
     <string name="DRMA_author">CONTACTER L\'AUTEUR</string>
     <string name="DRMA_5stars">NOTE 5 ÉTOILES</string>
+    <string name="delete">Supprimer</string>
+    <string name="edit">Modifier</string>
+    <string name="action">Choisissez une action:</string>
+    <string name="field_empty">Champ de titre obligatoire</string>
+    <string name="duplicated_item">Film dupliqué!</string>
 
 </resources>

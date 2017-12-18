@@ -102,8 +102,10 @@ public class ListasVector implements Listas {
                 for (int i = 4; i < items.length; i++) {
                     pelis.add(Integer.parseInt(items[i]));
                 }
+                String titulo=(items[2]==null?"":items[2]);
+                String description=(items.length<=3 || items[3]==null?"":items[3]);
                 // usuario, titulo, descripcion, icono, lista peliculas
-                anyade(new Lista(items[0], items[2], items[3], icono, pelis));
+                anyade(new Lista(items[0], titulo, description, icono, pelis));
             }
         } catch (Exception e) {
             e.printStackTrace();

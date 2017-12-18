@@ -1,6 +1,7 @@
 package org.upv.movie.list.netflix.activity;
 
 import android.app.ActivityOptions;
+import android.app.ListActivity;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -122,13 +124,42 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             }
 
             @Override
-            public void onLongClick(View view, int position) {
+            public void onLongClick(View view, final int position) {
                 // No se puede eliminar la lista por defecto
                 if (position == 0) {
                     noDeleteListDialog();
                 } else {
-                    deleteListDialog(listaPeliculasUsuario.elemento(position).getTitulo(), position);
+                    positionListSelect = position;
+//                    deleteListDialog(listaPeliculasUsuario.elemento(position).getTitulo(), position);
+
+
+                    final CharSequence[] items = {getString(R.string.delete), getString(R.string.edit)};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ListasActivity.this);
+
+                    builder.setTitle(R.string.action);
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int item) {
+                            //  Delete
+                            if (item == 0) {
+                                deleteListDialog(listaPeliculasUsuario.elemento(position).getTitulo(), position);
+                            }
+                            // Edit
+                            else {
+                                editItemList(position);
+
+                            }
+                        }
+
+                    });
+
+                    AlertDialog alert = builder.create();
+
+                    alert.show();
+                    //do your stuff here
                 }
+
             }
         }));
 
@@ -154,6 +185,15 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setNavigationPerfil();
+    }
+
+    private void editItemList(int position) {
+        Intent intent = new Intent(ListasActivity.this, NuevaListaActivity.class);
+
+        intent.putExtra("title", listaPeliculasUsuario.elemento(position).getTitulo());
+        intent.putExtra("description", listaPeliculasUsuario.elemento(position).getDescripcion());
+        intent.putExtra("icon", listaPeliculasUsuario.elemento(position).getIcono());
+        startActivityForResult(intent, NUEVA_LISTA);
     }
 
     @Override
@@ -244,22 +284,32 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
             username.setText(user.getMail());
             userfoto = navigationView.getHeaderView(0).findViewById(R.id.navUserFoto);
             userfoto.setImageResource(user.getDEFAULT_PHOTO());
-        } else if (requestCode == LIST_MOVIE && resultCode == RESULT_OK) {
-            String action = data.getStringExtra("ACTION");
-            if (action.equals("REMOVE")) {
-                deleteListDialog(listaPeliculasUsuario.elemento(positionListSelect).getTitulo(), positionListSelect);
-            } else {
-                if (action.equals("EDIT")) {
-                    // Iniciar actividad edición con elemento  "positionListSelect"
-                    Toast.makeText(this, "Falta llamada a edición", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == LIST_MOVIE) {
+
+            if (data != null) {
+                String action = data.getStringExtra("ACTION");
+                if (action.equals("REMOVE")) {
+                    deleteListDialog(listaPeliculasUsuario.elemento(positionListSelect).getTitulo(), positionListSelect);
+                } else {
+                    if (action.equals("EDIT")) {
+                        // Iniciar actividad edición con elemento  "positionListSelect"
+//                    Toast.makeText(this, "Falta llamada a edición", Toast.LENGTH_SHORT).show();
+                        editItemList(positionListSelect);
+                    }
                 }
+            } else {
+                initListasPeliculas();
             }
+
             adapter.notifyDataSetChanged();
-        } else if (requestCode == NUEVA_LISTA && resultCode == RESULT_OK) {
+        } else if (requestCode == NUEVA_LISTA && resultCode == RESULT_OK)
+
+        {
             User user = readUserFromPreferences();
             String titulo = data.getExtras().getString("titulo");
             String descripcion = data.getExtras().getString("descripcion");
             int icono = data.getExtras().getInt("icono");
+            String option = data.getExtras().getString("option");
 
             switch (icono) {
                 case 0:
@@ -284,13 +334,37 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                     icono = R.drawable.ic_star;
                     break;
             }
-            listaPeliculasUsuario.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
-            listaPeliculasTodosUsuarios.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
-            listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
+
+            if (option.equals("new")) {
+                listaPeliculasUsuario.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
+                listaPeliculasTodosUsuarios.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
+                listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
+            } else {
+                Lista item = listaPeliculasUsuario.elemento(positionListSelect);
+
+                for (Lista itemAllUsers : listaPeliculasTodosUsuarios.elementos()) {
+                    if (item.getTitulo().equals(itemAllUsers.getTitulo())
+                            &&
+                            item.getDescripcion().equals(itemAllUsers.getDescripcion())
+                            &&
+                            item.getIcono() == itemAllUsers.getIcono()) {
+                        itemAllUsers.setTitulo(titulo);
+                        itemAllUsers.setDescripcion(descripcion);
+                        itemAllUsers.setIcono(icono);
+                    }
+                }
+                listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
+
+                item.setTitulo(titulo);
+                item.setDescripcion(descripcion);
+                item.setIcono(icono);
+            }
             adapter.notifyDataSetChanged();
         }
 
-        switch (requestCode) {
+        switch (requestCode)
+
+        {
             case INAPP_BILLING: {
                 int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
                 String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
@@ -311,6 +385,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 }
             }
         }
+
     }
 
     public void getInAppInformationOfProducts() {
@@ -441,6 +516,9 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                     listaPeliculasUsuario.anyade(new Lista(user.getUsername(), l.getTitulo(), l.getDescripcion(), l.getIcono(), l.getPeliculas()));
                 }
             }
+            if (adapter != null)
+                ((ListaAdapter) adapter).setSource(listaPeliculasUsuario);
+
         }
     }
 
@@ -504,6 +582,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onRestart() {
         super.onRestart();
-        initListasPeliculas();
+//        initListasPeliculas();
     }
 }

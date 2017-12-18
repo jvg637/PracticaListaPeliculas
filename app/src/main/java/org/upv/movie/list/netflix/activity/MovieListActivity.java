@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -109,11 +110,16 @@ public class MovieListActivity extends AppCompatActivity {
             invalidateOptionsMenu();
             idsPeliculasUser = new ArrayList<>();
             allMovies = true;
+
+            setTitle( getResources().getString(R.string.LA_default_list_title));
         } else {
+
             idsPeliculasUser = (ArrayList<Integer>) getIntent().getExtras().get("peliculasLista");
             descLista = getIntent().getExtras().getString("descLista");
             iconoLista = getIntent().getExtras().getInt("iconoLista");
             userLista = getIntent().getExtras().getString("userLista");
+
+            setTitle( getIntent().getExtras().getString("tituloLista"));
             for (Movie movie : MovieList.list) {
                 for (int i = 0; i < idsPeliculasUser.size(); i++) {
                     if (idsPeliculasUser.get(i) == movie.getId()) {
@@ -168,13 +174,27 @@ public class MovieListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_MOVIE && resultCode == RESULT_OK) {
-            movieList.clear();
+
             @SuppressWarnings("ConstantConditions")
             long idPelicula = data.getExtras().getLong("idPelicula");
-            idsPeliculasUser.add((int) idPelicula);
-            movieList.add(MovieList.list.get((int) idPelicula));
-            modificaFichero();
-            actualizaAdapter();
+
+            boolean nueva = true;
+
+            for (int idPeli:idsPeliculasUser) {
+                if (idPeli==idPelicula) {
+                    nueva = false;
+                    break;
+                }
+            }
+            if (nueva) {
+                movieList.clear();
+                movieList.add(MovieList.list.get((int) idPelicula));
+                idsPeliculasUser.add((int) idPelicula);
+                modificaFichero();
+                actualizaAdapter();
+            } else {
+                Snackbar.make(findViewById(R.id.nsv), R.string.duplicated_item, Snackbar.LENGTH_SHORT).show();
+            }
         }
         if (resultCode == RESULT_OK) {
             adapter.notifyDataSetChanged();
@@ -248,6 +268,7 @@ public class MovieListActivity extends AppCompatActivity {
                     && listaPeliculasTodosUsuarios.elemento(i).getIcono() == iconoLista) {
                 Lista peliculaAdd = new Lista(userLista, tituloLista, descLista, iconoLista, idsPeliculasUser);
                 listaPeliculasTodosUsuarios.actualiza(i, peliculaAdd);
+
                 listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
             }
         }
