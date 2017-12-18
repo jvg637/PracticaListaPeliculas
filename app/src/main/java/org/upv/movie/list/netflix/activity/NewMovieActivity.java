@@ -23,8 +23,8 @@ import java.util.List;
  */
 
 public class NewMovieActivity extends AppCompatActivity {
-    //Lista peliculas
     private List<Movie> movieList;
+    private MovieListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +35,13 @@ public class NewMovieActivity extends AppCompatActivity {
 
         EditText inputSearch = findViewById(R.id.inputSearch);
 
-        // Obtener el Recycler
-        RecyclerView recyclerView = findViewById(R.id.recycler_new_movie);
+        final RecyclerView recyclerView = findViewById(R.id.recycler_new_movie);
         recyclerView.setHasFixedSize(true);
 
-        // Usar un administrador para LinearLayout
         LinearLayoutManager lManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(lManager);
 
-        // Crear un nuevo adaptador
-        final MovieListAdapter adapter = new MovieListAdapter(movieList);
+        adapter = new MovieListAdapter(movieList);
 
         recyclerView.setAdapter(adapter);
 
@@ -55,12 +52,10 @@ public class NewMovieActivity extends AppCompatActivity {
             }
         }));
 
-        /* Activando el filtro de busqueda */
         inputSearch.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                adapter.getFilter().filter(arg0.toString());
+                adapter.getFilter().filter(arg0);
             }
 
             @Override
@@ -75,7 +70,7 @@ public class NewMovieActivity extends AppCompatActivity {
 
     public void guardarPelicula(int position){
         Intent intent = new Intent();
-        intent.putExtra("idPelicula", movieList.get(position).getId());
+        intent.putExtra("idPelicula", adapter.getMoviesFilter().get(position).getId());
         setResult(RESULT_OK, intent);
         finish();
     }

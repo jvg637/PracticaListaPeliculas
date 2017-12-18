@@ -88,7 +88,7 @@
     <string name="ANL_new_list_title">Title</string>
     <string name="ANL_new_list_description">Description</string>
     <string name="ANL_new_list_icon">Icon</string>
-    <string name="ANL_ok">Ok</string>
+    <string name="ANL_ok">OK</string>
     <string name="ANL_cancel">Cancel</string>
 
     <!-- Textos correspondientes al xml de activity_new_movie (ANM) -->

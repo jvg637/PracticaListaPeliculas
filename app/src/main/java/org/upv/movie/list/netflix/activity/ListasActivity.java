@@ -83,16 +83,13 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listas);
-
         // Puntuar mi aplicación
         new RateMyApp(this).app_launched();
-
         // Banner
         adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
         serviceConectInAppBilling();
-
         // Initializar Listas
         initListasPeliculas();
 
@@ -196,7 +193,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 e.printStackTrace();
             }
             int response = ownedItemsInApp.getInt("RESPONSE_CODE");
-            System.out.println(response);
             if (response == 0) {
                 ArrayList<String> ownedSkus = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
                 ArrayList<String> purchaseDataList = ownedItemsInApp.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
@@ -205,9 +201,6 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                     String purchaseData = purchaseDataList.get(i);
                     String signature = signatureList.get(i);
                     String sku = ownedSkus.get(i);
-                    System.out.println("Inapp Purchase data: " + purchaseData);
-                    System.out.println("Inapp Signature: " + signature);
-                    System.out.println("Inapp Sku: " + sku);
                     if (sku.equals(ID_ARTICULO)) {
                         setAds(false);
                     } else {
@@ -336,9 +329,7 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
                 for (String thisResponse : responseList) {
                     JSONObject object = new JSONObject(thisResponse);
                     String ref = object.getString("productId");
-                    System.out.println("InApp Reference: " + ref);
                     String price = object.getString("price");
-                    System.out.println("InApp Price: " + price);
                 }
             }
         } catch (RemoteException | JSONException e) {
@@ -508,5 +499,11 @@ public class ListasActivity extends AppCompatActivity implements NavigationView.
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initListasPeliculas();
     }
 }

@@ -62,7 +62,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     static class MovieListViewHolder extends RecyclerView.ViewHolder {
-
         private ImageView poster;
         private TextView title;
         private TextView category;
@@ -95,9 +94,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             if (constraint.length() == 0) {
                 moviesFilter.addAll(items);
             } else {
-                final String filterPattern = constraint.toString().toLowerCase().trim();
+                final String minuscula = constraint.toString().toLowerCase().trim();
                 for (final Movie movie : items) {
-                    if (movie.getTitle().contains(filterPattern) || movie.getCategory().contains(filterPattern)) {
+                    if (movie.getTitle().toLowerCase().contains(minuscula) ||
+                            movie.getCategory().toLowerCase().contains(minuscula)) {
                         moviesFilter.add(movie);
                     }
                 }
@@ -113,4 +113,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
+    public List<Movie> getMoviesFilter() {
+        return moviesFilter;
+    }
 }
