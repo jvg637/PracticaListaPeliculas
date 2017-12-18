@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -45,7 +46,7 @@ public class MovieListActivity extends AppCompatActivity {
     private static final int REFRESH_RATINGS = 10000;
     private static final int ADD_MOVIE = 10001;
     private static String FICHERO_LISTAS = "listas.txt";
-    private RecyclerView.Adapter adapter;
+    private MovieListAdapter adapter;
     private RecyclerView recycler;
     private List<Movie> movieList;
     private ArrayList<Integer> idsPeliculasUser;
@@ -55,6 +56,7 @@ public class MovieListActivity extends AppCompatActivity {
     private ListasVector listaPeliculasTodosUsuarios;
     private String userLogged;
     private boolean allMovies;
+    private ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +143,7 @@ public class MovieListActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
-            actualizaAdapter();
+        actualizaAdapter();
 
         recycler.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recycler, new RecyclerViewTouchListener.RecyclerViewClickListener() {
             @Override
@@ -155,7 +157,7 @@ public class MovieListActivity extends AppCompatActivity {
 
             @Override
             public void onLongClick(View view, int position) {
-                if(!allMovies) {
+                if (!allMovies) {
                     deleteListDialog(position);
                 }
             }
@@ -252,10 +254,10 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     public void actualizaAdapter() {
-        if(movieList.size() != idsPeliculasUser.size()) {
-            for(Integer idPelicula : idsPeliculasUser) {
+        if (movieList.size() != idsPeliculasUser.size()) {
+            for (Integer idPelicula : idsPeliculasUser) {
                 Movie movie = MovieList.list.get(idPelicula);
-                if(!movieList.contains(movie)) {
+                if (!movieList.contains(movie)) {
                     movieList.add(movie);
                 }
             }
