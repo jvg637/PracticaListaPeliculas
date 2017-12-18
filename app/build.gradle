@@ -7,8 +7,8 @@ android {
         applicationId "org.upv.movie.list.netflix"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 9
-        versionName "1.09g"
+        versionCode 10
+        versionName "1.10g"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
