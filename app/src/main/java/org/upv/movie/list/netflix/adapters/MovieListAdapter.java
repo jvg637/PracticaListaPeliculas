@@ -1,18 +1,20 @@
 package org.upv.movie.list.netflix.adapters;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.upv.movie.list.netflix.R;
 import org.upv.movie.list.netflix.model.Movie;
-import org.upv.movie.list.netflix.movie.MovieList;
 import org.upv.movie.list.netflix.utils.DownloadImageTask;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @Override
     public MovieListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.pelicula_row, parent, false);
+        //imageButton = v.findViewById(R.id.delete_movie_from_list);
         return new MovieListViewHolder(v);
     }
 
@@ -63,7 +66,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     }
 
     static class MovieListViewHolder extends RecyclerView.ViewHolder {
-
         private ImageView poster;
         private TextView title;
         private TextView category;
@@ -96,9 +98,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             if (constraint.length() == 0) {
                 moviesFilter.addAll(items);
             } else {
-                final String filterPattern = constraint.toString().toLowerCase().trim();
+                final String minuscula = constraint.toString().toLowerCase().trim();
                 for (final Movie movie : items) {
-                    if (movie.getTitle().contains(filterPattern) || movie.getCategory().contains(filterPattern)) {
+                    if (movie.getTitle().toLowerCase().contains(minuscula) ||
+                            movie.getCategory().toLowerCase().contains(minuscula)) {
                         moviesFilter.add(movie);
                     }
                 }
@@ -114,4 +117,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
+    public List<Movie> getMoviesFilter() {
+        return moviesFilter;
+    }
 }

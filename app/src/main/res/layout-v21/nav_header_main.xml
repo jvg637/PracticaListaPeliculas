@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/imagen_xml"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:transitionName="@string/shared_photo_perfil"
         app:srcCompat="@mipmap/ic_perfil_round" />
 
     <TextView

@@ -47,6 +47,7 @@
                 android:focusable="false"
                 android:hint="@string/AP_user"
                 android:imeOptions="actionNext"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="textEmailAddress"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
@@ -57,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_usuario">
 
@@ -66,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/AIS_password"
                 android:imeOptions="actionNext"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="textPassword"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
@@ -74,7 +77,6 @@
             android:id="@+id/mostrar_contraseña"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:onClick="mostrarContrasena"
             android:text="@string/AIS_show_password"
@@ -89,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mostrar_contraseña">
 
@@ -98,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/AP_name"
                 android:imeOptions="actionNext"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="text"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
@@ -108,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_name">
 
@@ -117,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/AP_email"
                 android:imeOptions="actionDone"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="textEmailAddress"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>

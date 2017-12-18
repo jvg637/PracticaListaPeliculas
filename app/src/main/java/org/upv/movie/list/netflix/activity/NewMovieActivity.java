@@ -23,11 +23,8 @@ import java.util.List;
  */
 
 public class NewMovieActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    private EditText inputSearch;
-    //Lista peliculas
     private List<Movie> movieList;
+    private MovieListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +33,15 @@ public class NewMovieActivity extends AppCompatActivity {
 
         movieList = MovieList.list;
 
-        inputSearch = findViewById(R.id.inputSearch);
+        EditText inputSearch = findViewById(R.id.inputSearch);
 
-        // Obtener el Recycler
-        recyclerView = findViewById(R.id.recycler_new_movie);
+        final RecyclerView recyclerView = findViewById(R.id.recycler_new_movie);
         recyclerView.setHasFixedSize(true);
 
-        // Usar un administrador para LinearLayout
         LinearLayoutManager lManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(lManager);
 
-        // Crear un nuevo adaptador
-        final MovieListAdapter adapter = new MovieListAdapter(movieList);
+        adapter = new MovieListAdapter(movieList);
 
         recyclerView.setAdapter(adapter);
 
@@ -58,31 +52,25 @@ public class NewMovieActivity extends AppCompatActivity {
             }
         }));
 
-        /* Activando el filtro de busqueda */
         inputSearch.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                adapter.getFilter().filter(arg0.toString());
+                adapter.getFilter().filter(arg0);
             }
 
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-                // TODO Auto-generated method stub
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-
             }
         });
     }
 
     public void guardarPelicula(int position){
         Intent intent = new Intent();
-        intent.putExtra("idPelicula", movieList.get(position).getId());
+        intent.putExtra("idPelicula", adapter.getMoviesFilter().get(position).getId());
         setResult(RESULT_OK, intent);
         finish();
     }

@@ -42,10 +42,10 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(R.layout.spinner_item_layout, parent, false);
 
-        TextView textView = (TextView) row.findViewById(R.id.spinnerTextView);
+        TextView textView = row.findViewById(R.id.spinnerTextView);
         textView.setText(mContentArray[position]);
 
-        ImageView imageView = (ImageView)row.findViewById(R.id.spinnerImage);
+        ImageView imageView = row.findViewById(R.id.spinnerImage);
         imageView.setImageResource(mImageArray[position]);
 
         return row;

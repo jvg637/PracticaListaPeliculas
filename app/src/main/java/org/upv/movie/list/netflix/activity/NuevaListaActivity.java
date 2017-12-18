@@ -20,27 +20,24 @@ public class NuevaListaActivity extends AppCompatActivity {
     EditText titulo;
     EditText descripcion;
     Spinner icono;
-    //String [] textArray = {"image 1", "image 2"};
     String[] textArray = {"", "", "", "", "", ""};
     Integer[] imageArray = {R.drawable.ic_fav, R.drawable.ic_star, R.drawable.ic_thumb_up, R.drawable.ic_thumb_down, R.drawable.ic_schedule, R.drawable.ic_help};
-
     Button ok;
     Button cancel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_lista);
 
-        titulo = (EditText)findViewById(R.id.et_titulo_anl);
-        descripcion = (EditText)findViewById(R.id.et_descripcion_anl);
+        titulo = findViewById(R.id.et_titulo_anl);
+        descripcion = findViewById(R.id.et_descripcion_anl);
 
-        icono = (Spinner) findViewById(R.id.sp_icono_anl);
+        icono = findViewById(R.id.sp_icono_anl);
         SpinnerAdapter adapter = new org.upv.movie.list.netflix.adapters.SpinnerAdapter(this, R.layout.spinner_item_layout, textArray, imageArray);
         icono.setAdapter(adapter);
 
-        ok = (Button) findViewById(R.id.bt_ok_anl);
+        ok = findViewById(R.id.bt_ok_anl);
         ok.setText(android.R.string.ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +51,7 @@ public class NuevaListaActivity extends AppCompatActivity {
             }
         });
 
-
-        cancel = (Button) findViewById(R.id.bt_cancel_anl);
+        cancel = findViewById(R.id.bt_cancel_anl);
         cancel.setText(android.R.string.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

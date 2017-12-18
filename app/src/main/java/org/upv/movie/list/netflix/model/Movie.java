@@ -14,8 +14,6 @@
 
 package org.upv.movie.list.netflix.model;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -66,7 +64,7 @@ public class Movie implements Serializable {
     private String producers;
 
     public void clearRatings() {
-        if (ratings!=null) {
+        if (ratings != null) {
             ratings.clear();
         }
     }
@@ -191,17 +189,14 @@ public class Movie implements Serializable {
         return ratings.size();
     }
 
-
     public void addRating(Float rating) {
         ratings.add(rating);
     }
 
     public URI getBackgroundImageURI() {
         try {
-            Log.d("BACK MOVIE: ", bgImageUrl);
             return new URI(getBackgroundImageUrl());
         } catch (URISyntaxException e) {
-            Log.d("URI exception: ", bgImageUrl);
             return null;
         }
     }

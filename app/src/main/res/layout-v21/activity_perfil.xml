@@ -18,6 +18,7 @@
             android:layout_height="150dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/imagen_xml"
+            android:transitionName="@string/shared_photo_perfil"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titulo">
 
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_usuario">
 
@@ -74,7 +77,6 @@
             android:id="@+id/mostrar_contraseña"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:onClick="mostrarContrasena"
             android:text="@string/AIS_show_password"
@@ -89,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mostrar_contraseña">
 
@@ -108,6 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minHeight="?android:attr/actionBarSize"
+            android:transitionGroup="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_name">
 

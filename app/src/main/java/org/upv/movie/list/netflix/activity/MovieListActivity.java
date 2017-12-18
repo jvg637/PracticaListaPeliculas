@@ -16,17 +16,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.upv.movie.list.netflix.R;
-import org.upv.movie.list.netflix.adapters.RecyclerItemClickListener;
 import org.upv.movie.list.netflix.adapters.MovieListAdapter;
 import org.upv.movie.list.netflix.adapters.RecyclerViewTouchListener;
 import org.upv.movie.list.netflix.model.Lista;
 import org.upv.movie.list.netflix.model.Movie;
-import org.upv.movie.list.netflix.model.User;
 import org.upv.movie.list.netflix.movie.MovieList;
 import org.upv.movie.list.netflix.movie.Utils;
 import org.upv.movie.list.netflix.utils.ListasVector;
@@ -47,36 +46,29 @@ public class MovieListActivity extends AppCompatActivity {
     private static final int REFRESH_RATINGS = 10000;
     private static final int ADD_MOVIE = 10001;
     private static String FICHERO_LISTAS = "listas.txt";
-    private RecyclerView.Adapter adapter;
-    private FloatingActionButton fab;
+    private MovieListAdapter adapter;
     private RecyclerView recycler;
-    //Lista peliculas
     private List<Movie> movieList;
-
-    //Indicador de archivo de idioma
-    private int archivoMovie;
-
-    //Vectores de peliculas usuarios
     private ArrayList<Integer> idsPeliculasUser;
     private String tituloLista, descLista;
     private int iconoLista;
     private String userLista;
     private ListasVector listaPeliculasTodosUsuarios;
     private String userLogged;
+    private boolean allMovies;
+    private ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
-        //Detectamos el idioma que tiene el dispositivo
         String language = Locale.getDefault().getLanguage();
 
-        //Obtenemos el usuario conectado
         SharedPreferences prefsLogin = getSharedPreferences(USER_LOGIN_PREFERENCES, Context.MODE_PRIVATE);
         userLogged = prefsLogin.getString(USER_LOGIN_PREFERENCES_KEY_USER, "");
 
-        fab = findViewById(R.id.fab_add_movie);
+        FloatingActionButton fab = findViewById(R.id.fab_add_movie);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +77,7 @@ public class MovieListActivity extends AppCompatActivity {
             }
         });
 
-        //Cargamos el archivo movies que corresponda con el idioma
+        int archivoMovie;
         switch (language) {
             case "es":
                 archivoMovie = R.raw.movies_es;
@@ -98,13 +90,12 @@ public class MovieListActivity extends AppCompatActivity {
                 break;
         }
 
-
+        //noinspection ConstantConditions
         tituloLista = getIntent().getExtras().getString("tituloLista");
         listaPeliculasTodosUsuarios = new ListasVector();
         listaPeliculasTodosUsuarios.abrir(this, FICHERO_LISTAS);
 
         Gson gson = new Gson();
-        //Cargamos las peliculas en MovieList
         movieList = new ArrayList<>();
         String json = Utils.loadJSONFromResource(this, archivoMovie);
         Type collection = new TypeToken<ArrayList<Movie>>() {
@@ -114,11 +105,11 @@ public class MovieListActivity extends AppCompatActivity {
         if (tituloLista.equals("todas")) {
             movieList = MovieList.list;
             fab.setVisibility(View.GONE);
-            mState =true;
+            mState = true;
             invalidateOptionsMenu();
-
+            idsPeliculasUser = new ArrayList<>();
+            allMovies = true;
         } else {
-            //Aqui cargamos las listas de todos los usuarios y despues la del usuario que está con la sesión iniciada
             idsPeliculasUser = (ArrayList<Integer>) getIntent().getExtras().get("peliculasLista");
             descLista = getIntent().getExtras().getString("descLista");
             iconoLista = getIntent().getExtras().getInt("iconoLista");
@@ -130,14 +121,14 @@ public class MovieListActivity extends AppCompatActivity {
                     }
                 }
             }
+            allMovies = false;
         }
 
-        //Leo de preferencias las valoraciones de todas las peliculas
         SharedPreferences prefs = getSharedPreferences("Valoraciones", Context.MODE_PRIVATE);
-        Set movieRatings = new HashSet<String>();
+        Set<String> movieRatings = new HashSet<>();
         movieRatings = prefs.getStringSet("ratings", movieRatings);
         gson = new Gson();
-        for (String movieRating : (Iterable<String>) movieRatings) {
+        for (String movieRating : movieRatings) {
             String[] rating = gson.fromJson(movieRating, String.class).split("╩");
             for (Movie movie : movieList) {
                 if (movie.getId() == Long.valueOf(rating[0])) {
@@ -147,18 +138,12 @@ public class MovieListActivity extends AppCompatActivity {
             }
         }
 
-
-        // Obtener el Recycler
         recycler = findViewById(R.id.movie_list_recycler);
         recycler.setHasFixedSize(true);
 
-        // Usar un administrador para LinearLayout
         RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
-
-        // Crear un nuevo adaptador
-        adapter = new MovieListAdapter(movieList);
-        recycler.setAdapter(adapter);
+        actualizaAdapter();
 
         recycler.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recycler, new RecyclerViewTouchListener.RecyclerViewClickListener() {
             @Override
@@ -166,43 +151,30 @@ public class MovieListActivity extends AppCompatActivity {
                 Intent intent = new Intent(MovieListActivity.this, ShowEditMovieActivity.class);
                 intent.putExtra(ShowEditMovieActivity.PARAM_EXTRA_ID_PELICULA, (int) movieList.get(position).getId());
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MovieListActivity.this,
-                        new Pair<View, String>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
+                        new Pair<>(v.findViewById(R.id.movie_poster), getString(R.string.shared_photo_list_movie)));
                 ActivityCompat.startActivityForResult(MovieListActivity.this, intent, REFRESH_RATINGS, options.toBundle());
             }
 
-
             @Override
             public void onLongClick(View view, int position) {
-                // No se puede eliminar la lista por defecto
-                deleteListDialog(movieList, position);
+                if (!allMovies) {
+                    deleteListDialog(position);
+                }
             }
         }));
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_MOVIE && resultCode == RESULT_OK) {
+            movieList.clear();
+            @SuppressWarnings("ConstantConditions")
             long idPelicula = data.getExtras().getLong("idPelicula");
             idsPeliculasUser.add((int) idPelicula);
-
-            //Me falta averiguar como añadir en el fichero los datos que he modificado
-            for (int i = 0; i < listaPeliculasTodosUsuarios.tamanyo(); i++) {
-                if (listaPeliculasTodosUsuarios.elemento(i).getUsuario().equals(userLogged)
-                        && listaPeliculasTodosUsuarios.elemento(i).getTitulo().equals(tituloLista)
-                        && listaPeliculasTodosUsuarios.elemento(i).getDescripcion().equals(descLista)
-                        && listaPeliculasTodosUsuarios.elemento(i).getIcono() == iconoLista) {
-                    Lista peliculaAdd = new Lista(userLista, tituloLista, descLista, iconoLista, idsPeliculasUser);
-                    listaPeliculasTodosUsuarios.actualiza(i, peliculaAdd);
-                }
-            }
             movieList.add(MovieList.list.get((int) idPelicula));
-            //listaPeliculasTodosUsuarios.anyade(new Lista(user.getUsername(), titulo, descripcion, icono, new ArrayList<Integer>()));
-            listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
-            adapter = new MovieListAdapter(movieList);
-            recycler.setAdapter(adapter);
-
+            modificaFichero();
+            actualizaAdapter();
         }
         if (resultCode == RESULT_OK) {
             adapter.notifyDataSetChanged();
@@ -210,62 +182,55 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
-    private void deleteListDialog(final List<Movie> movies, int position) {
-
+    private void deleteListDialog(int position) {
         final int pos = position;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + movies.get(pos).getTitle() + "\" ?");
+        builder.setMessage(getResources().getString(R.string.LA_delete_list_dialog) + movieList.get(pos).getTitle() + "\" ?");
 
-        // OK button
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                movies.remove(pos);
-                adapter = new MovieListAdapter(movieList);
-                recycler.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                movieList.remove(pos);
+                idsPeliculasUser.remove(pos);
+                modificaFichero();
+                actualizaAdapter();
             }
         });
 
-        // Cancel button
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
             }
         });
 
-        // Create the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     boolean mState = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_list_movie, menu);
 
-
-        if (mState)
-        {
+        if (mState) {
             for (int i = 0; i < menu.size(); i++)
                 menu.getItem(i).setVisible(false);
         }
 
-        if (movieList.size()<=0)
+        if (movieList.size() <= 0)
             menu.getItem(1).setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
         if (id == R.id.action_edit) {
             Intent intentData = new Intent();
             intentData.putExtra("ACTION", "EDIT");
             setResult(RESULT_OK, intentData);
             finish();
-
         } else if (id == R.id.action_delete) {
             Intent intentData = new Intent();
             intentData.putExtra("ACTION", "REMOVE");
@@ -273,5 +238,32 @@ public class MovieListActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void modificaFichero() {
+        for (int i = 0; i < listaPeliculasTodosUsuarios.tamanyo(); i++) {
+            if (listaPeliculasTodosUsuarios.elemento(i).getUsuario().equals(userLogged)
+                    && listaPeliculasTodosUsuarios.elemento(i).getTitulo().equals(tituloLista)
+                    && listaPeliculasTodosUsuarios.elemento(i).getDescripcion().equals(descLista)
+                    && listaPeliculasTodosUsuarios.elemento(i).getIcono() == iconoLista) {
+                Lista peliculaAdd = new Lista(userLista, tituloLista, descLista, iconoLista, idsPeliculasUser);
+                listaPeliculasTodosUsuarios.actualiza(i, peliculaAdd);
+                listaPeliculasTodosUsuarios.guardar(this, FICHERO_LISTAS);
+            }
+        }
+    }
+
+    public void actualizaAdapter() {
+        if (movieList.size() != idsPeliculasUser.size()) {
+            for (Integer idPelicula : idsPeliculasUser) {
+                Movie movie = MovieList.list.get(idPelicula);
+                if (!movieList.contains(movie)) {
+                    movieList.add(movie);
+                }
+            }
+        }
+        adapter = new MovieListAdapter(movieList);
+        recycler.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

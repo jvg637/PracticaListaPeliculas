@@ -3,15 +3,12 @@
     <string name="action_settings">Settings</string>
     <string name="label_activity_perfil">Profile</string>
 
-    <!-- Nombre de Transiciones -->
+    <!-- Otros -->
     <string name="shared_photo_list_movie">shared_photo_list_movie</string>
     <string name="shared_photo_perfil">shared_photo_perfil</string>
-    <!-- shared transitions-->
-    <!--<string name="transition_name_boton">enter_transition_perfil</string>-->
-
     <string name="drawer_open">navigation drawer open</string>
     <string name="drawer_close">navigation drawer close</string>
-    <!-- <string name="drawer_edit_user">Edit User Profile</string> -->
+    <string name="imagen_xml">Image</string>
 
     <!-- Textos correspondientes al xml de activity_inicio_sesion (AIS) -->
     <string name="AIS_Log_in">Log In</string>
@@ -91,8 +88,17 @@
     <string name="ANL_new_list_title">Title</string>
     <string name="ANL_new_list_description">Description</string>
     <string name="ANL_new_list_icon">Icon</string>
+    <string name="ANL_ok">OK</string>
+    <string name="ANL_cancel">Cancel</string>
 
     <!-- Textos correspondientes al xml de activity_new_movie (ANM) -->
     <string name="ANM_busqueda">Title, Category</string>
+
+    <!-- Textos correspondientes al xmol de dialog_ratemyapp (DRMA) -->
+    <string name="DRMA_rate">Please take a second for rate the app</string>
+    <string name="DRMA_stars">1. Love MasterListas, please rate 5 star in Play Store</string>
+    <string name="DRMA_problem">2. Have problems, please contact author to report issue</string>
+    <string name="DRMA_author">CONTACT AUTHOR</string>
+    <string name="DRMA_5stars">RATE 5 STAR</string>
 
 </resources>
