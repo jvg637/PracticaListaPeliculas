@@ -106,5 +106,6 @@
     <string name="action">Choisissez une action:</string>
     <string name="field_empty">Champ de titre obligatoire</string>
     <string name="duplicated_item">Film dupliqué!</string>
+    <string name="educational_demo">App incomplet. Seulement à des fins d\'éducation.</string>
 
 </resources>

@@ -105,5 +105,6 @@
     <string name="action">Action:</string>
     <string name="field_empty">You must write at least a title!</string>
     <string name="duplicated_item">Duplicated movie!</string>
+    <string name="educational_demo">Application incomplete. Only for education purpose.</string>
 
 </resources>

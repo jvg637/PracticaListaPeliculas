@@ -106,5 +106,6 @@
     <string name="action">Elija una opción:</string>
     <string name="field_empty">Compo titulo obligatorio!</string>
     <string name="duplicated_item">Película dulicada!</string>
+    <string name="educational_demo">App incompleta. Sólo para fines educativos</string>
 
 </resources>

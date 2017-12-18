@@ -93,6 +93,8 @@ public class InicioSesionActivity extends AppCompatActivity {
 
         rememberUser();
         initUserList();
+
+        Toast.makeText(this, getString(R.string.educational_demo), Toast.LENGTH_SHORT).show();
     }
 
     public void loguearCheckbox(View v) {
